@@ -260,14 +260,31 @@ const PRODUCTS = [
 
 /* ---------- Favourites ---------- */
 (() => {
-  const picks = ['Extreme Cream 50 ml', 'R.E.D Blemish Clear Soothing Cream', 'Real Hyaluronic Blue 100 Ampoule', 'Aqua Squalane Moisturizing Cream 60 ml'];
-  const art = '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 92h60V62a30 30 0 0 0-60 0z" fill="#F7F6F2"/><rect x="14" y="50" width="72" height="16" rx="7" fill="#2F3B37"/></svg>';
+  const picks = ['Extreme Cream 50 ml', 'R.E.D Blemish Clear Soothing Cream', 'Real Hyaluronic Blue 100 Ampoule', 'Aqua Squalane Moisturizing Cream 60 ml',
+    'Aqua Squalane Serum 50 ml', 'Green Mild Up Sun+', 'Cera Moisture Barrier Sun Cream', 'Nosca9 Cleansing Water'];
+  const jar = '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 92h60V62a30 30 0 0 0-60 0z" fill="#F7F6F2"/><rect x="14" y="50" width="72" height="16" rx="7" fill="#2F3B37"/></svg>';
   const tube = '<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="38" y="30" width="24" height="64" rx="8" fill="#F7F6F2"/><rect x="42" y="8" width="16" height="26" rx="4" fill="#2F3B37"/></svg>';
-  document.getElementById('favGrid').innerHTML = picks.map(n => PRODUCTS.find(p => p.name === n)).map(p => `
+  const sun = '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M34 94V34h32v60z" fill="#F7F6F2"/><rect x="38" y="12" width="24" height="24" rx="4" fill="#2F3B37"/><circle cx="50" cy="64" r="9" fill="#F6E7A8"/></svg>';
+  const shape = p => /Ampoule|Serum|Water/.test(p.name) ? tube : /Sun/.test(p.name) ? sun : jar;
+  let hearts = []; try { hearts = JSON.parse(localStorage.getItem('coloro-hearts') || '[]'); } catch (_) {}
+  const grid = document.getElementById('favGrid');
+  grid.innerHTML = picks.map(n => PRODUCTS.find(p => p.name === n)).map((p, i) => `
     <article class="fav-card">
-      <div class="fav-art" style="--c:${p.c}">${p.name.includes('Ampoule') ? tube : art}</div>
+      <div class="fav-art" style="--c:${p.c}">
+        <span class="pick">pick</span>
+        <button class="heart" aria-pressed="${hearts.includes(p.name)}" aria-label="Save ${p.name}" data-name="${p.name}">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.5A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/></svg></button>
+        ${shape(p)}
+      </div>
       <div class="fav-body"><p class="brand">${p.brand}</p><h3>${p.name}</h3><span class="price">${eur(p.price)}</span></div>
     </article>`).join('');
+  grid.addEventListener('click', e => {
+    const b = e.target.closest('.heart'); if (!b) return;
+    const on = b.getAttribute('aria-pressed') !== 'true';
+    b.setAttribute('aria-pressed', on);
+    hearts = on ? [...hearts, b.dataset.name] : hearts.filter(x => x !== b.dataset.name);
+    try { localStorage.setItem('coloro-hearts', JSON.stringify(hearts)); } catch (_) {}
+  });
 })();
 
 /* ---------- Newsletter ---------- */
