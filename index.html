@@ -61,6 +61,10 @@
         <input id="searchInput" type="search" placeholder="Rechercher" data-en-ph="Search" aria-label="Rechercher un produit ou une marque" data-en-aria="Search products or brands">
         <button type="submit" aria-label="Rechercher" data-en-aria="Search"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button>
       </form>
+      <button type="button" class="wish-btn" id="wishBtn" aria-label="Ma liste d’envies" data-en-aria="My wishlist">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.5A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/></svg>
+        <span class="wish-count" id="wishCount" hidden>0</span>
+      </button>
       <div class="lang" role="group" aria-label="Langue" data-en-aria="Language">
         <button type="button" data-lang="fr" aria-pressed="true">FR</button>
         <button type="button" data-lang="en" aria-pressed="false">EN</button>
@@ -200,7 +204,19 @@
   <div class="wrap">
     <h2 id="shopTitle"><small class="ko" lang="ko">쇼핑</small><span data-en="The shelves">La boutique</span></h2>
     <p class="section-lead" data-en="Prices in euros. Some prices will be confirmed soon.">Prix en euros. Certains prix seront confirmés prochainement.</p>
-    <div class="filters" id="filters" role="group" aria-label="Filtrer les produits" data-en-aria="Filter products"></div>
+    <div class="shop-controls">
+      <div class="filter-row"><span class="row-label" data-en="Category">Catégorie</span><div class="filters" id="filters" role="group" aria-label="Filtrer par catégorie" data-en-aria="Filter by category"></div></div>
+      <div class="filter-row"><span class="row-label" data-en="Skin type">Type de peau</span><div class="filters" id="skinFilters" role="group" aria-label="Filtrer par type de peau" data-en-aria="Filter by skin type"></div></div>
+      <div class="sort-row">
+        <p class="result-count" id="resultCount" aria-live="polite"></p>
+        <label class="sort"><span data-en="Sort by">Trier par</span>
+          <select id="sortSel">
+            <option value="default" data-en="Our selection">Notre sélection</option>
+            <option value="asc" data-en="Price: low to high">Prix croissant</option>
+            <option value="desc" data-en="Price: high to low">Prix décroissant</option>
+          </select></label>
+      </div>
+    </div>
     <div class="grid" id="grid"></div>
   </div>
 </section>
@@ -310,6 +326,20 @@
     <div><h4 data-en="With">Avec</h4><p data-en="ONOUL matcha bar">Matcha bar ONOUL</p><p data-en="Seoul Salon scalp massages">Massages Seoul Salon</p></div>
   </div>
 </footer>
+
+<dialog id="wishDialog" class="dlg" aria-labelledby="wishTitle">
+  <div class="dlg-inner">
+    <button type="button" class="dlg-close" data-close aria-label="Fermer" data-en-aria="Close">×</button>
+    <h2 id="wishTitle" class="dlg-title" data-en="My wishlist">Ma liste d’envies</h2>
+    <div id="wishBody"></div>
+  </div>
+</dialog>
+<dialog id="productDialog" class="dlg dlg-wide" aria-labelledby="pdTitle">
+  <div class="dlg-inner">
+    <button type="button" class="dlg-close" data-close aria-label="Fermer" data-en-aria="Close">×</button>
+    <div id="pdBody" class="pd"></div>
+  </div>
+</dialog>
 
 <script src="i18n.js"></script>
 <script src="app.js"></script>

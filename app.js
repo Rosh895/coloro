@@ -33,7 +33,7 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const MINT = '#A8C3B4', PEACH = '#F9D5C8', BERRY = '#E0607E', LILAC = '#DCD3F2', BUTTER = '#F6E7A8';
 const PRODUCTS = [
   { id: 'rb-extreme', cat: 'creams', brand: 'Real Barrier', name: 'Extreme Cream 50 ml', price: 17.76, c: MINT, note: ['Peaux très sèches ou à barrière fragilisée. Crème riche aux céramides.', 'Very dry or barrier-compromised skin. Rich ceramide cream.'] },
-  { id: 'rb-aqua', cat: 'creams', brand: 'Real Barrier', name: 'Aqua Soothing Cream', price: 19.29, c: MINT, note: ['Hydratation apaisante pour les peaux qui tiraillent.', 'Soothing hydration for skin that feels tight.'] },
+  { id: 'rb-aqua', cat: 'creams', brand: 'Real Barrier', name: 'Aqua Soothing Cream', price: 19.29, c: MINT, note: ['Crème hydratante apaisante.', 'Soothing moisturising cream.'] },
   { id: 'drg-cream', cat: 'creams', brand: 'Dr.G', name: 'R.E.D Blemish Clear Soothing Cream', price: 17.74, c: MINT, note: ['Peaux sensibles, sujettes aux rougeurs, et peaux mixtes.', 'Sensitive, redness-prone and combination skin.'] },
   { id: 'fat-cream', cat: 'creams', brand: 'FATION', name: 'Nosca9 Trouble Cream', price: null, c: MINT, note: ['Peaux grasses et sujettes aux imperfections.', 'Oily and blemish-prone skin.'] },
   { id: 'sn-cream', cat: 'creams', brand: 'S.NATURE', name: 'Aqua Squalane Moisturizing Cream 60 ml', price: 14.95, c: PEACH, note: ['Peaux sèches ou déshydratées. Jour ou nuit.', 'Dry or dehydrated skin. Day or night.'] },
@@ -46,7 +46,7 @@ const PRODUCTS = [
   { id: 'drg-mask', cat: 'masks', brand: 'Dr.G', name: 'R.E.D Blemish Cool Soothing Mask', price: 15.88, c: MINT, note: ['Peaux sensibles et sujettes aux rougeurs.', 'Sensitive and redness-prone skin.'] },
   { id: 'fat-mask', cat: 'masks', brand: 'FATION', name: 'Nosca9 Trouble Clear Mask', price: 4.47, c: MINT, note: ['Peaux grasses et sujettes aux imperfections.', 'Oily and blemish-prone skin.'] },
   { id: 'rb-exmask', cat: 'masks', brand: 'Real Barrier', name: 'Extreme Cream Mask', price: 14.21, c: MINT, note: ['Peaux très sèches et réparation de la barrière.', 'Very dry skin and barrier repair.'] },
-  { id: 'sn-wrap', cat: 'masks', brand: 'S.NATURE', name: 'Aqua Squalane Cream Wrapping Mask, 4 pcs', price: 14.59, c: PEACH, note: ['Un masque au squalane pour peaux sèches et déshydratées. 4 masques.', 'A squalane wrap for dry, dehydrated skin. 4 masks.'] },
+  { id: 'sn-wrap', cat: 'masks', brand: 'S.NATURE', name: 'Aqua Squalane Cream Wrapping Mask, 4 pcs', price: 14.59, c: PEACH, note: ['Masque enveloppant au squalane. 4 masques.', 'Squalane wrapping mask. 4 masks.'] },
   { id: 'rb-sun', cat: 'sun', brand: 'Real Barrier', name: 'Cera Moisture Barrier Sun Cream', price: 12.26, c: BUTTER, note: ['Peaux sèches, déshydratées et mixtes.', 'Dry, dehydrated and combination skin.'] },
   { id: 'drg-sun', cat: 'sun', brand: 'Dr.G', name: 'Green Mild Up Sun+', price: 14.71, c: BUTTER, note: ['Peaux sensibles, grasses ou sujettes aux imperfections.', 'Sensitive and oily or blemish-prone skin.'] },
   { id: 'zeroid-sun', cat: 'sun', brand: 'ZEROID', name: 'Daily Sun Cream', price: null, c: BUTTER, note: ['Peaux très sèches ou à barrière fragilisée. Alternative pour peaux sensibles.', 'Very dry or barrier-compromised skin. A sensitive-skin alternative.'] },
@@ -62,19 +62,86 @@ const PRODUCTS = [
   { id: 'hk-silk', cat: 'sleep', brand: 'HAKOAL', name: '100% Mulberry Silk Pillowcase', price: null, c: LILAC, note: ['Soie de mûrier 6A, 22 momme.', '6A-grade mulberry silk, 22 momme.'] },
 ];
 const CATS = ['creams', 'serums', 'masks', 'sun', 'lips', 'makeup', 'sleep'];
+/* Skin types each product is recommended for (from the COLARO product sheet). Untagged products show under "all". */
+const SKIN_TAGS = {
+  'rb-extreme': ['barrier', 'sensitive'], 'drg-cream': ['sensitive', 'normal'], 'fat-cream': ['oily'], 'sn-cream': ['dry'],
+  'wl-ampoule': ['dry'], 'sn-serum': ['normal'], 'fat-serum': ['oily'], 'fat-water': ['oily'], 'fat-patch': ['oily'],
+  'rb-ampmask': ['dry', 'normal'], 'drg-mask': ['sensitive'], 'fat-mask': ['oily'], 'rb-exmask': ['barrier'],
+  'rb-sun': ['dry', 'normal'], 'drg-sun': ['sensitive', 'oily'], 'zeroid-sun': ['barrier', 'sensitive'],
+  'jv-glow': ['dry', 'normal'], 'jv-matte': ['oily', 'normal'], 'js-blush': ['dry'], 'nm-blush': ['oily', 'normal'],
+};
+const SKINS = ['dry', 'sensitive', 'normal', 'oily', 'barrier'];
+const LIP_SHADES = [['lip.nude', '#D9A58F'], ['lip.coral', '#F07A62'], ['lip.rose', '#E98AA3'], ['lip.mauve', '#A8667A'], ['lip.red', '#C8283C'], ['lip.deep', '#7A3B3F']];
+const BLUSH_SHADES = [['bl.peach', '#F5A58A'], ['bl.pink', '#F2A9C0'], ['bl.rose', '#D9788F'], ['bl.berry', '#A5385B']];
+const SHADES = { 'nm-tint': LIP_SHADES, 'js-blush': BLUSH_SHADES, 'nm-blush': BLUSH_SHADES };
 const PICKS = ['rb-extreme', 'drg-cream', 'wl-ampoule', 'sn-cream', 'sn-serum', 'drg-sun', 'rb-sun', 'fat-water'];
 
-/* Wishlist, shared by the carousel and the catalogue. Stored only in this browser. */
+/* Wishlist, shared by the carousel, catalogue and detail view. Stored only in this browser. */
 let hearts = [];
 try { hearts = JSON.parse(localStorage.getItem('colaro-hearts') || '[]'); } catch (_) {}
+const byId = id => PRODUCTS.find(p => p.id === id);
 const heartBtn = p => `<button class="heart" type="button" aria-pressed="${hearts.includes(p.id)}" aria-label="${t('save', { name: p.name })}" data-id="${p.id}">
   <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.5A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/></svg></button>`;
+
+/* Shade choice (memory only, per visit) */
+const chosen = {};
+const shadePicker = p => {
+  const list = SHADES[p.id]; if (!list) return '';
+  const sel = chosen[p.id];
+  return `<div class="shade-pick" data-id="${p.id}">
+    <div class="shade-row" role="radiogroup" aria-label="${t('shade.pick')}">${list.map(([k, hex], i) =>
+      `<button type="button" class="shade" role="radio" aria-checked="${sel === i}" aria-label="${t(k)}" title="${t(k)}" data-i="${i}" style="--hex:${hex}"></button>`).join('')}</div>
+    <span class="shade-name">${sel == null ? t('shade.count', { n: list.length }) : t(list[sel][0])}</span></div>`;
+};
+const shadeText = p => chosen[p.id] != null && SHADES[p.id] ? ' (' + t(SHADES[p.id][chosen[p.id]][0]) + ')' : '';
+
+function wishText() {
+  const lines = hearts.map(byId).map(p => `- ${p.brand} ${p.name}${shadeText(p)} – ${p.price == null ? t('price.soon') : eur(p.price)}`);
+  return [t('w.head'), '', ...lines, '', t('w.foot')].join('\n');
+}
+function renderWish() {
+  const list = hearts.map(byId);
+  $('#wishBody').innerHTML = list.length ? `
+    <ul class="wish-list">${list.map(p => `<li><span class="wish-dot" style="background:${p.c}"></span>
+      <div><b>${p.brand}</b><br>${p.name}${shadeText(p)}</div>
+      <span class="wish-price">${p.price == null ? t('price.soon') : eur(p.price)}</span>${heartBtn(p)}</li>`).join('')}</ul>
+    <div class="wish-actions"><button type="button" class="btn btn-pine" id="wishCopy">${t('w.copy')}</button>
+      <a class="btn btn-ghost" href="mailto:?subject=${encodeURIComponent(t('w.head'))}&body=${encodeURIComponent(wishText())}">${t('w.mail')}</a></div>
+    <p class="muted small">${t('w.note')}</p>` : `<p>${t('w.empty')}</p>`;
+}
+function updateWish() {
+  hearts = hearts.filter(byId);
+  $('#wishCount').textContent = hearts.length; $('#wishCount').hidden = !hearts.length;
+  document.querySelectorAll('.heart').forEach(h => h.setAttribute('aria-pressed', hearts.includes(h.dataset.id)));
+  if ($('#wishDialog').open) renderWish();
+}
 document.addEventListener('click', e => {
   const b = e.target.closest('.heart'); if (!b) return;
-  const on = b.getAttribute('aria-pressed') !== 'true';
-  hearts = on ? [...hearts, b.dataset.id] : hearts.filter(x => x !== b.dataset.id);
-  document.querySelectorAll(`.heart[data-id="${b.dataset.id}"]`).forEach(h => h.setAttribute('aria-pressed', on));
+  const id = b.dataset.id;
+  hearts = hearts.includes(id) ? hearts.filter(x => x !== id) : [...hearts, id];
   try { localStorage.setItem('colaro-hearts', JSON.stringify(hearts)); } catch (_) {}
+  updateWish();
+});
+$('#wishBtn').addEventListener('click', () => { renderWish(); $('#wishDialog').showModal(); });
+$('#wishBody').addEventListener('click', async e => {
+  if (e.target.id !== 'wishCopy') return;
+  try { await navigator.clipboard.writeText(wishText()); e.target.textContent = t('w.copied'); } catch (_) {}
+});
+
+/* Shade clicks anywhere (cards, detail view) */
+document.addEventListener('click', e => {
+  const s = e.target.closest('.shade'); if (!s) return;
+  const id = s.closest('.shade-pick').dataset.id, i = +s.dataset.i;
+  chosen[id] = chosen[id] === i ? null : i;
+  document.querySelectorAll(`.shade-pick[data-id="${id}"]`).forEach(el => { el.outerHTML = shadePicker(byId(id)); });
+  const again = document.querySelector(`.shade-pick[data-id="${id}"] .shade[data-i="${i}"]`); if (again) again.focus();
+  if ($('#wishDialog').open) renderWish();
+});
+
+/* Dialogs: close button, backdrop click */
+document.addEventListener('click', e => {
+  const c = e.target.closest('[data-close]'); if (c) c.closest('dialog').close();
+  else if (e.target.tagName === 'DIALOG') e.target.close();
 });
 
 const priceTag = p => p.price == null
@@ -118,43 +185,77 @@ function renderTiles() {
 }
 
 /* ---------- Catalogue ---------- */
-let activeCat = 'all', query = '';
+let activeCat = 'all', activeSkin = 'all', sortMode = 'default', query = '';
+const chip = (group, v, label, on) => `<button type="button" class="chip" data-${group}="${v}" aria-pressed="${on}">${label}</button>`;
 function renderCatalogue() {
-  const filters = $('#filters');
-  filters.innerHTML = ['all', ...CATS].map(c =>
-    `<button type="button" class="chip" data-cat="${c}" aria-pressed="${c === activeCat}">${t('cat.' + c)}</button>`).join('');
+  $('#filters').innerHTML = ['all', ...CATS].map(c => chip('cat', c, t('cat.' + c), c === activeCat)).join('');
+  $('#skinFilters').innerHTML = ['all', ...SKINS].map(s => chip('skin', s, t('sk.' + s), s === activeSkin)).join('');
   const q = query.trim().toLowerCase();
   const list = PRODUCTS.filter(p => (activeCat === 'all' || p.cat === activeCat) &&
+    (activeSkin === 'all' || (SKIN_TAGS[p.id] || []).includes(activeSkin)) &&
     (!q || (p.brand + ' ' + p.name + ' ' + p.note.join(' ')).toLowerCase().includes(q)));
+  if (sortMode !== 'default') {
+    const key = p => p.price == null ? Infinity : (sortMode === 'asc' ? p.price : -p.price);
+    list.sort((a, b) => key(a) - key(b));
+  }
+  $('#resultCount').textContent = list.length === 1 ? t('shop.count1') : t('shop.count', { n: list.length });
   $('#grid').innerHTML = list.length ? list.map(p => `
-    <article class="product" style="--c:${p.c}">
+    <article class="product" data-id="${p.id}" style="--c:${p.c}">
       <div class="product-top"><p class="brand">${p.brand}</p>${heartBtn(p)}</div>
-      <h3>${p.name}</h3>
+      <h3><button type="button" class="open-detail">${p.name}</button></h3>
       <p class="for">${p.note[LANG === 'en' ? 1 : 0]}</p>
+      ${shadePicker(p)}
       ${priceTag(p)}
-    </article>`).join('') : `<p>${t('shop.empty')}</p>`;
+    </article>`).join('') : `<div class="empty"><p>${t('shop.empty')}</p><button type="button" class="btn btn-ghost" id="resetFilters">${t('shop.reset')}</button></div>`;
 }
-function goShop(cat, q) {
-  activeCat = cat; query = q; renderCatalogue();
+function goShop(cat, q, skin = 'all') {
+  activeCat = cat; query = q; activeSkin = skin; renderCatalogue();
   $('#shop').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
 }
-$('#filters').addEventListener('click', e => {
-  const b = e.target.closest('.chip'); if (!b) return;
-  activeCat = b.dataset.cat; renderCatalogue();
-});
+$('#filters').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) { activeCat = b.dataset.cat; renderCatalogue(); } });
+$('#skinFilters').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) { activeSkin = b.dataset.skin; renderCatalogue(); } });
+$('#sortSel').addEventListener('change', e => { sortMode = e.target.value; renderCatalogue(); });
 $('#tiles').addEventListener('click', e => { const b = e.target.closest('.tile'); if (b) goShop(b.dataset.cat, ''); });
 $('#searchForm').addEventListener('submit', e => { e.preventDefault(); goShop('all', $('#searchInput').value); });
+
+/* ---------- Product detail ---------- */
+let detailId = null;
+function renderDetail() {
+  const p = byId(detailId); if (!p) return;
+  const tags = SKIN_TAGS[p.id] || [];
+  $('#pdBody').innerHTML = `
+    <div class="pd-art" style="--c:${p.c}">${SHAPES[shapeFor(p)]}</div>
+    <div class="pd-info">
+      <p class="brand">${p.brand}</p>
+      <h2 id="pdTitle">${p.name}</h2>
+      <p>${p.note[LANG === 'en' ? 1 : 0]}</p>
+      ${tags.length ? `<p class="skin-line"><b>${t('pd.skin')}</b> ${tags.map(s => t('sk.' + s)).join(' · ')}</p>` : ''}
+      ${shadePicker(p)}
+      <div class="pd-buy">${priceTag(p)}${heartBtn(p)}</div>
+      <p class="muted small">${t('pd.try')}</p>
+    </div>`;
+}
+function openDetail(id) { detailId = id; renderDetail(); $('#productDialog').showModal(); }
+$('#grid').addEventListener('click', e => {
+  if (e.target.id === 'resetFilters') { activeCat = 'all'; activeSkin = 'all'; query = ''; $('#searchInput').value = ''; renderCatalogue(); return; }
+  if (e.target.closest('.heart, .shade')) return;
+  const card = e.target.closest('.product'); if (card) openDetail(card.dataset.id);
+});
 
 /* ---------- Carousel ---------- */
 function renderCarousel() {
   $('#favGrid').innerHTML = PICKS.map(id => PRODUCTS.find(p => p.id === id)).map(p => `
-    <article class="fav-card">
+    <article class="fav-card" data-id="${p.id}">
       <div class="fav-art" style="--c:${p.c}"><span class="pick">${t('pick')}</span>${heartBtn(p)}${SHAPES[shapeFor(p)]}</div>
-      <div class="fav-body"><p class="brand">${p.brand}</p><h3>${p.name}</h3>${priceTag(p)}</div>
+      <div class="fav-body"><p class="brand">${p.brand}</p><h3><button type="button" class="open-detail">${p.name}</button></h3>${priceTag(p)}</div>
     </article>`).join('');
   $('#favPrev').setAttribute('aria-label', t('carousel.prev'));
   $('#favNext').setAttribute('aria-label', t('carousel.next'));
 }
+$('#favGrid').addEventListener('click', e => {
+  if (e.target.closest('.heart')) return;
+  const card = e.target.closest('.fav-card'); if (card) openDetail(card.dataset.id);
+});
 const slide = dir => $('#favGrid').scrollBy({ left: dir * 280, behavior: reduceMotion ? 'auto' : 'smooth' });
 $('#favPrev').addEventListener('click', () => slide(-1));
 $('#favNext').addEventListener('click', () => slide(1));
@@ -224,7 +325,8 @@ function renderResult(root) {
       ${ans.skin === 'sensitive' ? `<li>${t('r.sens')}</li>` : ''}
       <li>${t('r.blush')} <strong>${t(BLUSH[ans.tone])}</strong> – ${f[1]}</li></ul></div>
     <p class="muted">${t('r.note')}</p>
-    <div class="hero-actions"><a class="btn btn-berry" href="#vip">${t('r.vip')}</a>
+    <div class="hero-actions"><button type="button" class="btn btn-berry" id="quizShop">${t('r.shop')}</button>
+      <a class="btn btn-pine" href="#vip">${t('r.vip')}</a>
       <button type="button" class="btn btn-ghost" id="quizRestart">${t('r.retake')}</button></div></div>`;
 }
 $('#quiz').addEventListener('click', e => {
@@ -232,6 +334,7 @@ $('#quiz').addEventListener('click', e => {
   if (opt) { ans[QUIZ[step].key] = opt.dataset.v; step++; renderQuiz(); return; }
   if (e.target.id === 'quizBack') { step--; renderQuiz(); }
   if (e.target.id === 'quizRestart') { step = 0; ans = {}; renderQuiz(); }
+  if (e.target.id === 'quizShop') goShop('all', '', ans.skin);
 });
 
 /* ---------- Forms ---------- */
@@ -316,7 +419,8 @@ function startCountdown() {
 
 /* ---------- Boot ---------- */
 function renderAll() {
-  renderTicker(); renderTiles(); renderCatalogue(); renderCarousel(); renderShades(); renderQuiz(); formsState();
+  renderTicker(); renderTiles(); renderCatalogue(); renderCarousel(); renderShades(); renderQuiz(); formsState(); updateWish();
+  if ($('#productDialog').open) renderDetail();
 }
 document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
 document.addEventListener('langchange', renderAll);
