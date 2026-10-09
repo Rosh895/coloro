@@ -4,7 +4,7 @@
    - Strings created by JavaScript use T[key] = [french, english] and t(key). */
 
 let LANG = 'fr';
-try { const s = localStorage.getItem('coloro-lang'); if (s === 'en' || s === 'fr') LANG = s; } catch (_) {}
+try { const s = localStorage.getItem('colaro-lang'); if (s === 'en' || s === 'fr') LANG = s; } catch (_) {}
 
 const t = (key, vars) => {
   const pair = T[key];
@@ -37,7 +37,7 @@ function applyLang() {
 
 function setLang(l) {
   LANG = l;
-  try { localStorage.setItem('coloro-lang', l); } catch (_) {}
+  try { localStorage.setItem('colaro-lang', l); } catch (_) {}
   applyLang();
 }
 

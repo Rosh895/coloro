@@ -1,4 +1,4 @@
-/* COLORO – site behaviour. Language helpers (t, LANG, applyLang) come from i18n.js. */
+/* COLARO – site behaviour. Language helpers (t, LANG, applyLang) come from i18n.js. */
 
 /* ---------- Settings you can change ---------- */
 const CONFIG = {
@@ -66,7 +66,7 @@ const PICKS = ['rb-extreme', 'drg-cream', 'wl-ampoule', 'sn-cream', 'sn-serum', 
 
 /* Wishlist, shared by the carousel and the catalogue. Stored only in this browser. */
 let hearts = [];
-try { hearts = JSON.parse(localStorage.getItem('coloro-hearts') || '[]'); } catch (_) {}
+try { hearts = JSON.parse(localStorage.getItem('colaro-hearts') || '[]'); } catch (_) {}
 const heartBtn = p => `<button class="heart" type="button" aria-pressed="${hearts.includes(p.id)}" aria-label="${t('save', { name: p.name })}" data-id="${p.id}">
   <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.5A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/></svg></button>`;
 document.addEventListener('click', e => {
@@ -74,7 +74,7 @@ document.addEventListener('click', e => {
   const on = b.getAttribute('aria-pressed') !== 'true';
   hearts = on ? [...hearts, b.dataset.id] : hearts.filter(x => x !== b.dataset.id);
   document.querySelectorAll(`.heart[data-id="${b.dataset.id}"]`).forEach(h => h.setAttribute('aria-pressed', on));
-  try { localStorage.setItem('coloro-hearts', JSON.stringify(hearts)); } catch (_) {}
+  try { localStorage.setItem('colaro-hearts', JSON.stringify(hearts)); } catch (_) {}
 });
 
 const priceTag = p => p.price == null
@@ -236,10 +236,10 @@ $('#quiz').addEventListener('click', e => {
 
 /* ---------- Forms ---------- */
 function mailTo(kind, data) {
-  const subject = kind === 'vip' ? 'Inscription VIP COLORO' : 'Inscription newsletter COLORO';
+  const subject = kind === 'vip' ? 'Inscription VIP COLARO' : 'Inscription newsletter COLARO';
   const labels = { name: 'Nom', email: 'E-mail', phone: 'Téléphone', slot: 'Créneau souhaité', allergies: 'Allergies / sensibilités' };
   const body = Object.keys(data).filter(k => labels[k] && data[k]).map(k => labels[k] + ' : ' + data[k]).join('\n') +
-    '\n\nJ’accepte que COLORO utilise mes coordonnées pour me contacter au sujet du pop-up.';
+    '\n\nJ’accepte que COLARO utilise mes coordonnées pour me contacter au sujet du pop-up.';
   window.location.href = 'mailto:' + CONFIG.contactEmail + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
 }
 async function send(kind, data) {
