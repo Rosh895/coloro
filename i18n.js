@@ -104,6 +104,7 @@ const T = {
   'f.err.send': ['L’envoi a échoué. Réessayez dans un instant.', 'Sending failed. Please try again in a moment.'],
   'f.ok.vip': ['Merci {name} ! Votre inscription VIP a bien été envoyée. Nous vous écrirons à {email}.', 'Thank you {name}! Your VIP registration was sent. We will write to {email}.'],
   'f.ok.loop': ['Merci ! Vous recevrez les dates d’ouverture dès qu’elles seront connues.', 'Thank you! You will get the opening dates as soon as they are known.'],
+  'f.ok.mail': ['Votre application e-mail s’ouvre avec votre demande : envoyez le message pour finaliser. Sinon, écrivez-nous à {to}.', 'Your email app is opening with your request: send the message to finish. Otherwise, write to us at {to}.'],
   'f.closed': ['Les inscriptions ouvrent très bientôt.', 'Registrations open very soon.'],
   'f.sending': ['Envoi…', 'Sending…'],
   /* countdown */
@@ -111,7 +112,7 @@ const T = {
   'cd.open': ['Le pop-up est ouvert !', 'The pop-up is open!'],
   'cd.label': ['Ouverture dans', 'Opening in'],
   /* ticker */
-  'tick': [['콜라로', 'Test de peau offert', '물광 피부', 'Lounge VIP', '두피 케어', 'K-beauty à Paris', '촉촉', 'Mars – avril 2027'],
-           ['콜라로', 'Free skin test', '물광 피부', 'VIP lounge', '두피 케어', 'K-beauty in Paris', '촉촉', 'March – April 2027']],
+  'tick': [['콜라로', 'Test de peau offert', '물광 피부', 'Lounge VIP', '두피 케어', 'K-beauty à Paris', '촉촉', '1er mars – 1er avril 2027'],
+           ['콜라로', 'Free skin test', '물광 피부', 'VIP lounge', '두피 케어', 'K-beauty in Paris', '촉촉', '1 March – 1 April 2027']],
   'ring': ['TEST DE PEAU OFFERT ✿ 무료 피부 진단 ✿ ', 'FREE SKIN TEST ✿ 무료 피부 진단 ✿ '],
 };

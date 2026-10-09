@@ -3,9 +3,11 @@
 /* ---------- Settings you can change ---------- */
 const CONFIG = {
   // Exact opening moment, e.g. '2027-03-15T10:00:00+01:00'. While null, no countdown is shown.
-  openingDate: null,
+  openingDate: '2027-03-01T10:00:00+01:00',
+  // Mailbox that receives registrations while no formEndpoint is set (the visitor's email app opens, prefilled).
+  contactEmail: 'colarofrance@gmail.com',
   // Address that receives form submissions, e.g. a Formspree URL: 'https://formspree.io/f/xxxxxxx'.
-  // While null, the forms are switched off and say that registrations open soon.
+  // When set, forms are sent directly instead of opening the visitor's email app.
   formEndpoint: null,
 };
 
@@ -233,7 +235,15 @@ $('#quiz').addEventListener('click', e => {
 });
 
 /* ---------- Forms ---------- */
+function mailTo(kind, data) {
+  const subject = kind === 'vip' ? 'Inscription VIP COLORO' : 'Inscription newsletter COLORO';
+  const labels = { name: 'Nom', email: 'E-mail', phone: 'Téléphone', slot: 'Créneau souhaité', allergies: 'Allergies / sensibilités' };
+  const body = Object.keys(data).filter(k => labels[k] && data[k]).map(k => labels[k] + ' : ' + data[k]).join('\n') +
+    '\n\nJ’accepte que COLORO utilise mes coordonnées pour me contacter au sujet du pop-up.';
+  window.location.href = 'mailto:' + CONFIG.contactEmail + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+}
 async function send(kind, data) {
+  if (!CONFIG.formEndpoint) { mailTo(kind, data); return 'mail'; }
   const res = await fetch(CONFIG.formEndpoint, {
     method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify({ kind, ...data }),
@@ -243,7 +253,7 @@ async function send(kind, data) {
 const validEmail = v => /^\S+@\S+\.\S+$/.test(v);
 
 function formsState() {
-  const open = !!CONFIG.formEndpoint;
+  const open = !!(CONFIG.formEndpoint || CONFIG.contactEmail);
   $('#vipSubmit').disabled = !open;
   $('#loopForm button').disabled = !open;
   if (!open) {
@@ -270,8 +280,8 @@ $('#vipForm').addEventListener('submit', async e => {
   err.hidden = true;
   const btn = $('#vipSubmit'); btn.disabled = true; btn.textContent = t('f.sending');
   try {
-    await send('vip', { name: d.name, email: d.email, phone: d.phone, slot: d.slot, allergies: d.allergies, consent: true, lang: LANG });
-    ok.textContent = t('f.ok.vip', { name: d.name.trim().split(' ')[0], email: d.email });
+    const how = await send('vip', { name: d.name, email: d.email, phone: d.phone, slot: d.slot, allergies: d.allergies, consent: true, lang: LANG });
+    ok.textContent = how === 'mail' ? t('f.ok.mail', { to: CONFIG.contactEmail }) : t('f.ok.vip', { name: d.name.trim().split(' ')[0], email: d.email });
     ok.hidden = false; form.reset();
   } catch (_) { err.textContent = t('f.err.send'); err.hidden = false; }
   btn.disabled = false; btn.textContent = LANG === 'en' ? btn.dataset.en : btn.dataset.frdataen;
@@ -282,7 +292,7 @@ $('#loopForm').addEventListener('submit', async e => {
   const form = e.target, msg = $('#loopMsg'), v = form.elements.email.value.trim();
   msg.hidden = false;
   if (!validEmail(v)) { msg.textContent = t('f.err.email'); return; }
-  try { await send('newsletter', { email: v, consent: true, lang: LANG }); msg.textContent = t('f.ok.loop'); form.reset(); }
+  try { const how = await send('newsletter', { email: v, consent: true, lang: LANG }); msg.textContent = how === 'mail' ? t('f.ok.mail', { to: CONFIG.contactEmail }) : t('f.ok.loop'); form.reset(); }
   catch (_) { msg.textContent = t('f.err.send'); }
 });
 
@@ -292,7 +302,7 @@ function startCountdown() {
   if (!CONFIG.openingDate) return;
   const target = new Date(CONFIG.openingDate).getTime();
   if (isNaN(target)) return;
-  $('#heroDates').hidden = true; box.hidden = false;
+  box.hidden = false;
   const tick = () => {
     const ms = target - Date.now();
     if (ms <= 0) { box.innerHTML = `<b>${t('cd.open')}</b>`; return; }
