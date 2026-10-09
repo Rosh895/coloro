@@ -571,6 +571,31 @@ bkRoot.addEventListener('click', async e => {
   }
 });
 
+/* ---------- Passport concept (preview only: no points, no rewards) ---------- */
+(() => {
+  const box = $('#stamps'), stamps = [...box.querySelectorAll('.stamp')];
+  const update = () => {
+    const n = stamps.filter(s => s.getAttribute('aria-pressed') === 'true').length;
+    $('#ppCount').textContent = t('pp.count', { n });
+    $('#ppBar').style.width = (n / stamps.length * 100) + '%';
+  };
+  box.addEventListener('click', e => {
+    const s = e.target.closest('.stamp'); if (!s) return;
+    s.setAttribute('aria-pressed', s.getAttribute('aria-pressed') !== 'true'); update();
+  });
+  document.addEventListener('langchange', update);
+  update();
+})();
+
+/* ---------- Share (referral concept) ---------- */
+$('#shareBtn').addEventListener('click', async e => {
+  const data = { title: t('share.title'), text: t('share.text'), url: location.href.split('#')[0] };
+  try {
+    if (navigator.share) await navigator.share(data);
+    else { await navigator.clipboard.writeText(data.url); e.target.textContent = t('share.copied'); setTimeout(() => { e.target.textContent = t('share.btn'); }, 2500); }
+  } catch (_) {}
+});
+
 /* ---------- Countdown (only when CONFIG.openingDate is set) ---------- */
 function startCountdown() {
   const box = $('#countdown');
