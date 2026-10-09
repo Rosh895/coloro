@@ -10,6 +10,8 @@ const t = (key, vars) => {
   const pair = T[key];
   let s = pair ? pair[LANG === 'en' ? 1 : 0] : key;
   if (vars) for (const k in vars) s = s.replace('{' + k + '}', vars[k]);
+  // French typography: non-breaking space before : ; ! ? and in "10 h"
+  if (typeof s === 'string' && LANG === 'fr') s = s.replace(/ ([:;!?»])/g, '\u00a0$1').replace(/« /g, '«\u00a0').replace(/(\d) h\b/g, '$1\u00a0h');
   return s;
 };
 

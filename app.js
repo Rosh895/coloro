@@ -89,8 +89,8 @@ const shadePicker = p => {
   const list = SHADES[p.id]; if (!list) return '';
   const sel = chosen[p.id];
   return `<div class="shade-pick" data-id="${p.id}">
-    <div class="shade-row" role="radiogroup" aria-label="${t('shade.pick')}">${list.map(([k, hex], i) =>
-      `<button type="button" class="shade" role="radio" aria-checked="${sel === i}" aria-label="${t(k)}" title="${t(k)}" data-i="${i}" style="--hex:${hex}"></button>`).join('')}</div>
+    <div class="shade-row" role="group" aria-label="${t('shade.pick')}">${list.map(([k, hex], i) =>
+      `<button type="button" class="shade" aria-pressed="${sel === i}" aria-label="${t(k)}" title="${t(k)}" data-i="${i}" style="--hex:${hex}"></button>`).join('')}</div>
     <span class="shade-name">${sel == null ? t('shade.count', { n: list.length }) : t(list[sel][0])}</span></div>`;
 };
 const shadeText = p => chosen[p.id] != null && SHADES[p.id] ? ' (' + t(SHADES[p.id][chosen[p.id]][0]) + ')' : '';
@@ -492,8 +492,8 @@ function renderBooking(focusHeading = false) {
       <button type="button" class="btn btn-ghost" id="bkAgain">${t('bk.again')}</button></div>`;
   } else if (bk.step === 0) {
     body = `<h3 tabindex="-1" id="bkHeading">${t('bk.exp.title')}</h3>
-      <div class="exp-pick" role="radiogroup" aria-label="${t('bk.exp.title')}">
-        ${['walk', 'vip'].map(k => `<button type="button" class="exp-opt" role="radio" aria-checked="${bk.exp === k}" data-exp="${k}">
+      <div class="exp-pick" role="group" aria-label="${t('bk.exp.title')}">
+        ${['walk', 'vip'].map(k => `<button type="button" class="exp-opt" aria-pressed="${bk.exp === k}" data-exp="${k}">
           <strong>${t('bk.exp.' + k)}</strong><span>${t('bk.exp.' + k + '.s')}</span></button>`).join('')}</div>
       ${bk.exp === 'walk'
         ? `<p class="bk-info">${t('bk.walk.info')}</p><a class="btn btn-pine" href="#visit">${t('bk.address')}</a>`
@@ -502,8 +502,8 @@ function renderBooking(focusHeading = false) {
     body = `<h3 tabindex="-1" id="bkHeading">${t('bk.date.title')}</h3><p class="muted small">${t('bk.date.note')}</p>
       <div class="cals">${calendarHTML()}</div>
       <h3 class="bk-sub">${t('bk.time.title')}</h3>
-      <div class="windows" role="radiogroup" aria-label="${t('bk.time.title')}">${WINDOWS.map(w =>
-        `<button type="button" class="win" role="radio" aria-checked="${bk.win === w}" data-win="${w}">${t(w)}</button>`).join('')}</div>
+      <div class="windows" role="group" aria-label="${t('bk.time.title')}">${WINDOWS.map(w =>
+        `<button type="button" class="win" aria-pressed="${bk.win === w}" data-win="${w}">${t(w)}</button>`).join('')}</div>
       ${bk.err ? `<p class="form-error" role="alert">${bk.err}</p>` : ''}
       <div class="bk-nav"><button type="button" class="quiz-back" data-prev>${t('r.back')}</button>
         <button type="button" class="btn btn-berry" data-next>${t('q.next')}</button></div>`;
