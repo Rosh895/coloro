@@ -270,71 +270,122 @@ function renderShades() {
     ['bl.rose', '#D9788F', 'bl.neutral'], ['bl.berry', '#A5385B', 'bl.deep']]);
 }
 
-/* ---------- Skin quiz ---------- */
-const QUIZ = [
-  { key: 'skin', q: 'q.skin', prefix: 'o.', values: ['dry', 'sensitive', 'normal', 'oily', 'barrier'] },
-  { key: 'lips', q: 'q.lips', prefix: 'o.l.', values: ['normal', 'some', 'dry', 'chapped'] },
-  { key: 'tone', q: 'q.tone', prefix: 'o.', values: ['warm', 'cool', 'neutral', 'deep'] },
-];
-const N = {
-  wellage: 'WELLAGE Real Hyaluronic Blue 100 Ampoule', snCream: 'S.NATURE Aqua Squalane Moisturizing Cream', snSerum: 'S.NATURE Aqua Squalane Serum',
-  rbSun: 'Real Barrier Cera Moisture Barrier Sun Cream', drgCream: 'Dr.G R.E.D Blemish Clear Soothing Cream', drgSun: 'Dr.G Green Mild Up Sun+',
-  drgMask: 'Dr.G R.E.D Blemish Cool Soothing Mask', fatCream: 'FATION Nosca9 Trouble Cream', fatSerum: 'FATION Nosca9 Trouble Serum',
-  fatMask: 'FATION Nosca9 Trouble Clear Mask', rbCream: 'Real Barrier Extreme Cream', rbMask: 'Real Barrier Extreme Cream Mask',
-  aquaMask: 'Real Barrier Aqua Soothing Ampoule Mask', zeroid: 'ZEROID Daily Sun Cream',
+/* ---------- Skin and scalp quiz ---------- */
+const QUESTIONS = {
+  goals: { multi: true, q: 'q.goals', hint: 'q.goals.hint', values: ['skin', 'makeup', 'scalp'], prefix: 'g.' },
+  skin: { q: 'q.skin', prefix: 'o.', values: ['dry', 'sensitive', 'normal', 'oily', 'barrier'] },
+  lips: { q: 'q.lips', prefix: 'o.l.', values: ['normal', 'some', 'dry', 'chapped'] },
+  tone: { q: 'q.tone', prefix: 'o.', values: ['warm', 'cool', 'neutral', 'deep'] },
+  scalp: { q: 'q.scalp', prefix: 'o.sc.', values: ['normal', 'dry', 'oily', 'itchy'] },
 };
+/* Routines use product ids from PRODUCTS (recommendations come from the COLARO product sheet). */
 const ROUTINES = {
-  dry: { am: [N.wellage, N.snCream, N.rbSun], pm: [N.wellage, N.snCream], mask: N.aquaMask, finish: 'glow' },
-  sensitive: { am: [N.drgCream, N.drgSun], pm: [N.drgCream], mask: N.drgMask, finish: 'glow' },
-  normal: { am: [N.snSerum, N.drgCream, N.rbSun], pm: [N.snSerum, N.drgCream], mask: N.aquaMask, finish: 'either' },
-  oily: { am: [N.fatSerum, N.fatCream, N.drgSun], pm: [N.fatSerum, N.fatCream], mask: N.fatMask, finish: 'matte' },
-  barrier: { am: [N.rbCream + ' ', N.zeroid], pm: [N.rbCream], mask: N.rbMask, finish: 'glow' },
+  dry: { am: ['wl-ampoule', 'sn-cream', 'rb-sun'], pm: ['wl-ampoule', 'sn-cream'], mask: 'rb-ampmask', finish: 'glow' },
+  sensitive: { am: ['drg-cream', 'drg-sun'], pm: ['drg-cream'], mask: 'drg-mask', finish: 'glow' },
+  normal: { am: ['sn-serum', 'drg-cream', 'rb-sun'], pm: ['sn-serum', 'drg-cream'], mask: 'rb-ampmask', finish: 'either' },
+  oily: { am: ['fat-serum', 'fat-cream', 'drg-sun'], pm: ['fat-serum', 'fat-cream'], mask: 'fat-mask', finish: 'matte' },
+  barrier: { am: ['rb-extreme', 'zeroid-sun'], pm: ['rb-extreme'], mask: 'rb-exmask', finish: 'glow' },
 };
 const BLUSH = { warm: 'bl.peach', cool: 'bl.pink', neutral: 'bl.rose', deep: 'bl.berry' };
-let step = 0, ans = {};
+let step = 0, ans = { goals: [] };
+
+const hasGoal = g => ans.goals.includes(g);
+const flow = (goals = ans.goals) => ['goals',
+  ...(goals.some(g => g === 'skin' || g === 'makeup') ? ['skin'] : []),
+  ...(goals.includes('makeup') ? ['lips', 'tone'] : []),
+  ...(goals.includes('scalp') ? ['scalp'] : [])];
+const progressHTML = (n, total) => `
+  <div class="quiz-meta"><span id="quizStep">${t('p.step', { n: n + 1, total })}</span></div>
+  <div class="quiz-progress" id="quizBar" role="progressbar" aria-valuemin="1" aria-valuemax="${total}" aria-valuenow="${n + 1}">
+    ${Array.from({ length: total }, (_, i) => `<i class="${i <= n ? 'on' : ''}"></i>`).join('')}</div>`;
+const prodLink = id => { const p = byId(id); return `<button type="button" class="open-detail r-link" data-id="${id}">${p.brand} ${p.name}</button>${p.price != null ? `<small class="r-price">${eur(p.price)}</small>` : ''}`; };
 
 function renderQuiz() {
-  const root = $('#quiz');
-  if (step >= QUIZ.length) return renderResult(root);
-  const q = QUIZ[step];
-  root.innerHTML = `
-    <div class="quiz-progress" role="progressbar" aria-valuemin="1" aria-valuemax="${QUIZ.length}" aria-valuenow="${step + 1}">
-      ${QUIZ.map((_, i) => `<i class="${i <= step ? 'on' : ''}"></i>`).join('')}</div>
+  const root = $('#quiz'), steps = flow(), key = steps[step];
+  if (!key) return renderResult(root);
+  const q = QUESTIONS[key];
+  if (q.multi) {
+    root.innerHTML = `${progressHTML(step, Math.max(steps.length, 2))}
+      <h3>${t(q.q)}</h3><p class="muted">${t(q.hint)}</p>
+      <div class="options goal-options">${q.values.map(v => `<label class="goal-opt"><input type="checkbox" value="${v}" ${hasGoal(v) ? 'checked' : ''}>
+        <span><strong>${t(q.prefix + v)}</strong><span>${t(q.prefix + v + '.s')}</span></span></label>`).join('')}</div>
+      <button type="button" class="btn btn-berry quiz-next" id="quizNext" ${ans.goals.length ? '' : 'disabled'}>${t('q.next')}</button>`;
+    return;
+  }
+  root.innerHTML = `${progressHTML(step, steps.length)}
     <h3>${t(q.q)}</h3>
     <div class="options">${q.values.map(v => `<button type="button" class="opt-btn" data-v="${v}">
       <strong>${t(q.prefix + v)}</strong><span>${t(q.prefix + v + '.s')}</span></button>`).join('')}</div>
-    ${step ? `<button type="button" class="quiz-back" id="quizBack">${t('r.back')}</button>` : ''}`;
+    <button type="button" class="quiz-back" id="quizBack">${t('r.back')}</button>`;
 }
+
 function renderResult(root) {
-  const r = ROUTINES[ans.skin];
-  const f = { glow: [t('f.glow'), t('b.cream')], matte: [t('f.matte'), t('b.powder')], either: [t('f.either'), t('b.either')] }[r.finish];
-  const lip = ['normal', 'some'].includes(ans.lips) ? t('lip.stick') : t('lip.essence');
-  const light = ans.skin === 'barrier' ? ' ' + t('r.lightlayer') : '';
-  root.innerHTML = `<div class="result">
-    <h3>${t('r.title', { label: t('o.' + ans.skin) })}</h3>
-    <p>${t('need.' + ans.skin)}</p>
-    <div class="result-cols">
-      <div class="routine am"><h4>${t('r.am')}</h4><ol>
-        ${r.am.map((x, i) => `<li>${x.trim()}${i === 0 ? light : ''}</li>`).join('')}
-        <li>${f[0]} <small>${t('r.optional')}</small></li></ol></div>
-      <div class="routine pm"><h4>${t('r.pm')}</h4><ol>${r.pm.map(x => `<li>${x}</li>`).join('')}</ol>
-        <p class="weekly"><strong>${t('r.mask')}</strong> ${r.mask}</p></div>
-    </div>
-    <div class="extras"><h4>${t('r.extras')}</h4><ul>
-      <li>BRING GREEN Bamboo Hyalu ${lip}</li>
-      ${ans.skin === 'sensitive' ? `<li>${t('r.sens')}</li>` : ''}
-      <li>${t('r.blush')} <strong>${t(BLUSH[ans.tone])}</strong> – ${f[1]}</li></ul></div>
-    <p class="muted">${t('r.note')}</p>
-    <div class="hero-actions"><button type="button" class="btn btn-berry" id="quizShop">${t('r.shop')}</button>
-      <a class="btn btn-pine" href="#vip">${t('r.vip')}</a>
-      <button type="button" class="btn btn-ghost" id="quizRestart">${t('r.retake')}</button></div></div>`;
+  const ids = new Set();
+  const add = id => { ids.add(id); return id; };
+  let html = `<div class="result"><div class="result-hero"><p class="script r-kicker">${t('r.skinBlock')}</p>`;
+  const r = ans.skin ? ROUTINES[ans.skin] : null;
+  if (r) html += `<h3>${t('r.title', { label: t('o.' + ans.skin) })}</h3><p>${t('need.' + ans.skin)}</p>`;
+  else html += `<h3>${t('sc.title', { label: t('o.sc.' + ans.scalp) })}</h3>`;
+  html += '</div>';
+
+  if (r && hasGoal('skin')) {
+    const light = ans.skin === 'barrier' ? ' ' + t('r.lightlayer') : '';
+    html += `<div class="result-cols">
+      <div class="routine am"><h4>${t('r.am')}</h4><ol>${r.am.map((id, k) => `<li>${prodLink(add(id))}${k === 0 ? light : ''}</li>`).join('')}</ol></div>
+      <div class="routine pm"><h4>${t('r.pm')}</h4><ol>${r.pm.map(id => `<li>${prodLink(add(id))}</li>`).join('')}</ol>
+        <p class="weekly"><strong>${t('r.mask')}</strong> ${prodLink(add(r.mask))}</p></div></div>`;
+  }
+  if (r && hasGoal('makeup')) {
+    const cushion = { glow: ['jv-glow'], matte: ['jv-matte'], either: ['jv-glow', 'jv-matte'] }[r.finish];
+    const blush = { glow: ['js-blush'], matte: ['nm-blush'], either: ['js-blush', 'nm-blush'] }[r.finish];
+    const lip = ['normal', 'some'].includes(ans.lips) ? 'bg-stick' : 'bg-essence';
+    html += `<div class="extras"><h4>${t('r.makeupBlock')}</h4><ul>
+      <li><strong>${t('r.cushion')}</strong> ${cushion.map(id => prodLink(add(id))).join(' ' + (LANG === 'en' ? 'or' : 'ou') + ' ')}</li>
+      <li><strong>${t('r.blushLabel')}</strong> ${blush.map(id => prodLink(add(id))).join(' ' + (LANG === 'en' ? 'or' : 'ou') + ' ')} – <em>${t(BLUSH[ans.tone])}</em></li>
+      <li><strong>${t('r.lip')}</strong> ${prodLink(add(lip))}</li>
+      ${ans.skin === 'sensitive' ? `<li>${t('r.sens')}</li>` : ''}</ul></div>`;
+  }
+  if (hasGoal('scalp')) {
+    html += `<div class="scalp-card"><h4>${t('sc.title', { label: t('o.sc.' + ans.scalp) })}</h4>
+      <p>${t('sc.text')}</p>${ans.scalp === 'itchy' ? `<p class="muted small">${t('sc.itchy')}</p>` : ''}
+      <a class="btn btn-pine" href="#vip">${t('sc.vip')}</a></div>`;
+  }
+  const picks = [...ids];
+  html += `<p class="muted">${t('r.note')}</p><div class="hero-actions">
+    ${picks.length ? `<button type="button" class="btn btn-berry" id="quizAdd">${t('r.add')}</button>` : ''}
+    ${ans.skin ? `<button type="button" class="btn btn-ghost" id="quizShop">${t('r.shop')}</button>` : ''}
+    <a class="btn btn-ghost" href="#vip">${t('r.vip')}</a>
+    <button type="button" class="quiz-back" id="quizRestart">${t('r.retake')}</button></div></div>`;
+  root.innerHTML = html;
+  root.dataset.picks = picks.join(',');
 }
-$('#quiz').addEventListener('click', e => {
+
+const quizRoot = $('#quiz');
+quizRoot.addEventListener('change', e => {
+  if (!e.target.matches('.goal-options input')) return;
+  ans.goals = [...quizRoot.querySelectorAll('.goal-options input:checked')].map(i => i.value);
+  $('#quizNext').disabled = !ans.goals.length;
+  const total = Math.max(flow().length, 2);
+  const bar = $('#quizBar'); bar.setAttribute('aria-valuemax', total);
+  bar.innerHTML = Array.from({ length: total }, (_, i) => `<i class="${i <= step ? 'on' : ''}"></i>`).join('');
+  $('#quizStep').textContent = t('p.step', { n: step + 1, total });
+});
+quizRoot.addEventListener('click', e => {
   const opt = e.target.closest('.opt-btn');
-  if (opt) { ans[QUIZ[step].key] = opt.dataset.v; step++; renderQuiz(); return; }
-  if (e.target.id === 'quizBack') { step--; renderQuiz(); }
-  if (e.target.id === 'quizRestart') { step = 0; ans = {}; renderQuiz(); }
-  if (e.target.id === 'quizShop') goShop('all', '', ans.skin);
+  if (opt) { ans[flow()[step]] = opt.dataset.v; step++; renderQuiz(); return; }
+  const link = e.target.closest('.r-link'); if (link) { openDetail(link.dataset.id); return; }
+  switch (e.target.id) {
+    case 'quizNext': step++; renderQuiz(); break;
+    case 'quizBack': step--; renderQuiz(); break;
+    case 'quizRestart': step = 0; ans = { goals: [] }; renderQuiz(); break;
+    case 'quizShop': goShop('all', '', ans.skin); break;
+    case 'quizAdd': {
+      const ids = quizRoot.dataset.picks.split(',').filter(Boolean);
+      hearts = [...new Set([...hearts, ...ids])];
+      try { localStorage.setItem('colaro-hearts', JSON.stringify(hearts)); } catch (_) {}
+      updateWish(); e.target.textContent = t('r.added'); e.target.disabled = true; break;
+    }
+  }
 });
 
 /* ---------- Forms ---------- */
