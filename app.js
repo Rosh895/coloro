@@ -60,16 +60,19 @@ const PRODUCTS = [
   const cats = ['All', ...new Set(PRODUCTS.map(p => p.cat))];
   const filters = document.getElementById('filters');
   const grid = document.getElementById('grid');
-  let active = 'All';
+  let active = 'All', query = '';
 
   const render = () => {
-    grid.innerHTML = PRODUCTS.filter(p => active === 'All' || p.cat === active).map(p => `
+    const q = query.trim().toLowerCase();
+    const list = PRODUCTS.filter(p => (active === 'All' || p.cat === active) &&
+      (!q || (p.brand + ' ' + p.name + ' ' + p.note).toLowerCase().includes(q)));
+    grid.innerHTML = list.length ? list.map(p => `
       <article class="product" style="--c:${p.c}">
         <p class="brand">${p.brand}</p>
         <h3>${p.name}</h3>
         <p class="for">${p.note}</p>
         <span class="price ${p.price == null ? 'soon' : ''}">${p.price == null ? 'Price soon' : eur(p.price) + (p.per ? ' ' + p.per : '')}</span>
-      </article>`).join('');
+      </article>`).join('') : '<p>No products match. Try another word or choose All.</p>';
     filters.querySelectorAll('.chip').forEach(b => b.setAttribute('aria-pressed', b.dataset.cat === active));
   };
 
@@ -79,6 +82,15 @@ const PRODUCTS = [
     active = b.dataset.cat; render();
   });
   render();
+
+  // header search, categories menu and category tiles
+  const go = (cat, q) => { active = cat; query = q; render();
+    document.getElementById('shop').scrollIntoView({ behavior: 'smooth' }); };
+  const sel = document.getElementById('searchCat');
+  cats.slice(1).forEach(c => sel.add(new Option(c, c)));
+  document.addEventListener('click', e => { const t = e.target.closest('.tile, .promo [data-cat]'); if (t) go(t.dataset.cat, ''); });
+  document.getElementById('searchForm').addEventListener('submit', e => { e.preventDefault();
+    go(sel.value, document.getElementById('searchInput').value); });
 })();
 
 /* ---------- Shades ---------- */
@@ -243,5 +255,30 @@ const PRODUCTS = [
     } catch (_) {}
     ok.textContent = `Thank you, ${d.name.trim().split(' ')[0]}. You are on the VIP list. We will email ${d.email} with your slot.`;
     ok.hidden = false; form.reset();
+  });
+})();
+
+/* ---------- Favourites ---------- */
+(() => {
+  const picks = ['Extreme Cream 50 ml', 'R.E.D Blemish Clear Soothing Cream', 'Real Hyaluronic Blue 100 Ampoule', 'Aqua Squalane Moisturizing Cream 60 ml'];
+  const art = '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 92h60V62a30 30 0 0 0-60 0z" fill="#F7F6F2"/><rect x="14" y="50" width="72" height="16" rx="7" fill="#2F3B37"/></svg>';
+  const tube = '<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="38" y="30" width="24" height="64" rx="8" fill="#F7F6F2"/><rect x="42" y="8" width="16" height="26" rx="4" fill="#2F3B37"/></svg>';
+  document.getElementById('favGrid').innerHTML = picks.map(n => PRODUCTS.find(p => p.name === n)).map(p => `
+    <article class="fav-card">
+      <div class="fav-art" style="--c:${p.c}">${p.name.includes('Ampoule') ? tube : art}</div>
+      <div class="fav-body"><p class="brand">${p.brand}</p><h3>${p.name}</h3><span class="price">${eur(p.price)}</span></div>
+    </article>`).join('');
+})();
+
+/* ---------- Newsletter ---------- */
+(() => {
+  const f = document.getElementById('loopForm'), m = document.getElementById('loopMsg');
+  f.addEventListener('submit', e => {
+    e.preventDefault();
+    const v = f.elements.email.value.trim();
+    m.hidden = false;
+    if (!/^\S+@\S+\.\S+$/.test(v)) { m.textContent = 'Enter a valid email address.'; return; }
+    try { const l = JSON.parse(localStorage.getItem('coloro-news') || '[]'); l.push(v); localStorage.setItem('coloro-news', JSON.stringify(l)); } catch (_) {}
+    m.textContent = 'Thank you. We will email you the opening dates.'; f.reset();
   });
 })();

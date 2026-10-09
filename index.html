@@ -7,7 +7,7 @@
 <meta name="description" content="coloro is a Korean beauty pop-up at 64 rue de Turenne, Paris 3e. Take a skin test, get a routine built for you, and try K-beauty you won't find in Sephora.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Jost:wght@400;500;600&family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Great+Vibes&family=Jost:wght@400;500;600&family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -28,57 +28,94 @@
   </defs>
 </svg>
 
-<header class="nav">
-  <a class="nav-logo" href="#top" aria-label="coloro home">coloro</a>
-  <nav aria-label="Main">
-    <a href="#test">Skin test</a>
-    <a href="#shop">Products</a>
-    <a href="#visit">Visit</a>
-    <a href="#guest" class="nav-cta">Get VIP access</a>
-  </nav>
+<div class="announce"><p>Free skin test for every guest · VIP lounge by registration · 64 rue de Turenne, Paris 3e</p></div>
+<header class="site-head">
+  <div class="head-main">
+    <a class="logo" href="#top" aria-label="coloro home">
+      <svg viewBox="0 0 100 100" width="36" height="36" aria-hidden="true"><use href="#blossom" width="100" height="100"/></svg>
+      <span>coloro</span>
+    </a>
+    <nav aria-label="Main">
+      <a href="#top" class="on">Home</a>
+      <a href="#test">Skin test</a>
+      <a href="#shop">Shop</a>
+      <a href="#guest">VIP</a>
+      <a href="#visit">Visit</a>
+    </nav>
+    <form class="search" id="searchForm" role="search">
+      <input id="searchInput" type="search" placeholder="Search for beauty..." aria-label="Search products or brands">
+      <select id="searchCat" aria-label="Category" hidden><option value="All">All</option></select>
+      <button type="submit" aria-label="Search"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button>
+    </form>
+  </div>
 </header>
 
 <main id="top">
 
-<!-- HERO -->
-<section class="hero">
-  <svg class="branch branch-tl" viewBox="0 0 520 240" aria-hidden="true">
-    <path d="M0 62 C90 70 170 52 260 58 C330 62 380 82 430 104" stroke="#6B4A3A" stroke-width="7" fill="none" stroke-linecap="round"/>
-    <path d="M250 58 C280 20 320 8 380 6" stroke="#6B4A3A" stroke-width="5" fill="none" stroke-linecap="round"/>
-    <use href="#blossom" x="50" y="20" width="90" height="90"/>
-    <use href="#blossom" x="225" y="12" width="76" height="76"/>
-    <use href="#blossom" x="375" y="-12" width="60" height="60"/>
-    <use href="#blossom" x="395" y="80" width="105" height="105"/>
-    <use href="#blossom" x="130" y="95" width="46" height="46"/>
-  </svg>
-  <svg class="branch branch-br" viewBox="0 0 520 240" aria-hidden="true">
-    <path d="M0 62 C90 70 170 52 260 58 C330 62 380 82 430 104" stroke="#6B4A3A" stroke-width="7" fill="none" stroke-linecap="round"/>
-    <path d="M250 58 C280 20 320 8 380 6" stroke="#6B4A3A" stroke-width="5" fill="none" stroke-linecap="round"/>
-    <use href="#blossom" x="50" y="20" width="90" height="90"/>
-    <use href="#blossom" x="225" y="12" width="76" height="76"/>
-    <use href="#blossom" x="375" y="-12" width="60" height="60"/>
-    <use href="#blossom" x="395" y="80" width="105" height="105"/>
-  </svg>
-  <div class="petals" aria-hidden="true"></div>
-
-  <div class="hero-inner">
-    <h1 class="wordmark">coloro</h1>
-    <p class="tagline">Pop-up beauté coréenne <span lang="ko">콜라로</span></p>
-    <p class="hero-lead">Korean skincare and makeup you won't find in Sephora. Get a free skin test, leave with a routine that fits your face.</p>
+<section class="hero3" aria-label="Welcome">
+  <div class="hero3-text">
+    <p class="hero3-kicker">Skin test · Scalp care · K-beauty</p>
+    <h1>Know your skin,<span class="script">then glow</span></h1>
+    <p class="hero3-lead">Every guest at our Paris pop-up gets a free skin test and goodies. Register for VIP to add a scalp test and massage.</p>
     <div class="hero-actions">
-      <a class="btn btn-pine" href="#guest">Register for VIP access</a>
-      <a class="btn btn-ghost" href="#test">Try the skin quiz</a>
+      <a class="btn btn-berry btn-round" href="#guest">Register for VIP →</a>
+      <a class="btn btn-ghost btn-round" href="#test">Try the skin quiz</a>
     </div>
-    <p class="hero-address">64 rue de Turenne, 75003 Paris</p>
+    <p class="hero3-ko" lang="ko">콜라로 · pop-up beauté coréenne</p>
   </div>
+  <div class="hero3-art" aria-hidden="true">
+    <svg viewBox="0 0 520 470" class="art3">
+      <circle cx="270" cy="250" r="205" fill="#F9D5C8"/>
+      <circle cx="270" cy="250" r="205" fill="none" stroke="#fff" stroke-width="3" opacity=".6"/>
+      <ellipse cx="270" cy="432" rx="190" ry="14" fill="#2F3B37" opacity=".12"/>
+      <rect x="120" y="150" width="70" height="280" rx="16" fill="#A8C3B4"/>
+      <rect x="133" y="98" width="44" height="62" rx="9" fill="#2F3B37"/>
+      <rect x="135" y="250" width="40" height="80" rx="6" fill="#F7F6F2" opacity=".9"/>
+      <path d="M215 430 h140 v-130 a70 70 0 0 0 -140 0z" fill="#F7F6F2"/>
+      <rect x="206" y="274" width="158" height="38" rx="11" fill="#2F3B37"/>
+      <rect x="236" y="346" width="98" height="12" rx="6" fill="#DCEBE4"/>
+      <rect x="380" y="220" width="46" height="210" rx="14" fill="#E0607E"/>
+      <rect x="388" y="172" width="30" height="54" rx="7" fill="#2F3B37"/>
+      <rect x="440" y="290" width="38" height="140" rx="12" fill="#DCD3F2"/>
+      <rect x="445" y="258" width="28" height="38" rx="6" fill="#2F3B37"/>
+      <use href="#blossom" x="395" y="30" width="86" height="86"/>
+      <use href="#blossom" x="320" y="80" width="46" height="46"/>
+      <use href="#blossom" x="60" y="60" width="64" height="64"/>
+    </svg>
+    <p class="script note">Skin first,<br>glow next</p>
+  </div>
+  <div class="petals" aria-hidden="true"></div>
 </section>
 
-<!-- ZONES -->
-<section class="zones" aria-label="Pop-up zones">
-  <div class="zone z-mint"><h3>Skincare</h3><p>Barrier repair, soothing creams, ampoules and masks.</p></div>
-  <div class="zone z-peach"><h3>Hydration</h3><p>Hyaluronic and squalane for thirsty skin.</p></div>
-  <div class="zone z-lilac"><h3>Scalp care</h3><p>A scalp test and massage by Seoul Salon for VIP guests.</p></div>
-  <div class="zone z-berry"><h3>Makeup</h3><p>Cushions, lip tints, blush and mascara to try on.</p></div>
+<section class="tiles" aria-label="Shop by category">
+  <button class="tile t-mint" data-cat="Creams"><span class="tile-art"><svg viewBox="0 0 120 100" aria-hidden="true"><path d="M20 90h80V60a40 40 0 0 0-80 0z" fill="#F7F6F2"/><rect x="14" y="48" width="92" height="20" rx="8" fill="#2F3B37"/></svg></span><span class="tile-name">Creams</span><span class="tile-link">Shop now →</span></button>
+  <button class="tile t-peach" data-cat="Serums and cleansers"><span class="tile-art"><svg viewBox="0 0 120 100" aria-hidden="true"><rect x="46" y="34" width="28" height="58" rx="8" fill="#F7F6F2"/><rect x="52" y="14" width="16" height="24" rx="4" fill="#2F3B37"/></svg></span><span class="tile-name">Serums</span><span class="tile-link">Shop now →</span></button>
+  <button class="tile t-lilac" data-cat="Masks"><span class="tile-art"><svg viewBox="0 0 120 100" aria-hidden="true"><path d="M30 20h60l8 50a38 38 0 0 1-76 0z" fill="#F7F6F2"/><circle cx="48" cy="48" r="5" fill="#2F3B37"/><circle cx="72" cy="48" r="5" fill="#2F3B37"/></svg></span><span class="tile-name">Masks</span><span class="tile-link">Shop now →</span></button>
+  <button class="tile t-butter" data-cat="Sunscreen"><span class="tile-art"><svg viewBox="0 0 120 100" aria-hidden="true"><path d="M40 90V30h40v60z" fill="#F7F6F2"/><rect x="44" y="12" width="32" height="20" rx="4" fill="#2F3B37"/><circle cx="60" cy="62" r="10" fill="#F6E7A8"/></svg></span><span class="tile-name">Sunscreen</span><span class="tile-link">Shop now →</span></button>
+  <button class="tile t-berry" data-cat="Lips"><span class="tile-art"><svg viewBox="0 0 120 100" aria-hidden="true"><rect x="48" y="30" width="24" height="64" rx="8" fill="#F7F6F2"/><rect x="52" y="8" width="16" height="26" rx="4" fill="#2F3B37"/></svg></span><span class="tile-name">Lips</span><span class="tile-link">Shop now →</span></button>
+  <button class="tile t-peach" data-cat="Makeup"><span class="tile-art"><svg viewBox="0 0 120 100" aria-hidden="true"><circle cx="60" cy="52" r="38" fill="#F7F6F2"/><circle cx="60" cy="52" r="26" fill="#E0607E" opacity=".75"/></svg></span><span class="tile-name">Makeup</span><span class="tile-link">Shop now →</span></button>
+  <button class="tile t-lilac" data-cat="Sleep"><span class="tile-art"><svg viewBox="0 0 120 100" aria-hidden="true"><rect x="14" y="26" width="92" height="56" rx="14" fill="#F7F6F2"/><path d="M26 44q34 14 68 0" stroke="#DCD3F2" stroke-width="5" fill="none"/></svg></span><span class="tile-name">Silk pillowcase</span><span class="tile-link">Shop now →</span></button>
+</section>
+
+<section class="perks" aria-label="What every guest gets">
+  <div class="perk"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg><p><b>Free skin test</b><span>For every guest</span></p></div>
+  <div class="perk"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.5A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/></svg><p><b>Free goodies</b><span>Walk-in and VIP</span></p></div>
+  <div class="perk"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 20c0-8 4-14 12-14 0 8-4 14-12 14zM6 20l7-7"/></svg><p><b>Scalp test and massage</b><span>VIP guests, with Seoul Salon</span></p></div>
+  <div class="perk"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 10h14v10H5zM3 10h18V7H3zM12 7v13M12 7c-3 0-4-3-2-3.5S12 7 12 7zm0 0c3 0 4-3 2-3.5S12 7 12 7z"/></svg><p><b>VIP lounge</b><span>Register before you visit</span></p></div>
+</section>
+
+<section class="fav">
+  <div class="wrap">
+    <div class="fav-head">
+      <div><p class="script small">Our favourites</p><h2>Best sellers to try</h2></div>
+      <a class="view-all" href="#shop">View all →</a>
+    </div>
+    <div class="fav-grid" id="favGrid"></div>
+    <div class="promos">
+      <article class="promo p-berry"><div><h3>Makeup wall</h3><p>Cushions, lip tints, blush and mascara to try on.</p><button class="btn btn-berry btn-round" data-cat="Makeup">Shop makeup →</button></div></article>
+      <article class="promo p-mint"><div><h3>Skincare zone</h3><p>Barrier repair, soothing creams, ampoules and masks.</p><button class="btn btn-pine btn-round" data-cat="Creams">Shop skincare →</button></div></article>
+    </div>
+  </div>
 </section>
 
 <!-- GUESTS -->
@@ -204,10 +241,24 @@
 
 </main>
 
+<section class="loop">
+  <div class="loop-inner">
+    <div><p class="script small">Stay in the loop</p><p>Be the first to hear opening dates and VIP news.</p></div>
+    <form class="loop-form" id="loopForm" novalidate>
+      <input type="email" name="email" placeholder="Your email address" aria-label="Your email address" required>
+      <button type="submit" class="btn btn-berry btn-round">Subscribe →</button>
+      <p class="loop-msg" id="loopMsg" role="status" hidden></p>
+    </form>
+  </div>
+</section>
+
 <footer class="footer">
-  <p class="footer-logo">coloro</p>
-  <p>Pop-up beauté coréenne · 64 rue de Turenne, 75003 Paris</p>
-  <p><a href="#guest">Register for VIP</a> · <a href="#test">Skin quiz</a> · <a href="#shop">Products</a></p>
+  <div class="foot-grid">
+    <div><p class="footer-logo">coloro</p><p>Pop-up beauté coréenne<br>콜라로</p></div>
+    <div><h4>Quick links</h4><a href="#test">Skin quiz</a><a href="#shop">Shop</a><a href="#guest">VIP access</a><a href="#visit">Visit</a></div>
+    <div><h4>Find us</h4><p>64 rue de Turenne<br>75003 Paris</p></div>
+    <div><h4>With</h4><p>ONOUL matcha bar<br>Seoul Salon scalp massages</p><a href="https://www.instagram.com/seoulsalon_paris" target="_blank" rel="noopener">@seoulsalon_paris</a></div>
+  </div>
 </footer>
 
 <script src="app.js"></script>
