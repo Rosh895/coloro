@@ -614,9 +614,41 @@ function startCountdown() {
   document.addEventListener('langchange', tick);
 }
 
+/* ---------- Korean word of the day ---------- */
+const WORDS = [
+  ['사랑', 'sarang', 'amour', 'love'], ['안녕하세요', 'annyeonghaseyo', 'bonjour', 'hello'],
+  ['감사합니다', 'gamsahamnida', 'merci', 'thank you'], ['예쁘다', 'yeppeuda', 'être joli(e)', 'to be pretty'],
+  ['반짝반짝', 'banjjak-banjjak', 'scintillant (onomatopée)', 'twinkling (sparkly)'], ['촉촉', 'chokchok', 'humide, bien hydraté', 'moist, well hydrated'],
+  ['물광', 'mulgwang', 'éclat « dewy » de la peau (littéralement « lumière d’eau »)', 'dewy skin glow (literally “water light”)'],
+  ['벚꽃', 'beotkkot', 'fleur de cerisier', 'cherry blossom'], ['화이팅', 'hwaiting', 'courage ! (tu peux le faire)', 'you can do it!'], ['피부', 'pibu', 'peau', 'skin'],
+];
+let wordIndex = Math.floor(Date.now() / 864e5) % WORDS.length;
+function renderWord() {
+  const [ko, rom, fr, en] = WORDS[wordIndex];
+  $('#wordCard').innerHTML = `<svg class="word-bloom" viewBox="0 0 100 100" aria-hidden="true"><use href="#blossom" width="100" height="100"/></svg>
+    <p class="word-ko" lang="ko">${ko}</p><p class="word-rom">[${rom}]</p><p class="word-mean">= ${LANG === 'en' ? en : fr}</p>`;
+}
+$('#wordNext').addEventListener('click', () => { wordIndex = (wordIndex + 1) % WORDS.length; renderWord(); });
+
+/* ---------- Petals across the whole page ---------- */
+(() => {
+  if (reduceMotion) return;
+  const layer = document.createElement('div');
+  layer.className = 'petals-page'; layer.setAttribute('aria-hidden', 'true');
+  for (let i = 0; i < 8; i++) {
+    const s = document.createElement('span');
+    s.style.left = Math.random() * 100 + '%';
+    s.style.setProperty('--dx', (Math.random() * 200 - 100) + 'px');
+    s.style.animationDuration = 14 + Math.random() * 12 + 's';
+    s.style.animationDelay = -Math.random() * 20 + 's';
+    layer.appendChild(s);
+  }
+  document.body.appendChild(layer);
+})();
+
 /* ---------- Boot ---------- */
 function renderAll() {
-  renderTicker(); renderTiles(); renderCatalogue(); renderCarousel(); renderShades(); renderQuiz(); formsState(); updateWish(); renderBooking();
+  renderTicker(); renderTiles(); renderCatalogue(); renderCarousel(); renderShades(); renderQuiz(); formsState(); updateWish(); renderBooking(); renderWord();
   if ($('#productDialog').open) renderDetail();
 }
 document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
