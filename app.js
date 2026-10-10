@@ -32,7 +32,7 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* ---------- Products ---------- */
 const MINT = '#A8C3B4', PEACH = '#F9D5C8', BERRY = '#E0607E', LILAC = '#DCD3F2', BUTTER = '#F6E7A8';
 const PRODUCTS = [
-  { id: 'rb-extreme', cat: 'creams', brand: 'Real Barrier', name: 'Extreme Cream 50 ml', price: 17.76, c: MINT, note: ['Peaux très sèches ou à barrière fragilisée. Crème riche aux céramides.', 'Very dry or barrier-compromised skin. Rich ceramide cream.'] },
+  { id: 'rb-extreme', cat: 'creams', brand: 'Real Barrier', name: 'Extreme Cream 50 ml', price: 17.76, c: MINT, img: 'images/rb-extreme-cream.jpg', note: ['Peaux très sèches ou à barrière fragilisée. Crème riche aux céramides.', 'Very dry or barrier-compromised skin. Rich ceramide cream.'] },
   { id: 'rb-aqua', cat: 'creams', brand: 'Real Barrier', name: 'Aqua Soothing Cream', price: 19.29, c: MINT, note: ['Crème hydratante apaisante.', 'Soothing moisturising cream.'] },
   { id: 'drg-cream', cat: 'creams', brand: 'Dr.G', name: 'R.E.D Blemish Clear Soothing Cream', price: 17.74, c: MINT, note: ['Peaux sensibles, sujettes aux rougeurs, et peaux mixtes.', 'Sensitive, redness-prone and combination skin.'] },
   { id: 'fat-cream', cat: 'creams', brand: 'FATION', name: 'Nosca9 Trouble Cream', price: null, c: MINT, note: ['Peaux grasses et sujettes aux imperfections.', 'Oily and blemish-prone skin.'] },
@@ -144,6 +144,7 @@ document.addEventListener('click', e => {
   else if (e.target.tagName === 'DIALOG') e.target.close();
 });
 
+const photo = (p, lazy = true) => p.img ? `<img src="${p.img}" alt="${p.brand} ${p.name}" width="607" height="629" decoding="async" ${lazy ? 'loading="lazy"' : ''}>` : '';
 const priceTag = p => p.price == null
   ? `<span class="price soon">${t('price.soon')}</span>`
   : `<span class="price">${eur(p.price)}${p.per ? ' ' + t('per.mask') : ''}</span>`;
@@ -201,6 +202,7 @@ function renderCatalogue() {
   $('#resultCount').textContent = list.length === 1 ? t('shop.count1') : t('shop.count', { n: list.length });
   $('#grid').innerHTML = list.length ? list.map(p => `
     <article class="product" data-id="${p.id}" style="--c:${p.c}">
+      ${p.img ? `<div class="product-img">${photo(p)}</div>` : ''}
       <div class="product-top"><p class="brand">${p.brand}</p>${heartBtn(p)}</div>
       <h3><button type="button" class="open-detail">${p.name}</button></h3>
       <p class="for">${p.note[LANG === 'en' ? 1 : 0]}</p>
@@ -224,7 +226,7 @@ function renderDetail() {
   const p = byId(detailId); if (!p) return;
   const tags = SKIN_TAGS[p.id] || [];
   $('#pdBody').innerHTML = `
-    <div class="pd-art" style="--c:${p.c}">${SHAPES[shapeFor(p)]}</div>
+    <div class="pd-art" style="--c:${p.c}">${p.img ? photo(p, false) : SHAPES[shapeFor(p)]}</div>
     <div class="pd-info">
       <p class="brand">${p.brand}</p>
       <h2 id="pdTitle">${p.name}</h2>
@@ -246,7 +248,7 @@ $('#grid').addEventListener('click', e => {
 function renderCarousel() {
   $('#favGrid').innerHTML = PICKS.map(id => PRODUCTS.find(p => p.id === id)).map(p => `
     <article class="fav-card" data-id="${p.id}">
-      <div class="fav-art" style="--c:${p.c}"><span class="pick">${t('pick')}</span>${heartBtn(p)}${SHAPES[shapeFor(p)]}</div>
+      <div class="fav-art" style="--c:${p.c}">${photo(p)}<span class="pick">${t('pick')}</span>${heartBtn(p)}${p.img ? '' : SHAPES[shapeFor(p)]}</div>
       <div class="fav-body"><p class="brand">${p.brand}</p><h3><button type="button" class="open-detail">${p.name}</button></h3>${priceTag(p)}</div>
     </article>`).join('');
   $('#favPrev').setAttribute('aria-label', t('carousel.prev'));

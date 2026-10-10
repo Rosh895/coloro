@@ -301,6 +301,14 @@ input[aria-invalid="true"]{border-color:var(--cherry)}
 
 .empty{grid-column:1/-1;padding:28px 0}
 
+/* product photos */
+.fav-art>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.product{overflow:hidden}
+.product-img{margin:-22px -22px 16px;aspect-ratio:4/3;overflow:hidden;background:var(--c)}
+.product-img img{width:100%;height:100%;object-fit:cover;object-position:center 40%;display:block}
+.pd-art{overflow:hidden}
+.pd-art img{width:100%;height:100%;object-fit:cover;display:block}
+
 /* shade picker */
 .shade-pick{margin:4px 0 14px}
 .shade-row{display:flex;gap:8px;flex-wrap:wrap}
