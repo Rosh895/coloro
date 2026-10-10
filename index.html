@@ -53,7 +53,6 @@
     <nav aria-label="Navigation principale" data-en-aria="Main navigation">
       <a href="#top" data-en="Home">Accueil</a>
       <a href="#popup" data-en="Pop-up">Pop-up</a>
-      <a href="#booking" data-en="Book">Réserver</a>
       <a href="#test" data-en="Skin quiz">Quiz peau</a>
       <a href="#shop" data-en="Shop">Boutique</a>
       <a href="#vip" data-en="VIP">VIP</a>
@@ -219,10 +218,12 @@
 </section>
 
 <!-- BOOKING REQUEST -->
-<section class="section section-booking" id="booking" aria-labelledby="bookingTitle">
+<section class="section section-booking" id="vip" aria-labelledby="bookingTitle">
+  <span id="booking"></span>
   <div class="wrap">
-    <h2 id="bookingTitle"><small class="ko" lang="ko">예약</small><span data-en="Request a VIP slot">Demander un créneau VIP</span></h2>
-    <p class="section-lead" data-en="Choose the day and time that suit you. We confirm by email depending on availability: your request is not a confirmed booking.">Choisissez le jour et le moment qui vous conviennent. Nous confirmons par e-mail selon les disponibilités : votre demande n’est pas une réservation confirmée.</p>
+    <h2 id="bookingTitle"><small class="ko" lang="ko">VIP 라운지</small><span data-en="Join the VIP list">Rejoindre la liste VIP</span></h2>
+    <p class="section-lead" data-en="Register before your visit and pick the day and time that suit you. The VIP lounge adds a scalp test and a scalp massage by Seoul Salon to the full pop-up experience. We confirm by email depending on availability: your request is not a confirmed booking.">Inscrivez-vous avant votre visite et choisissez le jour et le moment qui vous conviennent. Le lounge VIP ajoute un test du cuir chevelu et un massage du cuir chevelu par Seoul Salon à tout le parcours du pop-up. Nous confirmons par e-mail selon les disponibilités : votre demande n’est pas une réservation confirmée.</p>
+    <p class="bk-walknote" data-en="Walk-in visit? No need to register: just drop by between 10am and 6pm.">Visite libre ? Pas besoin de vous inscrire : passez simplement nous voir entre 10 h et 18 h.</p>
     <div class="booking" id="bookingApp" aria-live="polite"></div>
   </div>
 </section>
@@ -275,40 +276,6 @@
         <p><strong data-en="Powder">Poudre</strong> – NAMING. Fluffy Powder Blush. <span data-en="For oily or combination skin and a soft finish.">Pour les peaux grasses ou mixtes et un fini doux.</span></p>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- VIP -->
-<section class="section" id="vip" aria-labelledby="vipTitle">
-  <div class="wrap vip-grid">
-    <div>
-      <h2 id="vipTitle"><small class="ko" lang="ko">VIP 라운지</small><span data-en="Join the VIP list">Rejoindre la liste VIP</span></h2>
-      <p class="lead" data-en="Register before your visit to get into the VIP lounge: a scalp test and a scalp massage by Seoul Salon, on top of the full pop-up experience.">Inscrivez-vous avant votre visite pour accéder au lounge VIP : test du cuir chevelu et massage du cuir chevelu par Seoul Salon, en plus de tout le parcours du pop-up.</p>
-      <p><a class="text-link" href="#booking" data-en="Want to pick a day? Request a slot">Envie de choisir un jour ? Demandez un créneau</a></p>
-    </div>
-    <form class="vip-form" id="vipForm" novalidate>
-      <div class="field-row">
-        <label><span data-en="Name">Nom</span>
-          <input name="name" type="text" autocomplete="name" required>
-        </label>
-        <label><span data-en="Email">E-mail</span>
-          <input name="email" type="email" autocomplete="email" required>
-        </label>
-      </div>
-      <div class="field-row">
-        <label><span data-en="Phone">Téléphone</span> <span class="opt" data-en="(optional)">(facultatif)</span>
-          <input name="phone" type="tel" autocomplete="tel">
-        </label>
-        <label><span data-en="Allergies or sensitivities">Allergies ou sensibilités</span> <span class="opt" data-en="(optional)">(facultatif)</span>
-          <input name="allergies" type="text">
-        </label>
-      </div>
-      <label class="check"><input type="checkbox" name="consent" required>
-        <span data-en="I agree that COLARO uses my details to contact me about the pop-up. I can withdraw at any time.">J’accepte que COLARO utilise mes coordonnées pour me contacter au sujet du pop-up. Je peux me rétracter à tout moment.</span></label>
-      <p class="form-error" id="formError" role="alert" hidden></p>
-      <button class="btn btn-berry" type="submit" id="vipSubmit" data-en="Join the VIP list">Rejoindre la liste VIP</button>
-      <p class="form-ok" id="formOk" role="status" hidden></p>
-    </form>
   </div>
 </section>
 

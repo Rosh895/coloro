@@ -408,38 +408,11 @@ const validEmail = v => /^\S+@\S+\.\S+$/.test(v);
 
 function formsState() {
   const open = !!(CONFIG.formEndpoint || CONFIG.contactEmail);
-  $('#vipSubmit').disabled = !open;
   $('#loopForm button').disabled = !open;
   if (!open) {
-    $('#formOk').hidden = false; $('#formOk').textContent = t('f.closed');
     $('#loopMsg').hidden = false; $('#loopMsg').textContent = t('f.closed');
   }
 }
-
-$('#vipForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  const form = e.target, err = $('#formError'), ok = $('#formOk');
-  const d = Object.fromEntries(new FormData(form));
-  form.querySelectorAll('input').forEach(i => i.removeAttribute('aria-invalid'));
-  const missing = ['name', 'email'].filter(k => !(d[k] || '').trim());
-  let msg = '', bad = missing;
-  if (missing.length) msg = t('f.err.fields');
-  else if (!validEmail(d.email)) { msg = t('f.err.email'); bad = ['email']; }
-  else if (!d.consent) { msg = t('f.err.consent'); bad = ['consent']; }
-  if (msg) {
-    bad.forEach(k => form.elements[k].setAttribute('aria-invalid', 'true'));
-    err.textContent = msg; err.hidden = false; ok.hidden = true;
-    form.elements[bad[0]].focus(); return;
-  }
-  err.hidden = true;
-  const btn = $('#vipSubmit'); btn.disabled = true; btn.textContent = t('f.sending');
-  try {
-    const how = await send('vip', { name: d.name, email: d.email, phone: d.phone, allergies: d.allergies, consent: true, lang: LANG });
-    ok.textContent = how === 'mail' ? t('f.ok.mail', { to: CONFIG.contactEmail }) : t('f.ok.vip', { name: d.name.trim().split(' ')[0], email: d.email });
-    ok.hidden = false; form.reset();
-  } catch (_) { err.textContent = t('f.err.send'); err.hidden = false; }
-  btn.disabled = false; btn.textContent = LANG === 'en' ? btn.dataset.en : btn.dataset.frdataen;
-});
 
 $('#loopForm').addEventListener('submit', async e => {
   e.preventDefault();
@@ -457,7 +430,7 @@ const OPEN_DAYS = []; // 1 March 2027 to 1 April 2027
 for (let d = 1; d <= 31; d++) OPEN_DAYS.push(new Date(2027, 2, d, 12));
 OPEN_DAYS.push(new Date(2027, 3, 1, 12));
 const WINDOWS = ['bk.w1', 'bk.w2', 'bk.w3', 'bk.w4'];
-const bk = { step: 0, exp: 'vip', date: null, win: null, name: '', email: '', phone: '', allergies: '', consent: false, done: null, err: '' };
+const bk = { step: 1, date: null, win: null, name: '', email: '', phone: '', allergies: '', consent: false, done: null, err: '' };
 const locale = () => (LANG === 'en' ? 'en-GB' : 'fr-FR');
 const fmtDay = d => d.toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 const isoDay = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -480,9 +453,10 @@ function calendarHTML() {
 
 function renderBooking(focusHeading = false) {
   const root = $('#bookingApp');
-  const steps = t('bk.steps');
-  const stepper = bk.done ? '' : `<ol class="stepper" aria-label="${steps[bk.step]}">${steps.map((s, i) =>
-    `<li class="${i === bk.step ? 'now' : i < bk.step ? 'past' : ''}" ${i === bk.step ? 'aria-current="step"' : ''}><span>${i + 1}</span>${s}</li>`).join('')}</ol>`;
+  const steps = t('bk.steps').slice(1); // step 0 (experience choice) was merged away; steps run 1..3
+  const cur = bk.step - 1;
+  const stepper = bk.done ? '' : `<ol class="stepper" aria-label="${steps[cur]}">${steps.map((s, i) =>
+    `<li class="${i === cur ? 'now' : i < cur ? 'past' : ''}" ${i === cur ? 'aria-current="step"' : ''}><span>${i + 1}</span>${s}</li>`).join('')}</ol>`;
   let body = '';
   if (bk.done) {
     const mail = bk.done === 'mail';
@@ -490,14 +464,6 @@ function renderBooking(focusHeading = false) {
       <p>${mail ? t('bk.done.mail', { to: CONFIG.contactEmail }) : t('bk.done', { name: esc(bk.name.split(' ')[0]) })}</p>
       ${recapHTML()}<p class="muted small">${t('bk.nonbinding')}</p>
       <button type="button" class="btn btn-ghost" id="bkAgain">${t('bk.again')}</button></div>`;
-  } else if (bk.step === 0) {
-    body = `<h3 tabindex="-1" id="bkHeading">${t('bk.exp.title')}</h3>
-      <div class="exp-pick" role="group" aria-label="${t('bk.exp.title')}">
-        ${['walk', 'vip'].map(k => `<button type="button" class="exp-opt" aria-pressed="${bk.exp === k}" data-exp="${k}">
-          <strong>${t('bk.exp.' + k)}</strong><span>${t('bk.exp.' + k + '.s')}</span></button>`).join('')}</div>
-      ${bk.exp === 'walk'
-        ? `<p class="bk-info">${t('bk.walk.info')}</p><a class="btn btn-pine" href="#visit">${t('bk.address')}</a>`
-        : `<button type="button" class="btn btn-berry" data-next>${t('q.next')}</button>`}`;
   } else if (bk.step === 1) {
     body = `<h3 tabindex="-1" id="bkHeading">${t('bk.date.title')}</h3><p class="muted small">${t('bk.date.note')}</p>
       <div class="cals">${calendarHTML()}</div>
@@ -505,8 +471,7 @@ function renderBooking(focusHeading = false) {
       <div class="windows" role="group" aria-label="${t('bk.time.title')}">${WINDOWS.map(w =>
         `<button type="button" class="win" aria-pressed="${bk.win === w}" data-win="${w}">${t(w)}</button>`).join('')}</div>
       ${bk.err ? `<p class="form-error" role="alert">${bk.err}</p>` : ''}
-      <div class="bk-nav"><button type="button" class="quiz-back" data-prev>${t('r.back')}</button>
-        <button type="button" class="btn btn-berry" data-next>${t('q.next')}</button></div>`;
+      <div class="bk-nav bk-nav-end"><button type="button" class="btn btn-berry" data-next>${t('q.next')}</button></div>`;
   } else if (bk.step === 2) {
     body = `<h3 tabindex="-1" id="bkHeading">${t('bk.details')}</h3>
       <div class="bk-fields">
@@ -547,11 +512,10 @@ bkRoot.addEventListener('input', e => {
 });
 bkRoot.addEventListener('click', async e => {
   const el = e.target.closest('button'); if (!el) return;
-  if (el.dataset.exp) { bk.exp = el.dataset.exp; renderBooking(); return; }
   if (el.dataset.date) { bk.date = el.dataset.date; bk.err = ''; renderBooking(); $(`.day[data-date="${bk.date}"]`).focus(); return; }
   if (el.dataset.win) { bk.win = el.dataset.win; bk.err = ''; renderBooking(); $(`.win[data-win="${bk.win}"]`).focus(); return; }
   if (el.dataset.prev !== undefined) return go(bk.step - 1);
-  if (el.id === 'bkAgain') { Object.assign(bk, { step: 0, exp: 'vip', date: null, win: null, done: null, err: '' }); return renderBooking(true); }
+  if (el.id === 'bkAgain') { Object.assign(bk, { step: 1, date: null, win: null, done: null, err: '' }); return renderBooking(true); }
   if (el.dataset.next !== undefined) {
     if (bk.step === 1 && (!bk.date || !bk.win)) { bk.err = t('bk.err.slot'); return renderBooking(); }
     if (bk.step === 2) {

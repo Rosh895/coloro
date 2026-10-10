@@ -160,7 +160,7 @@ const T = {
   'bk.done.mail.title': ['Plus qu’un clic !', 'One more click!'],
   'bk.done.mail': ['Votre application e-mail s’ouvre avec votre demande. Envoyez le message pour qu’elle nous parvienne. Si rien ne s’ouvre, écrivez-nous à {to}.', 'Your email app is opening with your request. Send the message so it reaches us. If nothing opens, write to us at {to}.'],
   'bk.done.title': ['Demande envoyée', 'Request sent'],
-  'bk.done': ['Merci {name} ! Nous revenons vers vous par e-mail. Ce n’est pas encore une réservation confirmée.', 'Thank you {name}! We will come back to you by email. This is not a confirmed booking yet.'],
+  'bk.done': ['Merci {name} ! Votre inscription à la liste VIP est bien envoyée. Nous revenons vers vous par e-mail pour confirmer le créneau. Ce n’est pas encore une réservation confirmée.', 'Thank you {name}! Your VIP list registration was sent. We will come back to you by email to confirm the slot. This is not a confirmed booking yet.'],
   'bk.address': ['Voir l’adresse', 'See the address'],
   'bk.again': ['Faire une autre demande', 'Make another request'],
   /* forms */
