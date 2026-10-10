@@ -467,6 +467,10 @@ input[aria-invalid="true"]{border-color:var(--cherry)}
 .a-photo{background:var(--peach)}.a-wheel{background:var(--lilac)}.a-insta{background:var(--butter)}
 .a-wheel svg{animation:spin 14s linear infinite}
 
+.test-visual{margin:0 0 32px;max-width:1000px}
+.test-visual img{display:block;width:100%;height:auto;border-radius:28px;box-shadow:var(--shadow-lift)}
+.test-visual figcaption{margin-top:10px;font-size:.85rem;opacity:.75}
+
 /* skin-scan illustration */
 .art .scan{animation:scan 3.4s ease-in-out infinite alternate}
 @keyframes scan{from{transform:translateY(-84px)}to{transform:translateY(122px)}}

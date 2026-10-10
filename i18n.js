@@ -18,7 +18,7 @@ const t = (key, vars) => {
 function applyLang() {
   const en = LANG === 'en';
   document.documentElement.lang = LANG;
-  [['data-en', null], ['data-en-ph', 'placeholder'], ['data-en-aria', 'aria-label']].forEach(([attr, target]) => {
+  [['data-en', null], ['data-en-ph', 'placeholder'], ['data-en-aria', 'aria-label'], ['data-en-alt', 'alt']].forEach(([attr, target]) => {
     document.querySelectorAll('[' + attr + ']').forEach(el => {
       const store = 'fr' + attr.replace(/-/g, '');
       if (el.dataset[store] === undefined) el.dataset[store] = target ? (el.getAttribute(target) || '') : el.textContent;
