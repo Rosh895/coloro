@@ -138,8 +138,8 @@ const T = {
   /* booking */
   'bk.steps': [['Expérience', 'Date et heure', 'Coordonnées', 'Récapitulatif'], ['Experience', 'Date and time', 'Details', 'Summary']],
   'bk.exp.title': ['Quelle visite souhaitez-vous ?', 'Which visit would you like?'],
-  'bk.exp.walk': ['Visite libre', 'Walk-in visit'], 'bk.exp.walk.s': ['Sans réservation. Test de peau et cadeaux offerts.', 'No booking needed. Skin test and free goodies.'],
-  'bk.exp.vip': ['Lounge VIP', 'VIP lounge'], 'bk.exp.vip.s': ['Sur demande. Test de peau, test et massage du cuir chevelu, cadeaux supplémentaires.', 'On request. Skin test, scalp test and massage, extra goodies.'],
+  'bk.exp.walk': ['Visite libre', 'Walk-in visit'], 'bk.exp.walk.s': ['Sans réservation. Test de peau, roue de la chance et passeport.', 'No booking needed. Skin test, spinning wheel and passport.'],
+  'bk.exp.vip': ['Lounge VIP', 'VIP lounge'], 'bk.exp.vip.s': ['Sur demande. Tout le parcours, plus le test et le massage du cuir chevelu au lounge VIP.', 'On request. The full experience, plus the scalp test and massage in the VIP lounge.'],
   'bk.walk.info': ['Pas besoin de réserver : passez nous voir du 1er mars au 1er avril 2027, de 10 h à 18 h, au 64 rue de Turenne.', 'No need to book: drop by from 1 March to 1 April 2027, 10am to 6pm, at 64 rue de Turenne.'],
   'bk.date.title': ['Quel jour vous conviendrait ?', 'Which day suits you?'],
   'bk.date.note': ['Le pop-up est ouvert de 10 h à 18 h. Choisissez un jour : nous confirmerons selon les disponibilités.', 'The pop-up is open 10am to 6pm. Pick a day: we will confirm depending on availability.'],
