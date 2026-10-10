@@ -131,7 +131,7 @@ const T = {
   'b.powder': ['blush poudre NAMING. Fluffy Powder Blush', 'NAMING. Fluffy Powder Blush'],
   'b.either': ['blush crème JUNGSAEMMOOL pour un fini éclatant, ou poudre NAMING. pour un fini mat doux', 'JUNGSAEMMOOL cream blush for dewy, or NAMING. powder blush for soft matte'],
   /* passport + share */
-  'pp.count': ['Aperçu : {n} sur 4 zones', 'Preview: {n} of 4 zones'],
+  'pp.count': ['Aperçu : {n} sur 4 étapes', 'Preview: {n} of 4 stops'],
   'share.title': ['COLARO – Pop-up K-beauty à Paris', 'COLARO – K-beauty pop-up in Paris'],
   'share.text': ['Découvre COLARO, le pop-up K-beauty à Paris (du 1er mars au 1er avril 2027) !', 'Discover COLARO, the K-beauty pop-up in Paris (1 March – 1 April 2027)!'],
   'share.copied': ['Lien copié !', 'Link copied!'], 'share.btn': ['Partager COLARO', 'Share COLARO'],
