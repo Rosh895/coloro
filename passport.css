@@ -42,3 +42,10 @@
 #pinForm{display:grid;gap:14px;margin-top:8px}
 #pinInput{font-size:1.6rem;letter-spacing:.5em;text-align:center}
 @media(prefers-reduced-motion:reduce){.stop.fresh .stamp-mark{animation:none}}
+
+/* sign-up step */
+.pp-register{background:#fff;border-radius:26px;padding:22px;box-shadow:var(--shadow)}
+.pp-register h2{font:500 1.7rem var(--serif);margin:0 0 6px}
+#regForm{display:grid;gap:14px;margin-top:14px}
+#ppMain[hidden]{display:none}
+#ppMain .pp-progress{margin-top:0}
