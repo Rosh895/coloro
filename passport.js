@@ -5,7 +5,7 @@
    - ENDPOINT = URL   : the visitor signs up once (first name + email), every stamp is validated ON THE SERVER by the
                         team code, and each participant becomes a row in the owner's Google Sheet. The codes then live
                         only in the owner's private Google script. */
-const ENDPOINT = 'https://script.google.com/macros/s/AKfycbxT1n2C0e60aM8ONDLj9cWGYa_gIJzxb6jyVjmAlFPzrwngg9dtZY38ItcSSiJaxZW8/exec'; // Google Apps Script web app that stores the passports in the COLARO Google Sheet (see private-docs/COLARO-passport-setup-FR.md)
+const ENDPOINT = 'https://script.google.com/macros/s/AKfycbz5PcKFc2L_5N5hpsaus3I5Jtis0btwFQHPoXxxe4TFdtzxrJIlLGlrdTBId4GM3lXC/exec'; // Google Apps Script web app that stores the passports in the COLARO Google Sheet (see private-docs/COLARO-passport-setup-FR.md)
 const STOP_HASHES = ["37f1c526e0c1832a9f7e880700280fc477cf0129c807f4273a6692e22a539d01", "5a23d0d9cc85734ca5f9f7e1a59d0e5790af612ab635fbda0d0552d9c455beb0", "2c103dcf38b1d0d34ed9940c4b4c27a088f7d1950109b8022cb4072cfd64f6f6", "79d1a699835a8db2b9af7b662533c3027c042571dc76b3d3d335b774d37d824a"]; // used only while ENDPOINT is null
 const STORE = 'colaro-passport';
 
