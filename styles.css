@@ -404,11 +404,13 @@ input[aria-invalid="true"]{border-color:var(--cherry)}
 .passport-logo{font:italic 600 1.7rem var(--serif)}
 .stamps{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .stamp{position:relative;aspect-ratio:1.4;border:2px dashed rgba(47,59,55,.35);border-radius:18px;background:transparent;cursor:pointer;display:grid;place-items:center;font:600 .9rem var(--sans);color:var(--pine);transition:background .25s,border-color .25s,transform .25s}
-.stamp i{font-style:normal;font-size:1.8rem;opacity:.25;transition:opacity .25s,transform .35s}
+.stamp i{font-style:normal;font-size:1.8rem;opacity:.6;transition:opacity .25s,transform .35s;margin-top:-16px}
+.stamp i svg{display:block;width:52px;height:52px;filter:grayscale(1);transition:filter .25s}
 .stamp span{position:absolute;bottom:10px;left:0;right:0;text-align:center;padding:0 6px}
 .stamp:hover{transform:translateY(-2px)}
 .stamp.z-mint{--zc:var(--mint)}.stamp.z-peach{--zc:var(--peach)}.stamp.z-lilac{--zc:var(--lilac)}.stamp.z-berry{--zc:#F2B6C4}
 .stamp[aria-pressed="true"]{border-style:solid;border-color:transparent;background:var(--zc);color:var(--pine)}
+.stamp[aria-pressed="true"] i svg{filter:none}
 .stamp[aria-pressed="true"] i{opacity:1;transform:rotate(-12deg) scale(1.15);color:var(--cherry)}
 .passport-count{margin:16px 0 8px;font-weight:600;font-size:.92rem}
 .passport-bar{height:8px;border-radius:99px;background:var(--mint);overflow:hidden}
