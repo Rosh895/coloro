@@ -107,7 +107,7 @@ $('#regForm').addEventListener('submit', async e => {
   msg.hidden = !err; msg.textContent = err; if (err) return;
   const label = btn.textContent; btn.disabled = true; btn.textContent = t('r.opening');
   try {
-    const res = await api({ action: 'register', name, email, instagram: f.elements.instagram.value.trim(), news: f.elements.news.checked, consent: true, lang: LANG });
+    const res = await api({ action: 'register', name, email, instagram: f.elements.instagram.value.trim(), skin: f.elements.skin.value, news: f.elements.news.checked, consent: true, lang: LANG });
     if (!res.ok) throw new Error(res.error || 'error');
     state.id = res.id; state.stamps = res.stamps; save(); f.reset(); render();
   } catch (_) { msg.hidden = false; msg.textContent = t('p.net'); }

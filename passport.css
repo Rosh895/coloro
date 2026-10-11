@@ -49,3 +49,6 @@
 #regForm{display:grid;gap:14px;margin-top:14px}
 #ppMain[hidden]{display:none}
 #ppMain .pp-progress{margin-top:0}
+
+#regForm select{font:inherit;padding:12px 14px;border:1.5px solid var(--sage);border-radius:14px;background:var(--white);color:var(--pine);width:100%}
+#regForm select:focus{border-color:var(--pine);outline:none;box-shadow:0 0 0 3px var(--mint)}
