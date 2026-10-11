@@ -76,12 +76,25 @@ const BLUSH_SHADES = [['bl.peach', '#F5A58A'], ['bl.pink', '#F2A9C0'], ['bl.rose
 const SHADES = { 'nm-tint': LIP_SHADES, 'js-blush': BLUSH_SHADES, 'nm-blush': BLUSH_SHADES };
 const PICKS = ['rb-extreme', 'drg-cream', 'wl-ampoule', 'sn-cream', 'sn-serum', 'drg-sun', 'rb-sun', 'fat-water'];
 
-/* Wishlist, shared by the carousel, catalogue and detail view. Stored only in this browser. */
-let hearts = [];
-try { hearts = JSON.parse(localStorage.getItem('colaro-hearts') || '[]'); } catch (_) {}
+/* ---------- Cart: a reservation basket ----------
+   Visitors choose products, send a reservation REQUEST by email, then pick up and pay at the pop-up.
+   There is no online payment and no stock system: COLARO confirms each request by email. */
+const MAX_QTY = 9;
 const byId = id => PRODUCTS.find(p => p.id === id);
-const heartBtn = p => `<button class="heart" type="button" aria-pressed="${hearts.includes(p.id)}" aria-label="${t('save', { name: p.name })}" data-id="${p.id}">
-  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.5A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/></svg></button>`;
+let cart = []; // [{ id, shade: index | null, qty }]
+try { cart = JSON.parse(localStorage.getItem('colaro-cart') || '[]'); } catch (_) {}
+cart = cart.filter(l => l && byId(l.id) && byId(l.id).price != null && Number.isInteger(l.qty) && l.qty > 0)
+  .map(l => ({ id: l.id, shade: Number.isInteger(l.shade) ? l.shade : null, qty: Math.min(MAX_QTY, l.qty) }));
+const saveCart = () => { try { localStorage.setItem('colaro-cart', JSON.stringify(cart)); } catch (_) {} };
+const sameLine = (l, id, shade) => l.id === id && (l.shade ?? null) === (shade ?? null);
+const cartCount = () => cart.reduce((n, l) => n + l.qty, 0);
+const cartTotal = () => cart.reduce((s, l) => s + byId(l.id).price * l.qty, 0);
+function addToCart(id, shade = null, qty = 1) {
+  const line = cart.find(l => sameLine(l, id, shade));
+  if (line) line.qty = Math.min(MAX_QTY, line.qty + qty); else cart.push({ id, shade, qty: Math.min(MAX_QTY, qty) });
+  saveCart(); updateCart();
+}
+const addBtn = p => p.price == null ? '' : `<button type="button" class="add-btn" data-id="${p.id}">${t('c.add')}</button>`;
 
 /* Shade choice (memory only, per visit) */
 const chosen = {};
@@ -91,42 +104,9 @@ const shadePicker = p => {
   return `<div class="shade-pick" data-id="${p.id}">
     <div class="shade-row" role="group" aria-label="${t('shade.pick')}">${list.map(([k, hex], i) =>
       `<button type="button" class="shade" aria-pressed="${sel === i}" aria-label="${t(k)}" title="${t(k)}" data-i="${i}" style="--hex:${hex}"></button>`).join('')}</div>
-    <span class="shade-name">${sel == null ? t('shade.count', { n: list.length }) : t(list[sel][0])}</span></div>`;
+    <span class="shade-name" data-warn="${t('c.pickShade')}">${sel == null ? t('shade.count', { n: list.length }) : t(list[sel][0])}</span></div>`;
 };
 const shadeText = p => chosen[p.id] != null && SHADES[p.id] ? ' (' + t(SHADES[p.id][chosen[p.id]][0]) + ')' : '';
-
-function wishText() {
-  const lines = hearts.map(byId).map(p => `- ${p.brand} ${p.name}${shadeText(p)} – ${p.price == null ? t('price.soon') : eur(p.price)}`);
-  return [t('w.head'), '', ...lines, '', t('w.foot')].join('\n');
-}
-function renderWish() {
-  const list = hearts.map(byId);
-  $('#wishBody').innerHTML = list.length ? `
-    <ul class="wish-list">${list.map(p => `<li><span class="wish-dot" style="background:${p.c}"></span>
-      <div><b>${p.brand}</b><br>${p.name}${shadeText(p)}</div>
-      <span class="wish-price">${p.price == null ? t('price.soon') : eur(p.price)}</span>${heartBtn(p)}</li>`).join('')}</ul>
-    <div class="wish-actions"><button type="button" class="btn btn-pine" id="wishCopy">${t('w.copy')}</button>
-      <a class="btn btn-ghost" href="mailto:?subject=${encodeURIComponent(t('w.head'))}&body=${encodeURIComponent(wishText())}">${t('w.mail')}</a></div>
-    <p class="muted small">${t('w.note')}</p>` : `<p>${t('w.empty')}</p>`;
-}
-function updateWish() {
-  hearts = hearts.filter(byId);
-  $('#wishCount').textContent = hearts.length; $('#wishCount').hidden = !hearts.length;
-  document.querySelectorAll('.heart').forEach(h => h.setAttribute('aria-pressed', hearts.includes(h.dataset.id)));
-  if ($('#wishDialog').open) renderWish();
-}
-document.addEventListener('click', e => {
-  const b = e.target.closest('.heart'); if (!b) return;
-  const id = b.dataset.id;
-  hearts = hearts.includes(id) ? hearts.filter(x => x !== id) : [...hearts, id];
-  try { localStorage.setItem('colaro-hearts', JSON.stringify(hearts)); } catch (_) {}
-  updateWish();
-});
-$('#wishBtn').addEventListener('click', () => { renderWish(); $('#wishDialog').showModal(); });
-$('#wishBody').addEventListener('click', async e => {
-  if (e.target.id !== 'wishCopy') return;
-  try { await navigator.clipboard.writeText(wishText()); e.target.textContent = t('w.copied'); } catch (_) {}
-});
 
 /* Shade clicks anywhere (cards, detail view) */
 document.addEventListener('click', e => {
@@ -137,7 +117,6 @@ document.addEventListener('click', e => {
   const prod = byId(id);
   document.querySelectorAll(`img[data-pid="${id}"]`).forEach(im => { im.src = imgFor(prod); im.alt = `${prod.brand} ${prod.name}${shadeText(prod)}`; });
   const again = document.querySelector(`.shade-pick[data-id="${id}"] .shade[data-i="${i}"]`); if (again) again.focus();
-  if ($('#wishDialog').open) renderWish();
 });
 
 /* Dialogs: close button, backdrop click */
@@ -206,11 +185,11 @@ function renderCatalogue() {
   $('#grid').innerHTML = list.length ? list.map(p => `
     <article class="product" data-id="${p.id}" style="--c:${p.c}">
       <div class="product-img${p.img ? '' : ' is-art'}">${p.img ? photo(p) : SHAPES[shapeFor(p)]}</div>
-      <div class="product-top"><p class="brand">${p.brand}</p>${heartBtn(p)}</div>
+      <p class="brand">${p.brand}</p>
       <h3><button type="button" class="open-detail">${p.name}</button></h3>
       <p class="for">${p.note[LANG === 'en' ? 1 : 0]}</p>
       ${shadePicker(p)}
-      ${priceTag(p)}
+      <div class="buy-row">${priceTag(p)}${addBtn(p)}</div>
     </article>`).join('') : `<div class="empty"><p>${t('shop.empty')}</p><button type="button" class="btn btn-ghost" id="resetFilters">${t('shop.reset')}</button></div>`;
 }
 function goShop(cat, q, skin = 'all') {
@@ -236,14 +215,14 @@ function renderDetail() {
       <p>${p.note[LANG === 'en' ? 1 : 0]}</p>
       ${tags.length ? `<p class="skin-line"><b>${t('pd.skin')}</b> ${tags.map(s => t('sk.' + s)).join(' · ')}</p>` : ''}
       ${shadePicker(p)}
-      <div class="pd-buy">${priceTag(p)}${heartBtn(p)}</div>
+      <div class="pd-buy">${priceTag(p)}${addBtn(p)}</div>
       <p class="muted small">${t('pd.try')}</p>
     </div>`;
 }
 function openDetail(id) { detailId = id; renderDetail(); $('#productDialog').showModal(); }
 $('#grid').addEventListener('click', e => {
   if (e.target.id === 'resetFilters') { activeCat = 'all'; activeSkin = 'all'; query = ''; $('#searchInput').value = ''; renderCatalogue(); return; }
-  if (e.target.closest('.heart, .shade')) return;
+  if (e.target.closest('.add-btn, .shade')) return;
   const card = e.target.closest('.product'); if (card) openDetail(card.dataset.id);
 });
 
@@ -251,14 +230,14 @@ $('#grid').addEventListener('click', e => {
 function renderCarousel() {
   $('#favGrid').innerHTML = PICKS.map(id => PRODUCTS.find(p => p.id === id)).map(p => `
     <article class="fav-card" data-id="${p.id}">
-      <div class="fav-art" style="--c:${p.c}">${photo(p)}<span class="pick">${t('pick')}</span>${heartBtn(p)}${p.img ? '' : SHAPES[shapeFor(p)]}</div>
-      <div class="fav-body"><p class="brand">${p.brand}</p><h3><button type="button" class="open-detail">${p.name}</button></h3>${priceTag(p)}</div>
+      <div class="fav-art" style="--c:${p.c}">${photo(p)}<span class="pick">${t('pick')}</span>${p.img ? '' : SHAPES[shapeFor(p)]}</div>
+      <div class="fav-body"><p class="brand">${p.brand}</p><h3><button type="button" class="open-detail">${p.name}</button></h3><div class="buy-row">${priceTag(p)}${addBtn(p)}</div></div>
     </article>`).join('');
   $('#favPrev').setAttribute('aria-label', t('carousel.prev'));
   $('#favNext').setAttribute('aria-label', t('carousel.next'));
 }
 $('#favGrid').addEventListener('click', e => {
-  if (e.target.closest('.heart')) return;
+  if (e.target.closest('.add-btn')) return;
   const card = e.target.closest('.fav-card'); if (card) openDetail(card.dataset.id);
 });
 const slide = dir => $('#favGrid').scrollBy({ left: dir * 280, behavior: reduceMotion ? 'auto' : 'smooth' });
@@ -375,19 +354,22 @@ quizRoot.addEventListener('click', e => {
     case 'quizRestart': step = 0; ans = { goals: [] }; renderQuiz(); break;
     case 'quizShop': goShop('all', '', ans.skin); break;
     case 'quizAdd': {
-      const ids = quizRoot.dataset.picks.split(',').filter(Boolean);
-      hearts = [...new Set([...hearts, ...ids])];
-      try { localStorage.setItem('colaro-hearts', JSON.stringify(hearts)); } catch (_) {}
-      updateWish(); e.target.textContent = t('r.added'); e.target.disabled = true; break;
+      const toneShade = { warm: 0, cool: 1, neutral: 2, deep: 3 }[ans.tone];
+      quizRoot.dataset.picks.split(',').filter(Boolean).forEach(id => {
+        const p = byId(id);
+        if (p.price == null) return;
+        addToCart(id, SHADES[id] ? (toneShade ?? 0) : null);
+      });
+      e.target.textContent = t('r.added'); e.target.disabled = true; break;
     }
   }
 });
 
 /* ---------- Forms ---------- */
 function mailTo(kind, data) {
-  const subject = { vip: 'Inscription VIP COLARO', booking: 'Demande de créneau VIP COLARO' }[kind] || 'Inscription newsletter COLARO';
-  const labels = { name: 'Nom', email: 'E-mail', phone: 'Téléphone', experience: 'Expérience', date: 'Jour souhaité', window: 'Moment souhaité', allergies: 'Allergies / sensibilités' };
-  const body = Object.keys(data).filter(k => labels[k] && data[k]).map(k => labels[k] + ' : ' + data[k]).join('\n') +
+  const subject = { vip: 'Inscription VIP COLARO', booking: 'Demande de créneau VIP COLARO', reservation: 'Réservation de produits COLARO' }[kind] || 'Inscription newsletter COLARO';
+  const labels = { name: 'Nom', email: 'E-mail', phone: 'Téléphone', experience: 'Expérience', date: 'Jour souhaité', window: 'Moment souhaité', allergies: 'Allergies / sensibilités', pickup: 'Retrait souhaité', message: 'Message', items: 'Produits', total: 'Total' };
+  const body = Object.keys(data).filter(k => labels[k] && data[k]).map(k => labels[k] + (k === 'items' ? ' :\n' : ' : ') + data[k]).join('\n') +
     '\n\nJ’accepte que COLARO utilise mes coordonnées pour me contacter au sujet du pop-up.';
   window.location.href = 'mailto:' + CONFIG.contactEmail + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
 }
@@ -555,6 +537,129 @@ $('#shareBtn').addEventListener('click', async e => {
   } catch (_) {}
 });
 
+/* ---------- Cart window ---------- */
+let cartView = 'list'; // 'list' | 'form'
+const ck = { name: '', email: '', phone: '', day: '', msg: '', consent: false, err: '', done: null };
+const frShade = (id, shade) => shade != null && SHADES[id] ? ' (' + T[SHADES[id][shade][0]][0] + ')' : '';
+const shadeLabel = l => l.shade != null && SHADES[l.id] ? ' (' + t(SHADES[l.id][l.shade][0]) + ')' : '';
+const unitPrice = p => eur(p.price) + (p.per ? ' ' + t('per.mask') : '');
+
+function cartLineHTML(l) {
+  const p = byId(l.id), src = l.shade != null && p.shadeImgs ? p.shadeImgs[l.shade] : p.img;
+  return `<li class="cart-line" data-id="${l.id}" data-shade="${l.shade ?? ''}">
+    <span class="cart-thumb" style="--c:${p.c}">${src ? `<img src="${src}" alt="" loading="lazy">` : ''}</span>
+    <div class="cart-info"><b>${p.brand}</b><span>${p.name}${shadeLabel(l)}</span><small>${unitPrice(p)}</small></div>
+    <div class="qty" role="group" aria-label="${t('c.qty')}">
+      <button type="button" class="qty-b" data-act="dec" aria-label="${t('c.dec')}">−</button><span aria-live="polite">${l.qty}</span><button type="button" class="qty-b" data-act="inc" aria-label="${t('c.inc')}">+</button></div>
+    <span class="cart-sum">${eur(p.price * l.qty)}</span>
+    <button type="button" class="cart-rm" data-act="rm" aria-label="${t('c.remove')} ${p.name}">×</button></li>`;
+}
+
+function renderCart() {
+  const body = $('#cartBody');
+  if (ck.done) {
+    const mail = ck.done === 'mail';
+    body.innerHTML = `<div class="bk-done"><h3 tabindex="-1" id="cartHeading">${t(mail ? 'bk.done.mail.title' : 'bk.done.title')}</h3>
+      <p>${mail ? t('bk.done.mail', { to: CONFIG.contactEmail }) : t('c.done', { name: esc(ck.name.split(' ')[0]) })}</p>
+      <p class="muted small">${t('c.notice')}</p>
+      <div class="cart-actions">${mail && cart.length ? `<button type="button" class="btn btn-ghost" id="cartClear">${t('c.clear')}</button>` : ''}
+        <button type="button" class="btn btn-pine" id="cartShop">${t('c.browse')}</button></div></div>`;
+    return;
+  }
+  if (!cart.length) {
+    body.innerHTML = `<p>${t('c.empty')}</p><button type="button" class="btn btn-pine" id="cartShop">${t('c.browse')}</button>`;
+    return;
+  }
+  const totals = `<div class="cart-total"><span>${t('c.total')}</span><b>${eur(cartTotal())}</b></div>`;
+  if (cartView === 'list') {
+    body.innerHTML = `<ul class="cart-list">${cart.map(cartLineHTML).join('')}</ul>${totals}
+      <p class="cart-how">${t('c.how')}</p><p class="muted small">${t('c.notice')}</p>
+      <div class="cart-actions"><button type="button" class="btn btn-ghost" id="cartClear">${t('c.clear')}</button>
+        <button type="button" class="btn btn-berry" id="cartNext">${t('c.continue')}</button></div>`;
+  } else {
+    body.innerHTML = `<h3 id="cartHeading" tabindex="-1">${t('c.details')}</h3>${totals}
+      <div class="bk-fields">
+        <label>${t('bk.name')}<input data-ck="name" type="text" autocomplete="name" value="${esc(ck.name)}" required></label>
+        <label>${t('bk.email')}<input data-ck="email" type="email" autocomplete="email" value="${esc(ck.email)}" required></label>
+        <label>${t('bk.phone')}<input data-ck="phone" type="tel" autocomplete="tel" value="${esc(ck.phone)}"></label>
+        <label>${t('c.day')}<input data-ck="day" type="date" min="2027-03-01" max="2027-04-01" value="${esc(ck.day)}"></label>
+      </div>
+      <label>${t('c.msg')}<input data-ck="msg" type="text" value="${esc(ck.msg)}"></label>
+      <label class="check"><input type="checkbox" data-ck="consent" ${ck.consent ? 'checked' : ''}><span>${t('c.consent')}</span></label>
+      <p class="muted small">${t('c.notice')}</p>
+      ${ck.err ? `<p class="form-error" role="alert">${ck.err}</p>` : ''}
+      <div class="cart-actions"><button type="button" class="quiz-back" id="cartBack">${t('r.back')}</button>
+        <button type="button" class="btn btn-berry" id="cartSend">${t('c.send')}</button></div>`;
+  }
+}
+
+function updateCart() {
+  const n = cartCount();
+  $('#cartCount').textContent = n; $('#cartCount').hidden = !n;
+  $('#cartBtn').setAttribute('aria-label', n ? `${t('c.title')} (${n})` : t('c.title'));
+  if ($('#cartDialog').open && cartView === 'list') renderCart();
+}
+const openCart = (view = 'list') => { cartView = view; ck.err = ''; ck.done = null; renderCart(); if (!$('#cartDialog').open) $('#cartDialog').showModal(); };
+
+$('#cartBtn').addEventListener('click', () => openCart());
+
+/* "Add to basket" buttons everywhere (cards, carousel, detail view) */
+document.addEventListener('click', e => {
+  const b = e.target.closest('.add-btn'); if (!b) return;
+  const p = byId(b.dataset.id); let shade = null;
+  if (SHADES[p.id]) {
+    shade = chosen[p.id] ?? null;
+    if (shade == null) {
+      document.querySelectorAll(`.shade-pick[data-id="${p.id}"]`).forEach(el => el.classList.add('warn'));
+      const first = b.closest('article, .pd-info')?.querySelector('.shade'); if (first) first.focus();
+      return;
+    }
+  }
+  addToCart(p.id, shade);
+  const label = b.textContent; b.textContent = t('c.added'); b.classList.add('done');
+  setTimeout(() => { b.textContent = t('c.add'); b.classList.remove('done'); }, 1400);
+});
+
+const cartBody = $('#cartBody');
+cartBody.addEventListener('input', e => {
+  const k = e.target.dataset.ck; if (!k) return;
+  ck[k] = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+});
+cartBody.addEventListener('click', async e => {
+  const act = e.target.closest('[data-act]');
+  if (act) {
+    const li = act.closest('.cart-line'), id = li.dataset.id, shade = li.dataset.shade === '' ? null : +li.dataset.shade;
+    const line = cart.find(l => sameLine(l, id, shade));
+    if (act.dataset.act === 'inc') line.qty = Math.min(MAX_QTY, line.qty + 1);
+    else if (act.dataset.act === 'dec') line.qty = Math.max(1, line.qty - 1);
+    else cart = cart.filter(l => l !== line);
+    saveCart(); updateCart(); renderCart(); return;
+  }
+  switch (e.target.id) {
+    case 'cartNext': cartView = 'form'; ck.err = ''; renderCart(); $('#cartHeading')?.focus(); break;
+    case 'cartBack': cartView = 'list'; renderCart(); break;
+    case 'cartClear': cart = []; saveCart(); ck.done = null; cartView = 'list'; updateCart(); renderCart(); break;
+    case 'cartShop': $('#cartDialog').close(); $('#shop').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' }); break;
+    case 'cartSend': {
+      if (!ck.name.trim() || !ck.email.trim()) ck.err = t('f.err.fields');
+      else if (!validEmail(ck.email.trim())) ck.err = t('f.err.email');
+      else if (!ck.consent) ck.err = t('f.err.consent');
+      else ck.err = '';
+      if (ck.err) { renderCart(); break; }
+      e.target.disabled = true; e.target.textContent = t('f.sending');
+      const frDay = d => new Date(d + 'T12:00:00').toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      const items = cart.map(l => { const p = byId(l.id); return `- ${l.qty} × ${p.brand} ${p.name}${frShade(l.id, l.shade)} – ${eur(p.price)}${p.per ? ' / masque' : ''} = ${eur(p.price * l.qty)}`; }).join('\n');
+      try {
+        const how = await send('reservation', { name: ck.name.trim(), email: ck.email.trim(), phone: ck.phone, pickup: ck.day ? frDay(ck.day) : '', message: ck.msg,
+          items, total: eur(cartTotal()), consent: true, lang: LANG });
+        ck.done = how === 'mail' ? 'mail' : 'sent';
+        if (ck.done === 'sent') { cart = []; saveCart(); updateCart(); }
+        renderCart(); $('#cartHeading')?.focus();
+      } catch (_) { ck.err = t('f.err.send'); renderCart(); }
+    }
+  }
+});
+
 /* ---------- Countdown (only when CONFIG.openingDate is set) ---------- */
 function startCountdown() {
   const box = $('#countdown');
@@ -607,7 +712,8 @@ $('#wordNext').addEventListener('click', () => { wordIndex = (wordIndex + 1) % W
 
 /* ---------- Boot ---------- */
 function renderAll() {
-  renderTicker(); renderTiles(); renderCatalogue(); renderCarousel(); renderQuiz(); formsState(); updateWish(); renderBooking(); renderWord();
+  renderTicker(); renderTiles(); renderCatalogue(); renderCarousel(); renderQuiz(); formsState(); updateCart(); renderBooking(); renderWord();
+  if ($('#cartDialog').open) renderCart();
   if ($('#productDialog').open) renderDetail();
 }
 document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
