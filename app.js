@@ -32,34 +32,34 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* ---------- Products ---------- */
 const MINT = '#A8C3B4', PEACH = '#F9D5C8', BERRY = '#E0607E', LILAC = '#DCD3F2', BUTTER = '#F6E7A8';
 const PRODUCTS = [
-  { id: 'rb-extreme', cat: 'creams', brand: 'Real Barrier', name: 'Extreme Cream 50 ml', price: 17.76, c: MINT, img: 'images/rb-extreme-cream.jpg', note: ['Peaux très sèches ou à barrière fragilisée. Crème riche aux céramides.', 'Very dry or barrier-compromised skin. Rich ceramide cream.'] },
-  { id: 'rb-aqua', cat: 'creams', brand: 'Real Barrier', name: 'Aqua Soothing Cream', price: 19.29, c: MINT, note: ['Crème hydratante apaisante.', 'Soothing moisturising cream.'] },
-  { id: 'drg-cream', cat: 'creams', brand: 'Dr.G', name: 'R.E.D Blemish Clear Soothing Cream', price: 17.74, c: MINT, note: ['Peaux sensibles, sujettes aux rougeurs, et peaux mixtes.', 'Sensitive, redness-prone and combination skin.'] },
-  { id: 'fat-cream', cat: 'creams', brand: 'FATION', name: 'Nosca9 Trouble Cream', price: 11.72, c: MINT, note: ['Peaux grasses et sujettes aux imperfections.', 'Oily and blemish-prone skin.'] },
-  { id: 'sn-cream', cat: 'creams', brand: 'S.NATURE', name: 'Aqua Squalane Moisturizing Cream 60 ml', price: 14.95, c: PEACH, note: ['Peaux sèches ou déshydratées. Jour ou nuit.', 'Dry or dehydrated skin. Day or night.'] },
-  { id: 'wl-ampoule', cat: 'serums', brand: 'WELLAGE', name: 'Real Hyaluronic Blue 100 Ampoule', price: 9.08, c: PEACH, note: ['Peaux sèches ou déshydratées. Une grande dose d’hydratation.', 'Dry or dehydrated skin. A big drink of hydration.'] },
-  { id: 'sn-serum', cat: 'serums', brand: 'S.NATURE', name: 'Aqua Squalane Serum 50 ml', price: 13.14, c: PEACH, note: ['Hydratation légère pour peaux normales et mixtes.', 'Light hydration for normal and combination skin.'] },
-  { id: 'fat-serum', cat: 'serums', brand: 'FATION', name: 'Nosca9 Trouble Serum', price: 14.37, c: MINT, note: ['Soin léger pour peaux grasses sujettes aux imperfections.', 'Lightweight care for oily, blemish-prone skin.'] },
-  { id: 'fat-water', cat: 'serums', brand: 'FATION', name: 'Nosca9 Cleansing Water', price: 21.39, c: MINT, note: ['Nettoyage doux pour peaux à imperfections.', 'Gentle cleansing for troubled skin.'] },
-  { id: 'fat-patch', cat: 'serums', brand: 'FATION', name: 'Nosca9 Spot Patch', price: 13.80, c: MINT, note: ['Pour les imperfections localisées.', 'For individual blemishes.'] },
-  { id: 'rb-ampmask', cat: 'masks', brand: 'Real Barrier', name: 'Aqua Soothing Ampoule Mask', price: 1.80, per: true, c: PEACH, note: ['Peaux sèches, déshydratées et mixtes.', 'Dry, dehydrated and combination skin.'] },
-  { id: 'drg-mask', cat: 'masks', brand: 'Dr.G', name: 'R.E.D Blemish Cool Soothing Mask', price: 15.88, c: MINT, note: ['Peaux sensibles et sujettes aux rougeurs.', 'Sensitive and redness-prone skin.'] },
+  { id: 'rb-extreme', cat: 'creams', brand: 'Real Barrier', name: 'Extreme Cream 50 ml', price: 17.76, c: MINT, img: 'images/rb-extreme.jpg', note: ['Peaux très sèches ou à barrière fragilisée. Crème riche aux céramides.', 'Very dry or barrier-compromised skin. Rich ceramide cream.'] },
+  { id: 'rb-aqua', cat: 'creams', brand: 'Real Barrier', name: 'Aqua Soothing Cream', price: 19.29, c: MINT, img: 'images/rb-aqua.jpg', note: ['Crème hydratante apaisante.', 'Soothing moisturising cream.'] },
+  { id: 'drg-cream', cat: 'creams', brand: 'Dr.G', name: 'R.E.D Blemish Clear Soothing Cream', price: 17.74, c: MINT, img: 'images/drg-cream.jpg', note: ['Peaux sensibles, sujettes aux rougeurs, et peaux mixtes.', 'Sensitive, redness-prone and combination skin.'] },
+  { id: 'fat-cream', cat: 'creams', brand: 'FATION', name: 'Nosca9 Trouble Cream', price: 11.72, c: MINT, img: 'images/fat-cream.jpg', note: ['Peaux grasses et sujettes aux imperfections.', 'Oily and blemish-prone skin.'] },
+  { id: 'sn-cream', cat: 'creams', brand: 'S.NATURE', name: 'Aqua Squalane Moisturizing Cream 60 ml', price: 14.95, c: PEACH, img: 'images/sn-cream.jpg', note: ['Peaux sèches ou déshydratées. Jour ou nuit.', 'Dry or dehydrated skin. Day or night.'] },
+  { id: 'wl-ampoule', cat: 'serums', brand: 'WELLAGE', name: 'Real Hyaluronic Blue 100 Ampoule', price: 9.08, c: PEACH, img: 'images/wl-ampoule.jpg', note: ['Peaux sèches ou déshydratées. Une grande dose d’hydratation.', 'Dry or dehydrated skin. A big drink of hydration.'] },
+  { id: 'sn-serum', cat: 'serums', brand: 'S.NATURE', name: 'Aqua Squalane Serum 50 ml', price: 13.14, c: PEACH, img: 'images/sn-serum.jpg', note: ['Hydratation légère pour peaux normales et mixtes.', 'Light hydration for normal and combination skin.'] },
+  { id: 'fat-serum', cat: 'serums', brand: 'FATION', name: 'Nosca9 Trouble Serum', price: 14.37, c: MINT, img: 'images/fat-serum.jpg', note: ['Soin léger pour peaux grasses sujettes aux imperfections.', 'Lightweight care for oily, blemish-prone skin.'] },
+  { id: 'fat-water', cat: 'serums', brand: 'FATION', name: 'Nosca9 Cleansing Water', price: 21.39, c: MINT, img: 'images/fat-water.jpg', note: ['Nettoyage doux pour peaux à imperfections.', 'Gentle cleansing for troubled skin.'] },
+  { id: 'fat-patch', cat: 'serums', brand: 'FATION', name: 'Nosca9 Spot Patch', price: 13.80, c: MINT, img: 'images/fat-patch.jpg', note: ['Pour les imperfections localisées.', 'For individual blemishes.'] },
+  { id: 'rb-ampmask', cat: 'masks', brand: 'Real Barrier', name: 'Aqua Soothing Ampoule Mask', price: 1.80, per: true, c: PEACH, img: 'images/rb-ampmask.jpg', note: ['Peaux sèches, déshydratées et mixtes.', 'Dry, dehydrated and combination skin.'] },
+  { id: 'drg-mask', cat: 'masks', brand: 'Dr.G', name: 'R.E.D Blemish Cool Soothing Mask', price: 15.88, c: MINT, img: 'images/drg-mask.jpg', note: ['Peaux sensibles et sujettes aux rougeurs.', 'Sensitive and redness-prone skin.'] },
   { id: 'fat-mask', cat: 'masks', brand: 'FATION', name: 'Nosca9 Trouble Clear Mask', price: 4.47, c: MINT, note: ['Peaux grasses et sujettes aux imperfections.', 'Oily and blemish-prone skin.'] },
-  { id: 'rb-exmask', cat: 'masks', brand: 'Real Barrier', name: 'Extreme Cream Mask', price: 14.21, c: MINT, note: ['Peaux très sèches et réparation de la barrière.', 'Very dry skin and barrier repair.'] },
+  { id: 'rb-exmask', cat: 'masks', brand: 'Real Barrier', name: 'Extreme Cream Mask', price: 14.21, c: MINT, img: 'images/rb-exmask.jpg', note: ['Peaux très sèches et réparation de la barrière.', 'Very dry skin and barrier repair.'] },
   { id: 'sn-wrap', cat: 'masks', brand: 'S.NATURE', name: 'Aqua Squalane Cream Wrapping Mask, 4 pcs', price: 14.59, c: PEACH, note: ['Masque enveloppant au squalane. 4 masques.', 'Squalane wrapping mask. 4 masks.'] },
-  { id: 'rb-sun', cat: 'sun', brand: 'Real Barrier', name: 'Cera Moisture Barrier Sun Cream', price: 12.26, c: BUTTER, note: ['Peaux sèches, déshydratées et mixtes.', 'Dry, dehydrated and combination skin.'] },
-  { id: 'drg-sun', cat: 'sun', brand: 'Dr.G', name: 'Green Mild Up Sun+', price: 14.71, c: BUTTER, note: ['Peaux sensibles, grasses ou sujettes aux imperfections.', 'Sensitive and oily or blemish-prone skin.'] },
-  { id: 'zeroid-sun', cat: 'sun', brand: 'ZEROID', name: 'Daily Sun Cream', price: 14.71, c: BUTTER, note: ['Peaux très sèches ou à barrière fragilisée. Alternative pour peaux sensibles.', 'Very dry or barrier-compromised skin. A sensitive-skin alternative.'] },
-  { id: 'bg-essence', cat: 'lips', brand: 'BRING GREEN', name: 'Bamboo Hyalu Lip Essence', price: 4.67, c: BERRY, note: ['Hydratation intense pour lèvres sèches ou gercées.', 'Intensive hydration for dry or chapped lips.'] },
+  { id: 'rb-sun', cat: 'sun', brand: 'Real Barrier', name: 'Cera Moisture Barrier Sun Cream', price: 12.26, c: BUTTER, img: 'images/rb-sun.jpg', note: ['Peaux sèches, déshydratées et mixtes.', 'Dry, dehydrated and combination skin.'] },
+  { id: 'drg-sun', cat: 'sun', brand: 'Dr.G', name: 'Green Mild Up Sun+', price: 14.71, c: BUTTER, img: 'images/drg-sun.jpg', note: ['Peaux sensibles, grasses ou sujettes aux imperfections.', 'Sensitive and oily or blemish-prone skin.'] },
+  { id: 'zeroid-sun', cat: 'sun', brand: 'ZEROID', name: 'Daily Sun Cream', price: 14.71, c: BUTTER, img: 'images/zeroid-sun.jpg', note: ['Peaux très sèches ou à barrière fragilisée. Alternative pour peaux sensibles.', 'Very dry or barrier-compromised skin. A sensitive-skin alternative.'] },
+  { id: 'bg-essence', cat: 'lips', brand: 'BRING GREEN', name: 'Bamboo Hyalu Lip Essence', price: 4.67, c: BERRY, img: 'images/bg-essence.jpg', note: ['Hydratation intense pour lèvres sèches ou gercées.', 'Intensive hydration for dry or chapped lips.'] },
   { id: 'bg-stick', cat: 'lips', brand: 'BRING GREEN', name: 'Bamboo Hyalu Lip Essence Stick', price: 4.67, c: BERRY, note: ['Hydratation quotidienne pour lèvres normales.', 'Everyday hydration for normal lips.'] },
-  { id: 'nm-tint', cat: 'lips', brand: 'NAMING.', name: 'Over Dew Glossy Lip Tint', price: 10.20, c: BERRY, note: ['Six teintes, du nude au rose profond.', 'Six shades, from nude to deep rose.'] },
-  { id: 'jv-glow', cat: 'makeup', brand: 'JAVIN DE SEOUL', name: 'Wink Cushion Glow', price: 19.64, c: BERRY, note: ['Peaux sèches, déshydratées ou normales. Fini éclatant.', 'Dry, dehydrated or normal skin. Dewy finish.'] },
+  { id: 'nm-tint', cat: 'lips', brand: 'NAMING.', name: 'Over Dew Glossy Lip Tint', price: 10.20, c: BERRY, img: 'images/tint-0.jpg', shadeImgs: ['images/tint-0.jpg', 'images/tint-1.jpg', 'images/tint-2.jpg', 'images/tint-3.jpg', 'images/tint-4.jpg', 'images/tint-5.jpg'], fit: 'contain', note: ['Six teintes, du nude au rose profond.', 'Six shades, from nude to deep rose.'] },
+  { id: 'jv-glow', cat: 'makeup', brand: 'JAVIN DE SEOUL', name: 'Wink Cushion Glow', price: 19.64, c: BERRY, img: 'images/jv-glow.jpg', note: ['Peaux sèches, déshydratées ou normales. Fini éclatant.', 'Dry, dehydrated or normal skin. Dewy finish.'] },
   { id: 'jv-matte', cat: 'makeup', brand: 'JAVIN DE SEOUL', name: 'Wink Cushion Matte', price: 17.56, c: BERRY, note: ['Peaux grasses ou mixtes. Fini mat.', 'Oily or combination skin. Matte finish.'] },
-  { id: 'js-blush', cat: 'makeup', brand: 'JUNGSAEMMOOL', name: 'Liquid / Cream Blush', price: 14.68, c: BERRY, note: ['Une couleur éclatante pour peaux sèches. Quatre teintes.', 'Dewy colour for dry skin. Four shades.'] },
-  { id: 'nm-blush', cat: 'makeup', brand: 'NAMING.', name: 'Fluffy Powder Blush', price: 10.50, c: BERRY, note: ['Fini poudré doux pour peaux grasses ou mixtes. Quatre teintes.', 'Soft powder finish for oily or combination skin. Four shades.'] },
+  { id: 'js-blush', cat: 'makeup', brand: 'JUNGSAEMMOOL', name: 'Liquid / Cream Blush', price: 14.68, c: BERRY, img: 'images/jsblush-0.jpg', shadeImgs: ['images/jsblush-0.jpg', 'images/jsblush-1.jpg', 'images/jsblush-2.jpg', 'images/jsblush-3.jpg'], note: ['Une couleur éclatante pour peaux sèches. Quatre teintes.', 'Dewy colour for dry skin. Four shades.'] },
+  { id: 'nm-blush', cat: 'makeup', brand: 'NAMING.', name: 'Fluffy Powder Blush', price: 10.50, c: BERRY, img: 'images/nmblush-0.jpg', shadeImgs: ['images/nmblush-0.jpg', 'images/nmblush-1.jpg', 'images/nmblush-2.jpg', 'images/nmblush-3.jpg'], note: ['Fini poudré doux pour peaux grasses ou mixtes. Quatre teintes.', 'Soft powder finish for oily or combination skin. Four shades.'] },
   { id: 'js-lash', cat: 'makeup', brand: 'JUNGSAEMMOOL', name: 'Touch Up Lash Maker', price: 14.21, c: BERRY, note: ['Mascara naturel du quotidien.', 'Natural, everyday mascara.'] },
-  { id: 'nm-lash', cat: 'makeup', brand: 'NAMING.', name: 'Lash Up Mascara', price: 14.84, c: BERRY, note: ['Plus de longueur et de définition.', 'More length and definition.'] },
-  { id: 'hk-silk', cat: 'sleep', brand: 'HAKOAL', name: '100% Mulberry Silk Pillowcase', price: 69.00, c: LILAC, note: ['Soie de mûrier 6A, 22 momme.', '6A-grade mulberry silk, 22 momme.'] },
+  { id: 'nm-lash', cat: 'makeup', brand: 'NAMING.', name: 'Lash Up Mascara', price: 14.84, c: BERRY, img: 'images/nm-lash.jpg', note: ['Plus de longueur et de définition.', 'More length and definition.'] },
+  { id: 'hk-silk', cat: 'sleep', brand: 'HAKOAL', name: '100% Mulberry Silk Pillowcase', price: 69.00, c: LILAC, img: 'images/hk-silk.jpg', note: ['Soie de mûrier 6A, 22 momme.', '6A-grade mulberry silk, 22 momme.'] },
 ];
 const CATS = ['creams', 'serums', 'masks', 'sun', 'lips', 'makeup', 'sleep'];
 /* Skin types each product is recommended for (from the COLARO product sheet). Untagged products show under "all". */
@@ -134,6 +134,8 @@ document.addEventListener('click', e => {
   const id = s.closest('.shade-pick').dataset.id, i = +s.dataset.i;
   chosen[id] = chosen[id] === i ? null : i;
   document.querySelectorAll(`.shade-pick[data-id="${id}"]`).forEach(el => { el.outerHTML = shadePicker(byId(id)); });
+  const prod = byId(id);
+  document.querySelectorAll(`img[data-pid="${id}"]`).forEach(im => { im.src = imgFor(prod); im.alt = `${prod.brand} ${prod.name}${shadeText(prod)}`; });
   const again = document.querySelector(`.shade-pick[data-id="${id}"] .shade[data-i="${i}"]`); if (again) again.focus();
   if ($('#wishDialog').open) renderWish();
 });
@@ -144,7 +146,8 @@ document.addEventListener('click', e => {
   else if (e.target.tagName === 'DIALOG') e.target.close();
 });
 
-const photo = (p, lazy = true) => p.img ? `<img src="${p.img}" alt="${p.brand} ${p.name}" width="607" height="629" decoding="async" ${lazy ? 'loading="lazy"' : ''}>` : '';
+const imgFor = p => (p.shadeImgs && chosen[p.id] != null) ? p.shadeImgs[chosen[p.id]] : p.img;
+const photo = (p, lazy = true) => p.img ? `<img src="${imgFor(p)}" alt="${p.brand} ${p.name}${shadeText(p)}" data-pid="${p.id}"${p.fit ? ` data-fit="${p.fit}"` : ''} decoding="async"${lazy ? ' loading="lazy"' : ''}>` : '';
 const priceTag = p => p.price == null
   ? `<span class="price soon">${t('price.soon')}</span>`
   : `<span class="price">${eur(p.price)}${p.per ? ' ' + t('per.mask') : ''}</span>`;
@@ -202,7 +205,7 @@ function renderCatalogue() {
   $('#resultCount').textContent = list.length === 1 ? t('shop.count1') : t('shop.count', { n: list.length });
   $('#grid').innerHTML = list.length ? list.map(p => `
     <article class="product" data-id="${p.id}" style="--c:${p.c}">
-      ${p.img ? `<div class="product-img">${photo(p)}</div>` : ''}
+      <div class="product-img${p.img ? '' : ' is-art'}">${p.img ? photo(p) : SHAPES[shapeFor(p)]}</div>
       <div class="product-top"><p class="brand">${p.brand}</p>${heartBtn(p)}</div>
       <h3><button type="button" class="open-detail">${p.name}</button></h3>
       <p class="for">${p.note[LANG === 'en' ? 1 : 0]}</p>
