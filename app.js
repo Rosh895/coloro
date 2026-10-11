@@ -78,8 +78,8 @@ const PICKS = ['rb-extreme', 'drg-cream', 'wl-ampoule', 'sn-cream', 'sn-serum', 
 
 /* ---------- Cart: a reservation basket ----------
    Visitors choose products, send a reservation REQUEST by email, then pick up and pay at the pop-up.
-   There is no online payment and no stock system: COLARO confirms each request by email. */
-const MAX_QTY = 9;
+   There is no online payment and no stock counting (COLARO has unlimited stock): COLARO confirms each request by email. */
+const MAX_QTY = 99; // sanity limit for the quantity buttons; COLARO has unlimited stock
 const byId = id => PRODUCTS.find(p => p.id === id);
 let cart = []; // [{ id, shade: index | null, qty }]
 try { cart = JSON.parse(localStorage.getItem('colaro-cart') || '[]'); } catch (_) {}

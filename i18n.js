@@ -129,11 +129,11 @@ const T = {
   'c.browse': ['Voir la boutique', 'Browse the shop'], 'c.qty': ['Quantité', 'Quantity'], 'c.dec': ['Moins', 'Less'], 'c.inc': ['Plus', 'More'],
   'c.remove': ['Retirer', 'Remove'], 'c.total': ['Total', 'Total'], 'c.continue': ['Continuer', 'Continue'], 'c.clear': ['Vider mon panier', 'Empty my basket'],
   'c.how': ['Retrait et paiement sur place, au pop-up (17 rue des Archives, du 1er mars au 1er avril 2027, de 10 h à 18 h). Aucun paiement n’est demandé en ligne.', 'Pick-up and payment on site, at the pop-up (17 rue des Archives, 1 March – 1 April 2027, 10am – 6pm). No payment is taken online.'],
-  'c.notice': ['Il s’agit d’une demande de réservation : vos produits ne sont réservés qu’après notre confirmation par e-mail, dans la limite des stocks disponibles.', 'This is a reservation request: your products are only reserved once we confirm by email, subject to stock.'],
+  'c.notice': ['Il s’agit d’une demande de réservation : vos produits ne sont réservés qu’après notre confirmation par e-mail.', 'This is a reservation request: your products are only reserved once we confirm by email.'],
   'c.details': ['Vos coordonnées', 'Your details'], 'c.day': ['Jour de retrait souhaité (facultatif)', 'Preferred pick-up day (optional)'], 'c.msg': ['Message (facultatif)', 'Message (optional)'],
   'c.consent': ['J’accepte que COLARO utilise mes coordonnées pour répondre à ma demande. Je peux me rétracter à tout moment.', 'I agree that COLARO uses my details to answer my request. I can withdraw at any time.'],
   'c.send': ['Envoyer ma demande de réservation', 'Send my reservation request'],
-  'c.done': ['Merci {name} ! Nous revenons vers vous par e-mail pour confirmer la disponibilité de vos produits. Vous réglez au retrait, sur place.', 'Thank you {name}! We will come back to you by email to confirm your products are available. You pay on pick-up, on site.'],
+  'c.done': ['Merci {name} ! Nous revenons vers vous par e-mail pour confirmer votre réservation. Vous réglez au retrait, sur place.', 'Thank you {name}! We will come back to you by email to confirm your reservation. You pay on pick-up, on site.'],
   /* passport + share */
   'pp.count': ['Aperçu : {n} sur 4 étapes', 'Preview: {n} of 4 stops'],
   'share.title': ['COLARO – Pop-up K-beauty à Paris', 'COLARO – K-beauty pop-up in Paris'],
