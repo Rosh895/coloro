@@ -265,16 +265,6 @@ const slide = dir => $('#favGrid').scrollBy({ left: dir * 280, behavior: reduceM
 $('#favPrev').addEventListener('click', () => slide(-1));
 $('#favNext').addEventListener('click', () => slide(1));
 
-/* ---------- Shades ---------- */
-function renderShades() {
-  const sw = list => list.map(([key, hex, sub]) =>
-    `<li><b style="background:${hex}"></b>${t(key)}${sub ? `<small>${t(sub)}</small>` : ''}</li>`).join('');
-  $('#lipShades').innerHTML = sw([['lip.nude', '#D9A58F'], ['lip.coral', '#F07A62'], ['lip.rose', '#E98AA3'],
-    ['lip.mauve', '#A8667A'], ['lip.red', '#C8283C'], ['lip.deep', '#7A3B3F']]);
-  $('#blushShades').innerHTML = sw([['bl.peach', '#F5A58A', 'bl.warm'], ['bl.pink', '#F2A9C0', 'bl.cool'],
-    ['bl.rose', '#D9788F', 'bl.neutral'], ['bl.berry', '#A5385B', 'bl.deep']]);
-}
-
 /* ---------- Skin and scalp quiz ---------- */
 const QUESTIONS = {
   goals: { multi: true, q: 'q.goals', hint: 'q.goals.hint', values: ['skin', 'makeup', 'scalp'], prefix: 'g.' },
@@ -617,7 +607,7 @@ $('#wordNext').addEventListener('click', () => { wordIndex = (wordIndex + 1) % W
 
 /* ---------- Boot ---------- */
 function renderAll() {
-  renderTicker(); renderTiles(); renderCatalogue(); renderCarousel(); renderShades(); renderQuiz(); formsState(); updateWish(); renderBooking(); renderWord();
+  renderTicker(); renderTiles(); renderCatalogue(); renderCarousel(); renderQuiz(); formsState(); updateWish(); renderBooking(); renderWord();
   if ($('#productDialog').open) renderDetail();
 }
 document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));

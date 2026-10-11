@@ -71,8 +71,6 @@ const T = {
   'lip.nude': ['Nude', 'Nude'], 'lip.coral': ['Corail', 'Coral'], 'lip.rose': ['Rose', 'Rose pink'],
   'lip.mauve': ['Mauve', 'Mauve'], 'lip.red': ['Rouge', 'Red'], 'lip.deep': ['Rose profond / brun', 'Deep rose / brown'],
   'bl.peach': ['Pêche / corail', 'Peach / coral'], 'bl.pink': ['Rose tendre', 'Soft pink'], 'bl.rose': ['Rose', 'Rose'], 'bl.berry': ['Rose profond / baie', 'Deep rose / berry'],
-  'bl.warm': ['Sous-tons chauds', 'Warm undertones'], 'bl.cool': ['Sous-tons froids', 'Cool undertones'],
-  'bl.neutral': ['Sous-tons neutres', 'Neutral undertones'], 'bl.deep': ['Teints plus foncés', 'Deeper complexions'],
   /* quiz */
   'q.goals': ['Que souhaitez-vous découvrir ?', 'What would you like to discover?'],
   'q.goals.hint': ['Plusieurs choix possibles.', 'You can choose several.'],
