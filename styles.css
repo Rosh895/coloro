@@ -403,14 +403,14 @@ input[aria-invalid="true"]{border-color:var(--cherry)}
 .passport-head{display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:18px}
 .passport-logo{font:italic 600 1.7rem var(--serif)}
 .stamps{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.stamp{position:relative;aspect-ratio:1.4;border:2px dashed rgba(47,59,55,.35);border-radius:18px;background:transparent;cursor:pointer;display:grid;place-items:center;font:600 .9rem var(--sans);color:var(--pine);transition:background .25s,border-color .25s,transform .25s}
-.stamp i{font-style:normal;font-size:1.8rem;opacity:.6;transition:opacity .25s,transform .35s;margin-top:-16px}
-.stamp i svg{display:block;width:52px;height:52px;filter:grayscale(1);transition:filter .25s}
-.stamp span{position:absolute;bottom:10px;left:0;right:0;text-align:center;padding:0 6px}
+.stamp{position:relative;min-height:124px;padding:12px 6px 10px;border:2px solid transparent;border-radius:18px;background:var(--zc);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font:600 .9rem var(--sans);color:var(--pine);transition:background .25s,border-color .25s,transform .25s}
+.stamp i{font-style:normal;font-size:1.8rem;opacity:1;transition:opacity .25s,transform .35s;line-height:0}
+.stamp i svg{display:block;width:52px;height:52px;}
+.stamp span{text-align:center;line-height:1.25}
 .stamp:hover{transform:translateY(-2px)}
 .stamp.z-mint{--zc:#8FD0B4}.stamp.z-peach{--zc:#F7A98F}.stamp.z-lilac{--zc:#BBA5F0}.stamp.z-berry{--zc:#F28BA6}
-.stamp[aria-pressed="true"]{border-style:solid;border-color:transparent;background:var(--zc);color:var(--pine)}
-.stamp[aria-pressed="true"] i svg{filter:none}
+.stamp[aria-pressed="true"]{border-color:var(--pine)}
+.stamp[aria-pressed="true"]::after{content:"✓";position:absolute;top:8px;right:10px;width:22px;height:22px;border-radius:50%;background:var(--pine);color:#fff;font-size:.8rem;line-height:22px;text-align:center}
 .stamp[aria-pressed="true"] i{opacity:1;transform:rotate(-12deg) scale(1.15);color:var(--cherry)}
 .passport-count{margin:16px 0 8px;font-weight:600;font-size:.92rem}
 .passport-bar{height:8px;border-radius:99px;background:var(--mint);overflow:hidden}
