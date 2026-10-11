@@ -408,7 +408,7 @@ input[aria-invalid="true"]{border-color:var(--cherry)}
 .stamp i svg{display:block;width:52px;height:52px;filter:grayscale(1);transition:filter .25s}
 .stamp span{position:absolute;bottom:10px;left:0;right:0;text-align:center;padding:0 6px}
 .stamp:hover{transform:translateY(-2px)}
-.stamp.z-mint{--zc:var(--mint)}.stamp.z-peach{--zc:var(--peach)}.stamp.z-lilac{--zc:var(--lilac)}.stamp.z-berry{--zc:#F2B6C4}
+.stamp.z-mint{--zc:#8FD0B4}.stamp.z-peach{--zc:#F7A98F}.stamp.z-lilac{--zc:#BBA5F0}.stamp.z-berry{--zc:#F28BA6}
 .stamp[aria-pressed="true"]{border-style:solid;border-color:transparent;background:var(--zc);color:var(--pine)}
 .stamp[aria-pressed="true"] i svg{filter:none}
 .stamp[aria-pressed="true"] i{opacity:1;transform:rotate(-12deg) scale(1.15);color:var(--cherry)}
