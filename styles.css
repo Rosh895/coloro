@@ -391,6 +391,7 @@ input[aria-invalid="true"]{border-color:var(--cherry)}
 .bk-done{text-align:left}
 
 /* passport + tips */
+.pp-cta{margin:6px 0 14px}
 .section-passport{background:var(--lilac)}
 .soon-tag{display:inline-block;background:var(--butter);border-radius:99px;padding:4px 14px;font-weight:700;font-size:.82rem;margin-bottom:14px}
 .passport-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,56px);align-items:center}

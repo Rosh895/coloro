@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="fr" data-en-title="Beauty Passport – COLARO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beauty Passport – COLARO</title>
+<meta name="description" content="Votre carte à tampons digitale COLARO : photobooth K-pop, roue de la chance, Instagram et un cadeau surprise." data-en-desc="Your COLARO digital stamp card: K-pop photo booth, spinning wheel, Instagram and a surprise gift.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F7F6F2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-50 -50 100 100'%3E%3Ccircle r='40' fill='%23F4C9D6'/%3E%3Ccircle r='9' fill='%23E0607E'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,600&family=Great+Vibes&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="passport.css">
+</head>
+<body class="pp-body">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="blossom" viewBox="-50 -50 100 100">
+      <g fill="#F4C9D6"><path id="petal" d="M0 0 C-16 -10 -20 -34 -9 -44 L0 -37 L9 -44 C20 -34 16 -10 0 0Z"/><use href="#petal" transform="rotate(72)"/><use href="#petal" transform="rotate(144)"/><use href="#petal" transform="rotate(216)"/><use href="#petal" transform="rotate(288)"/></g>
+      <circle r="9" fill="#E0607E"/><circle r="4" fill="#C94868"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="pp-head">
+  <a class="logo" href="./" aria-label="COLARO">
+    <svg viewBox="0 0 100 100" width="30" height="30" aria-hidden="true"><use href="#blossom" width="100" height="100"/></svg>
+    <span>colaro</span>
+  </a>
+  <div class="lang" role="group" aria-label="Langue" data-en-aria="Language">
+    <button type="button" data-lang="fr" aria-pressed="true">FR</button>
+    <button type="button" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+</header>
+
+<main class="pp">
+  <section class="pp-hero" aria-labelledby="ppTitle">
+    <p class="pill" data-en="Pop-up · 1 March – 1 April 2027">Pop-up · 1er mars – 1er avril 2027</p>
+    <h1 id="ppTitle" class="script">Beauty Passport</h1>
+    <p class="pp-sub" data-en="Your digital stamp card">Votre carte à tampons digitale</p>
+    <div class="pp-progress" role="progressbar" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" id="ppBar">
+      <div class="pp-dots" id="ppDots"></div>
+      <p id="ppCount"></p>
+    </div>
+    <p class="pp-gift" data-en="Collect your stamps for a surprise gift.">Collectez vos tampons pour un cadeau surprise.</p>
+  </section>
+
+  <ol class="stops" id="stops" aria-label="Les 4 étapes" data-en-aria="The 4 stops"></ol>
+
+  <p class="pp-note" data-en="Your stamps are saved only on this phone. Every stamp is validated by the COLARO team on site.">Vos tampons sont enregistrés uniquement sur ce téléphone. Chaque tampon est validé par l’équipe COLARO sur place.</p>
+  <p class="pp-where"><span data-en="COLARO pop-up">Pop-up COLARO</span> · 17 rue des Archives, 75004 Paris · <span data-en="10am – 6pm">10 h – 18 h</span></p>
+  <p class="pp-foot"><a href="./" data-en="Back to the website">Retour au site</a> · <button type="button" id="ppReset" class="pp-reset" data-en="Reset (team)">Réinitialiser (équipe)</button></p>
+</main>
+
+<dialog id="pinDialog" class="dlg" aria-labelledby="pinTitle">
+  <div class="dlg-inner">
+    <button type="button" class="dlg-close" data-close aria-label="Fermer" data-en-aria="Close">×</button>
+    <h2 id="pinTitle" class="dlg-title"></h2>
+    <p id="pinHelp" class="muted"></p>
+    <form id="pinForm" novalidate>
+      <label><span data-en="Team code">Code de l’équipe</span>
+        <input id="pinInput" type="password" inputmode="numeric" autocomplete="off" pattern="[0-9]*" maxlength="4" aria-describedby="pinMsg">
+      </label>
+      <p id="pinMsg" class="form-error" role="alert" hidden></p>
+      <button type="submit" class="btn btn-berry" data-en="Validate my stamp">Valider mon tampon</button>
+    </form>
+  </div>
+</dialog>
+
+<script src="i18n.js" defer></script>
+<script src="passport.js" defer></script>
+</body>
+</html>
