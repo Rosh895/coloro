@@ -31,6 +31,10 @@ Object.assign(T, {
   'r.consent': ['Cochez la case de consentement pour continuer.', 'Tick the consent box to continue.'],
   'r.skin': ['Choisissez votre type de peau.', 'Choose your skin type.'],
   'r.opening': ['Ouverture…', 'Opening…'],
+  'p.ref.stats': ['Amies ayant participé : {n} · Échantillons à récupérer : {d}', 'Friends who joined: {n} · Samples to collect: {d}'],
+  'p.ref.title': ['COLARO Beauty Passport', 'COLARO Beauty Passport'],
+  'p.ref.text': ['Rejoins-moi au pop-up K-beauty COLARO à Paris (1er mars – 1er avril 2027) et ouvre ton Beauty Passport !', 'Join me at the COLARO K-beauty pop-up in Paris (1 March – 1 April 2027) and open your Beauty Passport!'],
+  'p.ref.copied': ['Lien copié ! Envoyez-le à votre amie.', 'Link copied! Send it to your friend.'],
 });
 
 const ICONS = {
@@ -48,6 +52,10 @@ const STOPS = [
 
 const $ = (s, r = document) => r.querySelector(s);
 const online = !!ENDPOINT;
+/* Invite link: ?ref=CODE. The code is remembered on this phone until the friend signs up. */
+const refParam = (new URLSearchParams(location.search).get('ref') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10);
+if (refParam) { try { localStorage.setItem('colaro-ref', refParam); } catch (_) {} }
+const refBy = () => { try { return localStorage.getItem('colaro-ref') || ''; } catch (_) { return ''; } };
 let state = { stamps: [false, false, false, false], rot: [-8, 6, -5, 9], id: null };
 try { const s = JSON.parse(localStorage.getItem(STORE)); if (s && Array.isArray(s.stamps) && s.stamps.length === 4) state = { ...state, ...s }; } catch (_) {}
 const save = () => { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (_) {} };
@@ -75,11 +83,16 @@ function flowerSVG(st, stamped, i) {
   return `<svg viewBox="0 0 100 100" aria-hidden="true">${parts.join('')}${icon}${mark}</svg>`;
 }
 
+function applyRef(res) { if (res.ref) { state.ref = res.ref; state.invited = res.invited || 0; state.due = res.due || 0; } }
+
 function render() {
   const needsSignup = online && !state.id;
   $('#ppRegister').hidden = !needsSignup; $('#ppMain').hidden = needsSignup;
   $('#ppNote').textContent = t(online ? 'p.note.online' : 'p.note.local');
+  $('#invitedHint').hidden = !(needsSignup && refBy());
   if (needsSignup) return;
+  $('#ppRefer').hidden = !(online && state.ref);
+  if (online && state.ref) $('#referStats').textContent = t('p.ref.stats', { n: state.invited || 0, d: state.due || 0 });
   const n = state.stamps.filter(Boolean).length, first3 = state.stamps.slice(0, 3).every(Boolean);
   $('#ppDots').innerHTML = [1, 2, 3, 4].map((x, i) => `<span class="pp-dot${state.stamps[i] ? ' on' : ''}">${state.stamps[i] ? '✿' : x}</span>`).join('');
   $('#ppCount').textContent = t(n <= 1 ? 'p.count1' : 'p.count', { n });
@@ -108,9 +121,9 @@ $('#regForm').addEventListener('submit', async e => {
   msg.hidden = !err; msg.textContent = err; if (err) return;
   const label = btn.textContent; btn.disabled = true; btn.textContent = t('r.opening');
   try {
-    const res = await api({ action: 'register', name, email, instagram: f.elements.instagram.value.trim(), skin: f.elements.skin.value, news: f.elements.news.checked, consent: true, lang: LANG });
+    const res = await api({ action: 'register', name, email, instagram: f.elements.instagram.value.trim(), skin: f.elements.skin.value, news: f.elements.news.checked, consent: true, lang: LANG, refBy: refBy() });
     if (!res.ok) throw new Error(res.error || 'error');
-    state.id = res.id; state.stamps = res.stamps; save(); f.reset(); render();
+    state.id = res.id; state.stamps = res.stamps; applyRef(res); save(); f.reset(); render();
   } catch (_) { msg.hidden = false; msg.textContent = t('p.net'); }
   btn.disabled = false; btn.textContent = label;
 });
@@ -153,6 +166,13 @@ $('#pinForm').addEventListener('submit', async e => {
 document.addEventListener('click', e => {
   const c = e.target.closest('[data-close]'); if (c) c.closest('dialog').close(); else if (e.target.tagName === 'DIALOG') e.target.close();
 });
+$('#shareLink').addEventListener('click', async () => {
+  const url = location.origin + location.pathname + '?ref=' + state.ref, msg = $('#shareMsg');
+  try {
+    if (navigator.share) await navigator.share({ title: t('p.ref.title'), text: t('p.ref.text'), url });
+    else { await navigator.clipboard.writeText(url); msg.hidden = false; msg.textContent = t('p.ref.copied'); }
+  } catch (_) {}
+});
 $('#ppReset').addEventListener('click', () => {
   if (!confirm(t('p.reset.ask'))) return;
   state = { stamps: [false, false, false, false], rot: state.rot, id: null }; save(); render();
@@ -161,10 +181,13 @@ document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click'
 document.addEventListener('langchange', render);
 applyLang();
 
-/* Online mode: refresh the stamps from the server (e.g. validated on another phone). */
-if (online && state.id) {
+/* Online mode: refresh the stamps and referral numbers from the server (on load and when the customer comes back). */
+function refresh() {
+  if (!online || !state.id) return;
   api({ action: 'status', id: state.id }).then(res => {
-    if (res.ok) { state.stamps = res.stamps; save(); render(); }
+    if (res.ok) { state.stamps = res.stamps; applyRef(res); save(); render(); }
     else if (res.error === 'unknown') { state.id = null; save(); render(); }
   }).catch(() => {});
 }
+refresh();
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });

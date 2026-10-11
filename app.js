@@ -528,15 +528,6 @@ bkRoot.addEventListener('click', async e => {
   update();
 })();
 
-/* ---------- Share (referral concept) ---------- */
-$('#shareBtn').addEventListener('click', async e => {
-  const data = { title: t('share.title'), text: t('share.text'), url: location.href.split('#')[0] };
-  try {
-    if (navigator.share) await navigator.share(data);
-    else { await navigator.clipboard.writeText(data.url); e.target.textContent = t('share.copied'); setTimeout(() => { e.target.textContent = t('share.btn'); }, 2500); }
-  } catch (_) {}
-});
-
 /* ---------- Cart window ---------- */
 let cartView = 'list'; // 'list' | 'form'
 const ck = { name: '', email: '', phone: '', day: '', msg: '', consent: false, err: '', done: null };

@@ -52,3 +52,12 @@
 
 #regForm select{font:inherit;padding:12px 14px;border:1.5px solid var(--sage);border-radius:14px;background:var(--white);color:var(--pine);width:100%}
 #regForm select:focus{border-color:var(--pine);outline:none;box-shadow:0 0 0 3px var(--mint)}
+
+/* referral */
+.pp-refer{margin-top:18px;background:#fff;border-radius:26px;padding:22px;box-shadow:var(--shadow)}
+.pp-refer[hidden]{display:none}
+.pp-refer h2{font:500 1.5rem var(--serif);margin:0 0 6px}
+.pp-refer p{margin:0 0 12px}
+.pp-refer-stats{font-weight:700;background:var(--butter);border-radius:14px;padding:10px 14px}
+.pp-refer-msg{margin:10px 0 0;font-weight:600}
+.pp-invited{margin:0;color:var(--cherry);font-weight:600}

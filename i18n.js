@@ -136,9 +136,6 @@ const T = {
   'c.done': ['Merci {name} ! Nous revenons vers vous par e-mail pour confirmer votre réservation. Vous réglez au retrait, sur place.', 'Thank you {name}! We will come back to you by email to confirm your reservation. You pay on pick-up, on site.'],
   /* passport + share */
   'pp.count': ['Aperçu : {n} sur 4 étapes', 'Preview: {n} of 4 stops'],
-  'share.title': ['COLARO – Pop-up K-beauty à Paris', 'COLARO – K-beauty pop-up in Paris'],
-  'share.text': ['Découvre COLARO, le pop-up K-beauty à Paris (du 1er mars au 1er avril 2027) !', 'Discover COLARO, the K-beauty pop-up in Paris (1 March – 1 April 2027)!'],
-  'share.copied': ['Lien copié !', 'Link copied!'], 'share.btn': ['Partager COLARO', 'Share COLARO'],
   /* booking */
   'bk.steps': [['Expérience', 'Date et heure', 'Coordonnées', 'Récapitulatif'], ['Experience', 'Date and time', 'Details', 'Summary']],
   'bk.exp.title': ['Quelle visite souhaitez-vous ?', 'Which visit would you like?'],
