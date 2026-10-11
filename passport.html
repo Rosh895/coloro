@@ -51,8 +51,8 @@
       <label><span data-en="First name">Prénom</span><input name="name" type="text" autocomplete="given-name" required></label>
       <label><span data-en="Email">E-mail</span><input name="email" type="email" autocomplete="email" required></label>
       <label><span>Instagram <span class="opt" data-en="(optional)">(facultatif)</span></span><input name="instagram" type="text" placeholder="@" autocomplete="off" autocapitalize="none"></label>
-      <label><span><span data-en="Your skin type">Votre type de peau</span> <span class="opt" data-en="(optional)">(facultatif)</span></span>
-        <select name="skin">
+      <label><span data-en="Your skin type">Votre type de peau</span>
+        <select name="skin" required>
           <option value="" data-en="Choose…">Choisir…</option>
           <option value="dry" data-en="Dry or dehydrated">Sèche ou déshydratée</option>
           <option value="sensitive" data-en="Sensitive or redness-prone">Sensible ou sujette aux rougeurs</option>
@@ -62,7 +62,7 @@
           <option value="unknown" data-en="I don’t know yet">Je ne sais pas encore</option>
         </select></label>
       <label class="check"><input type="checkbox" name="consent" required><span data-en="I agree that COLARO saves my first name, email, skin type (if given) and stamps to manage my passport and my gift and to give me better beauty advice. My data is deleted on simple request to colarofrance@gmail.com.">J’accepte que COLARO enregistre mon prénom, mon e-mail, mon type de peau (si indiqué) et mes tampons pour gérer mon passeport et mon cadeau, et pour mieux me conseiller. Mes données sont supprimées sur simple demande à colarofrance@gmail.com.</span></label>
-      <label class="check"><input type="checkbox" name="news"><span data-en="I would also like to receive COLARO news (optional).">Je souhaite aussi recevoir les actualités COLARO (facultatif).</span></label>
+      <label class="check"><input type="checkbox" name="news"><span data-en="I would like to receive COLARO news and offers by email (optional, I can unsubscribe at any time).">Je souhaite recevoir les actualités et offres COLARO par e-mail (facultatif, je peux me désinscrire à tout moment).</span></label>
       <p id="regMsg" class="form-error" role="alert" hidden></p>
       <button type="submit" class="btn btn-berry" id="regBtn" data-en="Open my passport">Ouvrir mon passeport</button>
     </form>

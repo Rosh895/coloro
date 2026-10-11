@@ -29,6 +29,7 @@ Object.assign(T, {
   'p.note.online': ['Vos tampons sont liés à votre e-mail : retrouvez-les sur un autre téléphone en saisissant le même e-mail. Chaque tampon est validé par l’équipe COLARO sur place.', 'Your stamps are linked to your email: get them back on another phone by entering the same email. Every stamp is validated by the COLARO team on site.'],
   'r.name': ['Indiquez votre prénom.', 'Enter your first name.'], 'r.email': ['Saisissez une adresse e-mail valide.', 'Enter a valid email address.'],
   'r.consent': ['Cochez la case de consentement pour continuer.', 'Tick the consent box to continue.'],
+  'r.skin': ['Choisissez votre type de peau.', 'Choose your skin type.'],
   'r.opening': ['Ouverture…', 'Opening…'],
 });
 
@@ -103,7 +104,7 @@ $('#regForm').addEventListener('submit', async e => {
   const f = e.target, msg = $('#regMsg'), btn = $('#regBtn');
   const name = f.elements.name.value.trim(), email = f.elements.email.value.trim();
   let err = '';
-  if (!name) err = t('r.name'); else if (!validEmail(email)) err = t('r.email'); else if (!f.elements.consent.checked) err = t('r.consent');
+  if (!name) err = t('r.name'); else if (!validEmail(email)) err = t('r.email'); else if (!f.elements.skin.value) err = t('r.skin'); else if (!f.elements.consent.checked) err = t('r.consent');
   msg.hidden = !err; msg.textContent = err; if (err) return;
   const label = btn.textContent; btn.disabled = true; btn.textContent = t('r.opening');
   try {
