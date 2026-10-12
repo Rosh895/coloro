@@ -639,7 +639,7 @@ cartBody.addEventListener('click', async e => {
       if (ck.err) { renderCart(); break; }
       e.target.disabled = true; e.target.textContent = t('f.sending');
       const frDay = d => new Date(d + 'T12:00:00').toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-      const items = cart.map(l => { const p = byId(l.id); return `- ${l.qty} × ${p.brand} ${p.name}${frShade(l.id, l.shade)} – ${eur(p.price)}${p.per ? ' / masque' : ''} = ${eur(p.price * l.qty)}`; }).join('\n');
+      const items = cart.map(l => { const p = byId(l.id); return `- ${l.qty} × ${p.brand} ${p.name}${frShade(l.id, l.shade)} – ${eur(p.price)}${p.per ? ' / pièce' : ''} = ${eur(p.price * l.qty)}`; }).join('\n');
       try {
         const how = await send('reservation', { name: ck.name.trim(), email: ck.email.trim(), phone: ck.phone, pickup: ck.day ? frDay(ck.day) : '', message: ck.msg,
           items, total: eur(cartTotal()), consent: true, lang: LANG });

@@ -50,7 +50,7 @@ const T = {
   'cat.masks': ['Masques', 'Masks'], 'cat.sun': ['Solaires', 'Sunscreen'], 'cat.lips': ['Lèvres', 'Lips'],
   'cat.makeup': ['Maquillage', 'Makeup'], 'cat.sleep': ['Sommeil', 'Sleep'],
   /* shop */
-  'price.soon': ['Prix bientôt', 'Price soon'], 'per.mask': ['/ masque', '/ mask'],
+  'price.soon': ['Prix bientôt', 'Price soon'], 'per.mask': ['/ pièce', '/ piece'],
   'shop.empty': ['Aucun produit ne correspond à ces filtres.', 'No products match these filters.'],
   'shop.reset': ['Réinitialiser les filtres', 'Reset filters'],
   'pick': ['sélection', 'pick'],
