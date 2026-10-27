@@ -439,6 +439,23 @@
   </div>
 </dialog>
 
+<!-- EMILIE: AI guide (home page only). The panel loads the Emilie app only when opened. -->
+<div class="emilie" id="emilie">
+  <button type="button" class="emilie-fab" id="emilieBtn" aria-expanded="false" aria-controls="emiliePanel" aria-label="Demander à Emilie, notre guide IA" data-en-aria="Ask Emilie, our AI guide">
+    <svg viewBox="-50 -50 100 100" width="26" height="26" aria-hidden="true"><use href="#blossom" x="-50" y="-50" width="100" height="100"/></svg>
+    <span class="emilie-long" data-en="Ask Emilie">Demander à Emilie</span><span class="emilie-short" aria-hidden="true">Emilie</span>
+  </button>
+  <section class="emilie-panel" id="emiliePanel" role="dialog" aria-modal="false" aria-labelledby="emilieTitle" hidden>
+    <header class="emilie-head">
+      <div><strong id="emilieTitle">Emilie</strong><small data-en="Your K-beauty guide (AI)">Votre guide K-beauty (IA)</small></div>
+      <a class="emilie-open" href="https://colaro-pop-up-beaut-cor-enne-with-emilie-890238235574.europe-west2.run.app/" target="_blank" rel="noopener" data-en="Open in a new tab">Ouvrir dans un onglet</a>
+      <button type="button" class="emilie-close" id="emilieClose" aria-label="Fermer" data-en-aria="Close">×</button>
+    </header>
+    <p class="emilie-note" data-en="Emilie is an AI: she shares skincare ideas, not medical advice.">Emilie est une IA : elle partage des idées de soins, pas des conseils médicaux.</p>
+    <iframe id="emilieFrame" title="Emilie" data-src="https://colaro-pop-up-beaut-cor-enne-with-emilie-890238235574.europe-west2.run.app/" allow="microphone; autoplay; clipboard-write" referrerpolicy="no-referrer"></iframe>
+  </section>
+</div>
+
 <script src="i18n.js" defer></script>
 <script src="app.js" defer></script>
 </body>

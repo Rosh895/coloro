@@ -745,3 +745,19 @@ document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click'
 document.addEventListener('langchange', renderAll);
 applyLang();
 startCountdown();
+
+
+/* ---------- Emilie (AI guide) ---------- */
+(() => {
+  const btn = $('#emilieBtn'), panel = $('#emiliePanel'), frame = $('#emilieFrame');
+  if (!btn || !panel) return;
+  const set = open => {
+    panel.hidden = !open;
+    btn.setAttribute('aria-expanded', String(open));
+    if (open && !frame.src) frame.src = frame.dataset.src; // load the app only on first open
+    if (open) $('#emilieClose').focus(); else btn.focus();
+  };
+  btn.addEventListener('click', () => set(panel.hidden));
+  $('#emilieClose').addEventListener('click', () => set(false));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) set(false); });
+})();

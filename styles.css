@@ -489,3 +489,27 @@ input[aria-invalid="true"]{border-color:var(--cherry)}
   .petals,.petals-page{display:none}
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
+
+/* ---------- Emilie (AI guide, home page) ---------- */
+.emilie{position:fixed;right:18px;bottom:18px;z-index:40}
+.emilie-fab{display:flex;align-items:center;gap:10px;border:0;cursor:pointer;background:var(--berry);color:#fff;font:700 .98rem var(--sans);padding:13px 20px 13px 14px;border-radius:99px;box-shadow:0 10px 28px rgba(47,59,55,.28);transition:transform .2s,box-shadow .2s}
+.emilie-fab svg{background:#fff;border-radius:50%;padding:3px;flex:none}
+.emilie-short{display:none}
+.emilie-fab:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(47,59,55,.34)}
+.emilie-fab:focus-visible,.emilie-close:focus-visible,.emilie-open:focus-visible{outline:3px solid var(--pine);outline-offset:2px}
+.emilie-panel{position:absolute;right:0;bottom:64px;width:min(410px,calc(100vw - 36px));height:min(640px,calc(100vh - 110px));background:var(--white);border-radius:24px;box-shadow:0 18px 50px rgba(47,59,55,.35);display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(47,59,55,.12)}
+.emilie-panel[hidden]{display:none}
+.emilie-head{display:flex;align-items:center;gap:10px;padding:12px 14px 10px 18px;background:var(--pine);color:#fff}
+.emilie-head>div{flex:1;display:flex;flex-direction:column;line-height:1.2}
+.emilie-head strong{font:600 1.15rem var(--serif)}
+.emilie-head small{font-size:.76rem;opacity:.8}
+.emilie-open{color:#fff;font-size:.78rem;text-decoration:underline;white-space:nowrap}
+.emilie-close{border:0;background:rgba(255,255,255,.16);color:#fff;width:34px;height:34px;border-radius:50%;font-size:1.4rem;line-height:1;cursor:pointer}
+.emilie-note{font-size:.78rem;padding:7px 18px;background:var(--mint);color:var(--pine)}
+.emilie-panel iframe{flex:1;width:100%;border:0;background:#fff}
+@media(max-width:600px){
+  .emilie{right:12px;bottom:12px}
+  .emilie-long{display:none}.emilie-short{display:inline}.emilie-fab{padding:11px 18px 11px 11px}
+  .emilie-panel{position:fixed;inset:0;width:auto;height:auto;border-radius:0;border:0}
+}
+@media(prefers-reduced-motion:reduce){.emilie-fab{transition:none}}
