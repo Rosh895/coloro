@@ -61,3 +61,9 @@
 .pp-refer-stats{font-weight:700;background:var(--butter);border-radius:14px;padding:10px 14px}
 .pp-refer-msg{margin:10px 0 0;font-weight:600}
 .pp-invited{margin:0;color:var(--cherry);font-weight:600}
+
+.pp-share{display:flex;flex-wrap:wrap;gap:10px}
+.btn-wa{display:inline-flex;align-items:center;gap:10px;background:#138A5B;color:#fff}
+.btn-wa:hover{background:#0f7049}
+.btn-wa:focus-visible{outline:3px solid var(--pine);outline-offset:2px}
+@media(max-width:480px){.pp-share .btn{width:100%;text-align:center;justify-content:center}}

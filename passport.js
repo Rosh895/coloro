@@ -92,7 +92,7 @@ function render() {
   $('#invitedHint').hidden = !(needsSignup && refBy());
   if (needsSignup) return;
   $('#ppRefer').hidden = !(online && state.ref);
-  if (online && state.ref) $('#referStats').textContent = t('p.ref.stats', { n: state.invited || 0, d: state.due || 0 });
+  if (online && state.ref) { $('#referStats').textContent = t('p.ref.stats', { n: state.invited || 0, d: state.due || 0 }); refreshWa(); }
   const n = state.stamps.filter(Boolean).length, first3 = state.stamps.slice(0, 3).every(Boolean);
   $('#ppDots').innerHTML = [1, 2, 3, 4].map((x, i) => `<span class="pp-dot${state.stamps[i] ? ' on' : ''}">${state.stamps[i] ? '✿' : x}</span>`).join('');
   $('#ppCount').textContent = t(n <= 1 ? 'p.count1' : 'p.count', { n });
@@ -166,12 +166,12 @@ $('#pinForm').addEventListener('submit', async e => {
 document.addEventListener('click', e => {
   const c = e.target.closest('[data-close]'); if (c) c.closest('dialog').close(); else if (e.target.tagName === 'DIALOG') e.target.close();
 });
-$('#shareLink').addEventListener('click', async () => {
-  const url = location.origin + location.pathname + '?ref=' + state.ref, msg = $('#shareMsg');
-  try {
-    if (navigator.share) await navigator.share({ title: t('p.ref.title'), text: t('p.ref.text'), url });
-    else { await navigator.clipboard.writeText(url); msg.hidden = false; msg.textContent = t('p.ref.copied'); }
-  } catch (_) {}
+const inviteUrl = () => location.origin + location.pathname + '?ref=' + state.ref;
+const refreshWa = () => { if (state.ref) $('#shareWa').href = 'https://wa.me/?text=' + encodeURIComponent(t('p.ref.text') + ' ' + inviteUrl()); };
+$('#copyLink').addEventListener('click', async () => {
+  const msg = $('#shareMsg');
+  try { await navigator.clipboard.writeText(inviteUrl()); msg.hidden = false; msg.textContent = t('p.ref.copied'); }
+  catch (_) { msg.hidden = false; msg.textContent = inviteUrl(); }
 });
 $('#ppReset').addEventListener('click', () => {
   if (!confirm(t('p.reset.ask'))) return;
