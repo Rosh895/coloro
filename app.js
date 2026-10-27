@@ -286,11 +286,11 @@ const QUESTIONS = {
 };
 /* Routines use product ids from PRODUCTS (recommendations come from the COLARO product sheet). */
 const ROUTINES = {
-  dry: { am: ['wl-ampoule', 'sn-cream', 'rb-sun'], pm: ['wl-ampoule', 'sn-cream'], mask: 'rb-ampmask', finish: 'glow' },
-  sensitive: { am: ['drg-cream', 'drg-sun'], pm: ['drg-cream'], mask: 'drg-mask', finish: 'glow' },
-  normal: { am: ['sn-serum', 'drg-cream', 'rb-sun'], pm: ['sn-serum', 'drg-cream'], mask: 'rb-ampmask', finish: 'either' },
-  oily: { am: ['fat-serum', 'fat-cream', 'drg-sun'], pm: ['fat-serum', 'fat-cream'], mask: 'fat-mask', finish: 'matte' },
-  barrier: { am: ['rb-extreme', 'zeroid-sun'], pm: ['rb-extreme'], mask: 'rb-exmask', finish: 'glow' },
+  dry: { clean: 'mn-soy', tone: 'tw-ceramide', boost: 'ap-hyal', am: ['wl-ampoule', 'sn-cream', 'rb-sun'], pm: ['wl-ampoule', 'sn-cream'], mask: 'rb-ampmask', finish: 'glow' },
+  sensitive: { clean: 'tw-foam', tone: 'tw-ovalicin', boost: 'tw-panthenol', am: ['drg-cream', 'drg-sun'], pm: ['drg-cream'], mask: 'drg-mask', finish: 'glow' },
+  normal: { clean: 'tw-foam', tone: 'tw-ricetoner', boost: 'tw-arbserum', am: ['sn-serum', 'drg-cream', 'rb-sun'], pm: ['sn-serum', 'drg-cream'], mask: 'rb-ampmask', finish: 'either' },
+  oily: { clean: 'tw-kojic', tone: 'mn-bifida', boost: 'tw-tomato', am: ['fat-serum', 'fat-cream', 'drg-sun'], pm: ['fat-serum', 'fat-cream'], mask: 'fat-mask', finish: 'matte' },
+  barrier: { clean: 'mn-soy', tone: 'tw-ceramide', boost: 'mn-panthetoin', am: ['rb-extreme', 'zeroid-sun'], pm: ['rb-extreme'], mask: 'rb-exmask', finish: 'glow' },
 };
 const BLUSH = { warm: 'bl.peach', cool: 'bl.pink', neutral: 'bl.rose', deep: 'bl.berry' };
 let step = 0, ans = { goals: [] };
@@ -337,9 +337,10 @@ function renderResult(root) {
   if (r && hasGoal('skin')) {
     const light = ans.skin === 'barrier' ? ' ' + t('r.lightlayer') : '';
     html += `<div class="result-cols">
-      <div class="routine am"><h4>${t('r.am')}</h4><ol>${r.am.map((id, k) => `<li>${prodLink(add(id))}${k === 0 ? light : ''}</li>`).join('')}</ol></div>
-      <div class="routine pm"><h4>${t('r.pm')}</h4><ol>${r.pm.map(id => `<li>${prodLink(add(id))}</li>`).join('')}</ol>
-        <p class="weekly"><strong>${t('r.mask')}</strong> ${prodLink(add(r.mask))}</p></div></div>`;
+      <div class="routine am"><h4>${t('r.am')}</h4><ol>${[r.clean, r.tone, ...r.am].map(id => `<li>${prodLink(add(id))}${id === 'rb-extreme' ? light : ''}</li>`).join('')}</ol></div>
+      <div class="routine pm"><h4>${t('r.pm')}</h4><ol>${[r.clean, r.tone, ...r.pm].map(id => `<li>${prodLink(add(id))}</li>`).join('')}</ol>
+        <p class="weekly"><strong>${t('r.mask')}</strong> ${prodLink(add(r.mask))}</p>
+        <p class="weekly"><strong>${t('r.boost')}</strong> ${prodLink(add(r.boost))}</p></div></div>`;
   }
   if (r && hasGoal('makeup')) {
     const cushion = { glow: ['jv-glow'], matte: ['jv-matte'], either: ['jv-glow', 'jv-matte'] }[r.finish];

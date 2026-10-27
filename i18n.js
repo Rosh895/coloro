@@ -108,7 +108,7 @@ const T = {
   'need.barrier': ['Des céramides et une crème plus riche.', 'Ceramides and a richer moisturiser.'],
   'r.title': ['Votre peau : {label}', 'Your skin: {label}'],
   'r.am': ['Matin', 'Morning'], 'r.pm': ['Soir', 'Evening'],
-  'r.mask': ['Une à deux fois par semaine :', 'Once or twice a week:'],
+  'r.mask': ['Une à deux fois par semaine :', 'Once or twice a week:'], 'r.boost': ['Soin ciblé en plus :', 'Extra targeted care:'],
   'r.optional': ['Maquillage facultatif', 'Optional makeup'],
   'r.extras': ['Pour les lèvres et les joues', 'For lips and cheeks'],
   'r.lightlayer': ['(couche légère)', '(light layer)'],
