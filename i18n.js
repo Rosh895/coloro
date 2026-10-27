@@ -111,7 +111,7 @@ const T = {
   'r.mask': ['Une à deux fois par semaine :', 'Once or twice a week:'],
   'r.optional': ['Maquillage facultatif', 'Optional makeup'],
   'r.extras': ['Pour les lèvres et les joues', 'For lips and cheeks'],
-  'r.lightlayer': ['(couche légère)', '(light layer)'], 'r.spf': ['N’oubliez pas la crème solaire le matin.', 'Don’t forget sunscreen in the morning.'],
+  'r.lightlayer': ['(couche légère)', '(light layer)'],
   'r.sens': ['Vérifiez vos sensibilités aux ingrédients avec notre équipe avant de choisir un produit pour les lèvres.', 'Check your ingredient sensitivities with our team before choosing a lip product.'],
   'r.blush': ['Teinte de blush :', 'Blush shade:'],
   'r.note': ['Ceci est une première piste. Le test de peau offert sur place la confirmera.', 'This is a first guide. The free in-store skin test will confirm it.'],
