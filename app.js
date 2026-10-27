@@ -32,49 +32,41 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /* ---------- Products ---------- */
 const MINT = '#A8C3B4', PEACH = '#F9D5C8', BERRY = '#E0607E', LILAC = '#DCD3F2', BUTTER = '#F6E7A8';
 const PRODUCTS = [
-  { id: 'rb-extreme', cat: 'creams', brand: 'Real Barrier', name: 'Extreme Cream 50 ml', price: 24.90, c: MINT, img: 'images/rb-extreme.jpg', note: ['Peaux très sèches ou à barrière fragilisée. Crème riche aux céramides.', 'Very dry or barrier-compromised skin. Rich ceramide cream.'] },
-  { id: 'rb-aqua', cat: 'creams', brand: 'Real Barrier', name: 'Aqua Soothing Cream', price: 23.90, c: MINT, img: 'images/rb-aqua.jpg', note: ['Crème hydratante apaisante.', 'Soothing moisturising cream.'] },
-  { id: 'drg-cream', cat: 'creams', brand: 'Dr.G', name: 'R.E.D Blemish Clear Soothing Cream', price: 27.90, c: MINT, img: 'images/drg-cream.jpg', note: ['Peaux sensibles, sujettes aux rougeurs, et peaux mixtes.', 'Sensitive, redness-prone and combination skin.'] },
-  { id: 'fat-cream', cat: 'creams', brand: 'FATION', name: 'Nosca9 Trouble Cream', price: 22.90, c: MINT, img: 'images/fat-cream.jpg', note: ['Peaux grasses et sujettes aux imperfections.', 'Oily and blemish-prone skin.'] },
-  { id: 'sn-cream', cat: 'creams', brand: 'S.NATURE', name: 'Aqua Squalane Moisturizing Cream 60 ml', price: 24.90, c: PEACH, img: 'images/sn-cream.jpg', note: ['Peaux sèches ou déshydratées. Jour ou nuit.', 'Dry or dehydrated skin. Day or night.'] },
-  { id: 'wl-ampoule', cat: 'serums', brand: 'WELLAGE', name: 'Real Hyaluronic Blue 100 Ampoule', price: 18.90, c: PEACH, img: 'images/wl-ampoule.jpg', note: ['Peaux sèches ou déshydratées. Une grande dose d’hydratation.', 'Dry or dehydrated skin. A big drink of hydration.'] },
-  { id: 'sn-serum', cat: 'serums', brand: 'S.NATURE', name: 'Aqua Squalane Serum 50 ml', price: 19.90, c: PEACH, img: 'images/sn-serum.jpg', note: ['Hydratation légère pour peaux normales et mixtes.', 'Light hydration for normal and combination skin.'] },
-  { id: 'fat-serum', cat: 'serums', brand: 'FATION', name: 'Nosca9 Trouble Serum', price: 22.90, c: MINT, img: 'images/fat-serum.jpg', note: ['Soin léger pour peaux grasses sujettes aux imperfections.', 'Lightweight care for oily, blemish-prone skin.'] },
-  { id: 'fat-water', cat: 'serums', brand: 'FATION', name: 'Nosca9 Cleansing Water', price: 21.90, c: MINT, img: 'images/fat-water.jpg', note: ['Nettoyage doux pour peaux à imperfections.', 'Gentle cleansing for troubled skin.'] },
-  { id: 'fat-patch', cat: 'serums', brand: 'FATION', name: 'Nosca9 Spot Patch', price: 9.90, c: MINT, img: 'images/fat-patch.jpg', note: ['Pour les imperfections localisées.', 'For individual blemishes.'] },
-  { id: 'rb-ampmask', cat: 'masks', brand: 'Real Barrier', name: 'Aqua Soothing Ampoule Mask', price: 3.50, per: true, c: PEACH, img: 'images/rb-ampmask.jpg', note: ['Peaux sèches, déshydratées et mixtes.', 'Dry, dehydrated and combination skin.'] },
-  { id: 'drg-mask', cat: 'masks', brand: 'Dr.G', name: 'R.E.D Blemish Cool Soothing Mask, 5 pcs', price: 12.90, c: MINT, img: 'images/drg-mask.jpg', note: ['Peaux sensibles et sujettes aux rougeurs.', 'Sensitive and redness-prone skin.'] },
-  { id: 'fat-mask', cat: 'masks', brand: 'FATION', name: 'Nosca9 Trouble Clear Mask', price: 3.90, per: true, c: MINT, img: 'images/fat-mask.jpg', note: ['Peaux grasses et sujettes aux imperfections.', 'Oily and blemish-prone skin.'] },
-  { id: 'rb-exmask', cat: 'masks', brand: 'Real Barrier', name: 'Extreme Cream Mask', price: 2.90, per: true, c: MINT, img: 'images/rb-exmask.jpg', note: ['Peaux très sèches et réparation de la barrière.', 'Very dry skin and barrier repair.'] },
-  { id: 'sn-wrap', cat: 'masks', brand: 'S.NATURE', name: 'Aqua Squalane Cream Wrapping Mask, 4 pcs', price: 17.90, c: PEACH, img: 'images/sn-wrap.jpg', note: ['Masque enveloppant au squalane. 4 masques.', 'Squalane wrapping mask. 4 masks.'] },
-  { id: 'rb-sun', cat: 'sun', brand: 'Real Barrier', name: 'Cera Moisture Barrier Sun Cream', price: 20.90, c: BUTTER, img: 'images/rb-sun.jpg', note: ['Peaux sèches, déshydratées et mixtes.', 'Dry, dehydrated and combination skin.'] },
-  { id: 'drg-sun', cat: 'sun', brand: 'Dr.G', name: 'Green Mild Up Sun+', price: 22.90, c: BUTTER, img: 'images/drg-sun.jpg', note: ['Peaux sensibles, grasses ou sujettes aux imperfections.', 'Sensitive and oily or blemish-prone skin.'] },
-  { id: 'zeroid-sun', cat: 'sun', brand: 'ZEROID', name: 'Daily Sun Cream', price: 23.90, c: BUTTER, img: 'images/zeroid-sun.jpg', note: ['Peaux très sèches ou à barrière fragilisée. Alternative pour peaux sensibles.', 'Very dry or barrier-compromised skin. A sensitive-skin alternative.'] },
-  { id: 'bg-essence', cat: 'lips', brand: 'BRING GREEN', name: 'Bamboo Hyalu Lip Essence', price: 6.90, c: BERRY, img: 'images/bg-essence.jpg', note: ['Hydratation intense pour lèvres sèches ou gercées.', 'Intensive hydration for dry or chapped lips.'] },
-  { id: 'bg-stick', cat: 'lips', brand: 'BRING GREEN', name: 'Bamboo Hyalu Lip Essence Stick', price: 8.90, c: BERRY, img: 'images/bg-stick.jpg', note: ['Hydratation quotidienne pour lèvres normales.', 'Everyday hydration for normal lips.'] },
-  { id: 'nm-tint', cat: 'lips', brand: 'NAMING.', name: 'Over Dew Glossy Lip Tint', price: 15.90, c: BERRY, img: 'images/tint-0.jpg', shadeImgs: ['images/tint-0.jpg', 'images/tint-1.jpg', 'images/tint-2.jpg', 'images/tint-3.jpg', 'images/tint-4.jpg', 'images/tint-5.jpg'], fit: 'contain', note: ['Six teintes, du nude au rose profond.', 'Six shades, from nude to deep rose.'] },
-  { id: 'jv-glow', cat: 'makeup', brand: 'JAVIN DE SEOUL', name: 'Wink Cushion Glow', price: 26.90, c: BERRY, img: 'images/jv-glow.jpg', note: ['Peaux sèches, déshydratées ou normales. Fini éclatant.', 'Dry, dehydrated or normal skin. Dewy finish.'] },
-  { id: 'jv-matte', cat: 'makeup', brand: 'JAVIN DE SEOUL', name: 'Wink Cushion Matte', price: 25.90, c: BERRY, img: 'images/jv-matte.jpg', note: ['Peaux grasses ou mixtes. Fini mat.', 'Oily or combination skin. Matte finish.'] },
-  { id: 'js-blush', cat: 'makeup', brand: 'JUNGSAEMMOOL', name: 'Liquid / Cream Blush', price: 21.90, c: BERRY, img: 'images/jsblush-0.jpg', shadeImgs: ['images/jsblush-0.jpg', 'images/jsblush-1.jpg', 'images/jsblush-2.jpg', 'images/jsblush-3.jpg'], note: ['Une couleur éclatante pour peaux sèches. Quatre teintes.', 'Dewy colour for dry skin. Four shades.'] },
-  { id: 'nm-blush', cat: 'makeup', brand: 'NAMING.', name: 'Fluffy Powder Blush', price: 15.90, c: BERRY, img: 'images/nmblush-0.jpg', shadeImgs: ['images/nmblush-0.jpg', 'images/nmblush-1.jpg', 'images/nmblush-2.jpg', 'images/nmblush-3.jpg'], note: ['Fini poudré doux pour peaux grasses ou mixtes. Quatre teintes.', 'Soft powder finish for oily or combination skin. Four shades.'] },
-  { id: 'js-lash', cat: 'makeup', brand: 'JUNGSAEMMOOL', name: 'Touch Up Lash Maker', price: 19.90, c: BERRY, img: 'images/js-lash.jpg', note: ['Mascara naturel du quotidien.', 'Natural, everyday mascara.'] },
-  { id: 'nm-lash', cat: 'makeup', brand: 'NAMING.', name: 'Lash Up Mascara', price: 18.90, c: BERRY, img: 'images/nm-lash.jpg', note: ['Plus de longueur et de définition.', 'More length and definition.'] },
-  { id: 'hk-silk', cat: 'sleep', brand: 'HAKOAL', name: '100% Mulberry Silk Pillowcase', price: 69.90, c: LILAC, img: 'images/hk-silk.jpg', note: ['Soie de mûrier 6A, 22 momme.', '6A-grade mulberry silk, 22 momme.'] },
+  { id: 'tw-arbutin', cat: 'creams', brand: 'Tosowoong', name: 'Arbutin 5% Whitening Cream 50 g', price: 26.90, c: MINT, note: ['Crème à l’arbutine 5 % pour un teint d’aspect plus uniforme.', '5% arbutin cream for a more even-looking complexion.'] },
+  { id: 'tw-ovalicin', cat: 'toners', brand: 'Tosowoong', name: 'SOS Intensive Red Clinic Ovalicin Lotion 80 ml', price: 25.90, c: LILAC, note: ['Lotion SOS pour les peaux sujettes aux rougeurs.', 'SOS lotion for redness-prone skin.'] },
+  { id: 'tw-panthenol', cat: 'creams', brand: 'Tosowoong', name: 'Panthenol 20 Barrier Cream', price: 22.90, c: MINT, note: ['Crème au panthénol pour soutenir la barrière cutanée.', 'Panthenol cream to support the skin barrier.'] },
+  { id: 'tw-hyal9', cat: 'creams', brand: 'Tosowoong', name: 'Hyaluronic Acid 9 Cream', price: 21.90, c: MINT, note: ['Crème hydratante à l’acide hyaluronique.', 'Hydrating cream with hyaluronic acid.'] },
+  { id: 'tw-arbserum', cat: 'serums', brand: 'Tosowoong', name: 'Alpha Arbutin 2 Rice Serum', price: 19.90, c: PEACH, note: ['Sérum à l’alpha-arbutine et au riz pour un teint lumineux.', 'Alpha-arbutin and rice serum for a radiant-looking complexion.'] },
+  { id: 'tw-ricetoner', cat: 'toners', brand: 'Tosowoong', name: 'Rice Glow Milky Toner 250 ml', price: 19.90, c: LILAC, note: ['Toner laiteux au riz pour une peau douce et lumineuse.', 'Milky rice toner for soft, glowing-looking skin.'] },
+  { id: 'tw-ceramide', cat: 'toners', brand: 'Tosowoong', name: 'Ceramide Toner', price: 18.90, c: LILAC, note: ['Toner aux céramides pour hydrater et soutenir la barrière.', 'Ceramide toner to hydrate and support the barrier.'] },
+  { id: 'tw-tomato', cat: 'serums', brand: 'Tosowoong', name: 'Green Tomato Pore Ampoule 30 ml', price: 17.90, c: PEACH, note: ['Ampoule à la tomate verte pour un grain de peau d’aspect affiné.', 'Green tomato ampoule for a refined-looking skin texture.'] },
+  { id: 'tw-kojic', cat: 'cleansers', brand: 'Tosowoong', name: 'Kojic Acid Turmeric Face Wash', price: 14.90, c: BUTTER, note: ['Nettoyant visage à l’acide kojique et au curcuma.', 'Face wash with kojic acid and turmeric.'] },
+  { id: 'tw-foam', cat: 'cleansers', brand: 'Tosowoong', name: 'Mildly Acidic Foam Cleansing', price: 12.90, c: BUTTER, note: ['Mousse nettoyante légèrement acide, douce pour la peau.', 'Mildly acidic foaming cleanser, gentle on the skin.'] },
+  { id: 'mn-panthetoin', cat: 'creams', brand: 'ma:nyo', name: 'Panthetoin Cream 80 ml', price: 27.90, c: MINT, note: ['Crème apaisante et hydratante.', 'Soothing, hydrating cream.'] },
+  { id: 'mn-bifida', cat: 'toners', brand: 'ma:nyo', name: 'Bifida Biome Ampoule Toner 210 ml', price: 24.90, c: LILAC, note: ['Toner-ampoule au bifida pour hydrater la peau.', 'Bifida ampoule toner to hydrate the skin.'] },
+  { id: 'mn-soy', cat: 'cleansers', brand: 'ma:nyo', name: 'Pure Soybean Cleansing Milk 200 ml', price: 19.90, c: BUTTER, note: ['Lait nettoyant doux au soja.', 'Gentle soybean cleansing milk.'] },
+  { id: 'ap-spicule', cat: 'serums', brand: 'APLB', name: 'Spicule Collagen Shot 300 Serum Set (2 pièces)', price: 32.90, c: PEACH, note: ['Set de 2 sérums au collagène et aux spicules.', 'Set of 2 collagen and spicule serums.'] },
+  { id: 'ap-ampoule', cat: 'serums', brand: 'APLB', name: 'Collagen EGF Peptide Ampoule Serum 40 ml', price: 19.90, c: PEACH, note: ['Sérum-ampoule au collagène, EGF et peptides.', 'Collagen, EGF and peptide ampoule serum.'] },
+  { id: 'ap-cream', cat: 'creams', brand: 'APLB', name: 'Collagen EGF Peptide Cream', price: 19.90, c: MINT, note: ['Crème au collagène, EGF et peptides.', 'Collagen, EGF and peptide cream.'] },
+  { id: 'ap-toner', cat: 'toners', brand: 'APLB', name: 'Collagen EGF Peptide Facial Toner 160 ml', price: 16.90, c: LILAC, note: ['Toner visage au collagène, EGF et peptides.', 'Collagen, EGF and peptide facial toner.'] },
+  { id: 'ap-mist', cat: 'toners', brand: 'APLB', name: 'Collagen EGF Peptide Mist Essence 105 ml', price: 15.90, c: LILAC, note: ['Brume-essence au collagène, EGF et peptides.', 'Collagen, EGF and peptide mist essence.'] },
+  { id: 'ap-hyal', cat: 'serums', brand: 'APLB', name: 'Hyaluronic Acid', price: 17.90, c: PEACH, note: ['Soin à l’acide hyaluronique pour hydrater.', 'Hyaluronic acid care to hydrate.'] },
+  { id: 'ap-retinol', cat: 'serums', brand: 'APLB', name: 'Retinol Vitamin C Vitamin E', price: 19.90, c: PEACH, note: ['Soin au rétinol, à la vitamine C et à la vitamine E.', 'Care with retinol, vitamin C and vitamin E.'] },
+  { id: 'ap-retinoltoner', cat: 'toners', brand: 'APLB', name: 'Retinol Vitamin C Vitamin E Facial Toner 160 ml', price: 16.90, c: LILAC, note: ['Toner visage au rétinol, à la vitamine C et à la vitamine E.', 'Facial toner with retinol, vitamin C and vitamin E.'] },
+  { id: 'ap-retinolmist', cat: 'toners', brand: 'APLB', name: 'Retinol Vitamin C Vitamin E Mist Essence 105 ml', price: 15.90, c: LILAC, note: ['Brume-essence au rétinol, à la vitamine C et à la vitamine E.', 'Mist essence with retinol, vitamin C and vitamin E.'] },
 ];
-const CATS = ['creams', 'serums', 'masks', 'sun', 'lips', 'makeup', 'sleep'];
-/* Skin types each product is recommended for (from the COLARO product sheet). Untagged products show under "all". */
+const CATS = ['creams', 'serums', 'toners', 'cleansers'];
+/* Skin types each product is suggested for (to be confirmed by the COLARO team). Untagged products show under "all". */
 const SKIN_TAGS = {
-  'rb-extreme': ['barrier', 'sensitive'], 'drg-cream': ['sensitive', 'normal'], 'fat-cream': ['oily'], 'sn-cream': ['dry'],
-  'wl-ampoule': ['dry'], 'sn-serum': ['normal'], 'fat-serum': ['oily'], 'fat-water': ['oily'], 'fat-patch': ['oily'],
-  'rb-ampmask': ['dry', 'normal'], 'drg-mask': ['sensitive'], 'fat-mask': ['oily'], 'rb-exmask': ['barrier'],
-  'rb-sun': ['dry', 'normal'], 'drg-sun': ['sensitive', 'oily'], 'zeroid-sun': ['barrier', 'sensitive'],
-  'jv-glow': ['dry', 'normal'], 'jv-matte': ['oily', 'normal'], 'js-blush': ['dry'], 'nm-blush': ['oily', 'normal'],
+  'tw-arbutin': ['normal'], 'tw-ovalicin': ['sensitive'], 'tw-panthenol': ['sensitive', 'barrier'], 'tw-hyal9': ['dry'],
+  'tw-arbserum': ['normal'], 'tw-ricetoner': ['dry', 'normal'], 'tw-ceramide': ['barrier', 'dry'], 'tw-tomato': ['oily'],
+  'tw-kojic': ['oily'], 'tw-foam': ['sensitive', 'normal'], 'mn-panthetoin': ['barrier', 'sensitive'], 'mn-bifida': ['normal', 'oily'],
+  'mn-soy': ['dry', 'sensitive', 'barrier'], 'ap-spicule': ['normal'], 'ap-ampoule': ['normal', 'dry'], 'ap-cream': ['normal', 'dry'],
+  'ap-toner': ['normal'], 'ap-mist': ['normal'], 'ap-hyal': ['dry'], 'ap-retinol': ['normal'], 'ap-retinoltoner': ['normal'], 'ap-retinolmist': ['normal'],
 };
 const SKINS = ['dry', 'sensitive', 'normal', 'oily', 'barrier'];
-const LIP_SHADES = [['lip.nude', '#D9A58F'], ['lip.coral', '#F07A62'], ['lip.rose', '#E98AA3'], ['lip.mauve', '#A8667A'], ['lip.red', '#C8283C'], ['lip.deep', '#7A3B3F']];
-const BLUSH_SHADES = [['bl.peach', '#F5A58A'], ['bl.pink', '#F2A9C0'], ['bl.rose', '#D9788F'], ['bl.berry', '#A5385B']];
-const SHADES = { 'nm-tint': LIP_SHADES, 'js-blush': BLUSH_SHADES, 'nm-blush': BLUSH_SHADES };
-const PICKS = ['rb-extreme', 'drg-cream', 'wl-ampoule', 'sn-cream', 'sn-serum', 'drg-sun', 'rb-sun', 'fat-water'];
+const SHADES = {}; // no shade products in the catalogue for now
+const PICKS = ['tw-arbutin', 'tw-panthenol', 'mn-panthetoin', 'ap-ampoule', 'tw-ricetoner', 'ap-spicule', 'tw-tomato', 'ap-cream'];
 
 /* ---------- Cart: a reservation basket ----------
    Visitors choose products, send a reservation REQUEST by email, then pick up and pay at the pop-up.
@@ -136,10 +128,10 @@ const SHAPES = {
   tube: '<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="38" y="30" width="24" height="64" rx="8" fill="#F7F6F2"/><rect x="42" y="8" width="16" height="26" rx="4" fill="#2F3B37"/></svg>',
   sun: '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M34 94V34h32v60z" fill="#F7F6F2"/><rect x="38" y="12" width="24" height="24" rx="4" fill="#2F3B37"/><circle cx="50" cy="64" r="9" fill="#F6E7A8"/></svg>',
   round: '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="52" r="38" fill="#F7F6F2"/><circle cx="50" cy="52" r="26" fill="#E0607E" opacity=".75"/></svg>',
-  mask: '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M22 18h56l7 46a35 35 0 0 1-70 0z" fill="#F7F6F2"/><circle cx="40" cy="46" r="5" fill="#2F3B37"/><circle cx="60" cy="46" r="5" fill="#2F3B37"/></svg>',
+  bottle: '<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="36" y="34" width="28" height="60" rx="9" fill="#F7F6F2"/><rect x="43" y="20" width="14" height="16" rx="3" fill="#2F3B37"/><rect x="46" y="8" width="8" height="14" rx="3" fill="#2F3B37"/></svg>',
   pillow: '<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="10" y="28" width="80" height="48" rx="14" fill="#F7F6F2"/><path d="M22 46q28 12 56 0" stroke="#DCD3F2" stroke-width="5" fill="none"/></svg>',
 };
-const shapeFor = p => ({ creams: 'jar', serums: 'tube', masks: 'mask', sun: 'sun', lips: 'tube', makeup: 'round', sleep: 'pillow' })[p.cat];
+const shapeFor = p => ({ creams: 'jar', serums: 'tube', toners: 'bottle', cleansers: 'tube' })[p.cat];
 
 /* ---------- Ticker ---------- */
 function renderTicker() {
@@ -153,11 +145,8 @@ function renderTicker() {
 const TILE_ART = {
   creams: ['t-mint', '<path d="M20 90h80V60a40 40 0 0 0-80 0z" fill="#F7F6F2"/><rect x="14" y="48" width="92" height="20" rx="8" fill="#2F3B37"/>', '크림'],
   serums: ['t-peach', '<rect x="46" y="34" width="28" height="58" rx="8" fill="#F7F6F2"/><rect x="52" y="14" width="16" height="24" rx="4" fill="#2F3B37"/>', '세럼'],
-  masks: ['t-lilac', '<path d="M30 20h60l8 50a38 38 0 0 1-76 0z" fill="#F7F6F2"/><circle cx="48" cy="48" r="5" fill="#2F3B37"/><circle cx="72" cy="48" r="5" fill="#2F3B37"/>', '마스크'],
-  sun: ['t-butter', '<path d="M40 90V30h40v60z" fill="#F7F6F2"/><rect x="44" y="12" width="32" height="20" rx="4" fill="#2F3B37"/><circle cx="60" cy="62" r="10" fill="#F6E7A8"/>', '선케어'],
-  lips: ['t-berry', '<rect x="48" y="30" width="24" height="64" rx="8" fill="#F7F6F2"/><rect x="52" y="8" width="16" height="26" rx="4" fill="#2F3B37"/>', '립'],
-  makeup: ['t-peach', '<circle cx="60" cy="52" r="38" fill="#F7F6F2"/><circle cx="60" cy="52" r="26" fill="#E0607E" opacity=".75"/>', '메이크업'],
-  sleep: ['t-lilac', '<rect x="14" y="26" width="92" height="56" rx="14" fill="#F7F6F2"/><path d="M26 44q34 14 68 0" stroke="#DCD3F2" stroke-width="5" fill="none"/>', '실크 베개커버'],
+  toners: ['t-lilac', '<rect x="42" y="34" width="36" height="60" rx="11" fill="#F7F6F2"/><rect x="51" y="18" width="18" height="18" rx="4" fill="#2F3B37"/><rect x="55" y="6" width="10" height="14" rx="3" fill="#2F3B37"/>', '토너'],
+  cleansers: ['t-butter', '<rect x="44" y="30" width="32" height="64" rx="10" fill="#F7F6F2"/><rect x="50" y="10" width="20" height="24" rx="5" fill="#2F3B37"/><circle cx="60" cy="64" r="9" fill="#F6E7A8"/>', '클렌저'],
 };
 function renderTiles() {
   $('#tiles').innerHTML = CATS.map(c => {
@@ -246,27 +235,23 @@ $('#favNext').addEventListener('click', () => slide(1));
 
 /* ---------- Skin and scalp quiz ---------- */
 const QUESTIONS = {
-  goals: { multi: true, q: 'q.goals', hint: 'q.goals.hint', values: ['skin', 'makeup', 'scalp'], prefix: 'g.' },
+  goals: { multi: true, q: 'q.goals', hint: 'q.goals.hint', values: ['skin', 'scalp'], prefix: 'g.' },
   skin: { q: 'q.skin', prefix: 'o.', values: ['dry', 'sensitive', 'normal', 'oily', 'barrier'] },
-  lips: { q: 'q.lips', prefix: 'o.l.', values: ['normal', 'some', 'dry', 'chapped'] },
-  tone: { q: 'q.tone', prefix: 'o.', values: ['warm', 'cool', 'neutral', 'deep'] },
   scalp: { q: 'q.scalp', prefix: 'o.sc.', values: ['normal', 'dry', 'oily', 'itchy'] },
 };
 /* Routines use product ids from PRODUCTS (recommendations come from the COLARO product sheet). */
 const ROUTINES = {
-  dry: { am: ['wl-ampoule', 'sn-cream', 'rb-sun'], pm: ['wl-ampoule', 'sn-cream'], mask: 'rb-ampmask', finish: 'glow' },
-  sensitive: { am: ['drg-cream', 'drg-sun'], pm: ['drg-cream'], mask: 'drg-mask', finish: 'glow' },
-  normal: { am: ['sn-serum', 'drg-cream', 'rb-sun'], pm: ['sn-serum', 'drg-cream'], mask: 'rb-ampmask', finish: 'either' },
-  oily: { am: ['fat-serum', 'fat-cream', 'drg-sun'], pm: ['fat-serum', 'fat-cream'], mask: 'fat-mask', finish: 'matte' },
-  barrier: { am: ['rb-extreme', 'zeroid-sun'], pm: ['rb-extreme'], mask: 'rb-exmask', finish: 'glow' },
+  dry: { am: ['mn-soy', 'tw-ceramide', 'ap-hyal', 'tw-hyal9'], pm: ['mn-soy', 'tw-ceramide', 'ap-hyal', 'tw-hyal9'] },
+  sensitive: { am: ['tw-foam', 'tw-ovalicin', 'tw-panthenol'], pm: ['tw-foam', 'tw-ovalicin', 'tw-panthenol'] },
+  normal: { am: ['tw-foam', 'tw-ricetoner', 'tw-arbserum', 'ap-cream'], pm: ['tw-foam', 'tw-ricetoner', 'tw-arbserum', 'ap-cream'] },
+  oily: { am: ['tw-kojic', 'mn-bifida', 'tw-tomato', 'tw-hyal9'], pm: ['tw-kojic', 'mn-bifida', 'tw-tomato', 'tw-hyal9'] },
+  barrier: { am: ['mn-soy', 'tw-ceramide', 'tw-panthenol'], pm: ['mn-soy', 'tw-ceramide', 'mn-panthetoin'] },
 };
-const BLUSH = { warm: 'bl.peach', cool: 'bl.pink', neutral: 'bl.rose', deep: 'bl.berry' };
 let step = 0, ans = { goals: [] };
 
 const hasGoal = g => ans.goals.includes(g);
 const flow = (goals = ans.goals) => ['goals',
-  ...(goals.some(g => g === 'skin' || g === 'makeup') ? ['skin'] : []),
-  ...(goals.includes('makeup') ? ['lips', 'tone'] : []),
+  ...(goals.includes('skin') ? ['skin'] : []),
   ...(goals.includes('scalp') ? ['scalp'] : [])];
 const progressHTML = (n, total) => `
   <div class="quiz-meta"><span id="quizStep">${t('p.step', { n: n + 1, total })}</span></div>
@@ -303,21 +288,9 @@ function renderResult(root) {
   html += '</div>';
 
   if (r && hasGoal('skin')) {
-    const light = ans.skin === 'barrier' ? ' ' + t('r.lightlayer') : '';
     html += `<div class="result-cols">
-      <div class="routine am"><h4>${t('r.am')}</h4><ol>${r.am.map((id, k) => `<li>${prodLink(add(id))}${k === 0 ? light : ''}</li>`).join('')}</ol></div>
-      <div class="routine pm"><h4>${t('r.pm')}</h4><ol>${r.pm.map(id => `<li>${prodLink(add(id))}</li>`).join('')}</ol>
-        <p class="weekly"><strong>${t('r.mask')}</strong> ${prodLink(add(r.mask))}</p></div></div>`;
-  }
-  if (r && hasGoal('makeup')) {
-    const cushion = { glow: ['jv-glow'], matte: ['jv-matte'], either: ['jv-glow', 'jv-matte'] }[r.finish];
-    const blush = { glow: ['js-blush'], matte: ['nm-blush'], either: ['js-blush', 'nm-blush'] }[r.finish];
-    const lip = ['normal', 'some'].includes(ans.lips) ? 'bg-stick' : 'bg-essence';
-    html += `<div class="extras"><h4>${t('r.makeupBlock')}</h4><ul>
-      <li><strong>${t('r.cushion')}</strong> ${cushion.map(id => prodLink(add(id))).join(' ' + (LANG === 'en' ? 'or' : 'ou') + ' ')}</li>
-      <li><strong>${t('r.blushLabel')}</strong> ${blush.map(id => prodLink(add(id))).join(' ' + (LANG === 'en' ? 'or' : 'ou') + ' ')} – <em>${t(BLUSH[ans.tone])}</em></li>
-      <li><strong>${t('r.lip')}</strong> ${prodLink(add(lip))}</li>
-      ${ans.skin === 'sensitive' ? `<li>${t('r.sens')}</li>` : ''}</ul></div>`;
+      <div class="routine am"><h4>${t('r.am')}</h4><ol>${r.am.map(id => `<li>${prodLink(add(id))}</li>`).join('')}</ol><p class="muted small">${t('r.spf')}</p></div>
+      <div class="routine pm"><h4>${t('r.pm')}</h4><ol>${r.pm.map(id => `<li>${prodLink(add(id))}</li>`).join('')}</ol></div></div>`;
   }
   if (hasGoal('scalp')) {
     html += `<div class="scalp-card"><h4>${t('sc.title', { label: t('o.sc.' + ans.scalp) })}</h4>
@@ -354,11 +327,10 @@ quizRoot.addEventListener('click', e => {
     case 'quizRestart': step = 0; ans = { goals: [] }; renderQuiz(); break;
     case 'quizShop': goShop('all', '', ans.skin); break;
     case 'quizAdd': {
-      const toneShade = { warm: 0, cool: 1, neutral: 2, deep: 3 }[ans.tone];
       quizRoot.dataset.picks.split(',').filter(Boolean).forEach(id => {
         const p = byId(id);
         if (p.price == null) return;
-        addToCart(id, SHADES[id] ? (toneShade ?? 0) : null);
+        addToCart(id, null);
       });
       e.target.textContent = t('r.added'); e.target.disabled = true; break;
     }
