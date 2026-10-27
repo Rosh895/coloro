@@ -761,3 +761,13 @@ startCountdown();
   $('#emilieClose').addEventListener('click', () => set(false));
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) set(false); });
 })();
+
+
+/* ---------- Photo booth video: play when visible, never for people who prefer reduced motion ---------- */
+(() => {
+  const v = $('#boothVideo'); if (!v) return;
+  if (reduceMotion || !('IntersectionObserver' in window)) return; // they can still press play
+  new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { v.preload = 'auto'; v.play().catch(() => {}); } else v.pause();
+  }), { threshold: 0.4 }).observe(v);
+})();

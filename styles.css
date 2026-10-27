@@ -513,3 +513,12 @@ input[aria-invalid="true"]{border-color:var(--cherry)}
   .emilie-panel{position:fixed;inset:0;width:auto;height:auto;border-radius:0;border:0}
 }
 @media(prefers-reduced-motion:reduce){.emilie-fab{transition:none}}
+
+/* ---------- K-pop photo booth video ---------- */
+.booth-demo{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:36px;align-items:center;margin-top:40px;background:#fff;border-radius:32px;padding:26px;box-shadow:var(--shadow)}
+.booth-video{margin:0;position:relative}
+.booth-video video{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:22px;background:var(--blush)}
+.booth-video figcaption{font-size:.8rem;color:#5B6763;margin-top:8px;text-align:center}
+.booth-text h3{font:500 1.8rem var(--serif);margin:0 0 10px}
+.booth-text p{margin:0 0 18px;max-width:46ch}
+@media(max-width:700px){.booth-demo{grid-template-columns:1fr;padding:18px;gap:20px}.booth-video{max-width:300px;margin:0 auto}}
