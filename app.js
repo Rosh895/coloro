@@ -771,3 +771,50 @@ startCountdown();
     if (e.isIntersecting) { v.preload = 'auto'; v.play().catch(() => {}); } else v.pause();
   }), { threshold: 0.4 }).observe(v);
 })();
+
+
+/* ---------- Spinning wheel (preview game: no prizes, just a K-beauty "mood of the day") ---------- */
+(() => {
+  const rot = $('#wheelRot'), svg = $('#wheelSvg'), hub = $('#wheelHub'), btn = $('#wheelSpin'), box = $('#wheelResult'), pick = $('#wheelPick');
+  if (!rot || !svg) return;
+  const SEG = [
+    ['Peau glowy', 'Glowy skin', '#F9D5C8'], ['Hydratation +', 'Hydration boost', '#DCEBE4'], ['Teint pêche', 'Peachy glow', '#DCD3F2'],
+    ['Routine zen', 'Zen routine', '#F6E7A8'], ['Peau douce', 'Soft skin', '#F8D3E0'], ['Éclat K-beauty', 'K-beauty shine', '#DCEBE4'],
+    ['Test de peau', 'Skin test', '#F9D5C8'], ['Surprise ✿', 'Surprise ✿', '#DCD3F2'],
+  ];
+  const N = SEG.length, STEP = 360 / N, R = 160;
+  const pt = (deg, r) => { const a = (deg - 90) * Math.PI / 180; return [(r * Math.cos(a)).toFixed(2), (r * Math.sin(a)).toFixed(2)]; };
+  const label = i => SEG[i][LANG === 'en' ? 1 : 0];
+  function draw() {
+    let s = `<circle r="${R + 8}" fill="#2F3B37"/>`;
+    SEG.forEach((g, i) => {
+      const [x1, y1] = pt(i * STEP, R), [x2, y2] = pt((i + 1) * STEP, R);
+      s += `<path d="M0 0 L${x1} ${y1} A${R} ${R} 0 0 1 ${x2} ${y2} Z" fill="${g[2]}" stroke="#fff" stroke-width="3"/>`;
+      const c = i * STEP + STEP / 2;
+      s += `<g transform="rotate(${c})"><text x="0" y="-98" transform="rotate(-90 0 -98)" text-anchor="middle" dominant-baseline="middle" font-family="Inter,sans-serif" font-weight="700" font-size="15" fill="#2F3B37">${label(i)}</text></g>`;
+    });
+    for (let i = 0; i < N; i++) { const [x, y] = pt(i * STEP + STEP / 2, R + 1); s += `<circle cx="${x}" cy="${y}" r="3.2" fill="#F6E7A8" stroke="#2F3B37" stroke-width="1.2"/>`; }
+    svg.innerHTML = s;
+    svg.setAttribute('aria-label', t('w.aria'));
+  }
+  let angle = 0, busy = false, last = -1;
+  const rand = n => { try { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; } catch (_) { return Math.floor(Math.random() * n); } };
+  function spin() {
+    if (busy) return; busy = true; hub.disabled = btn.disabled = true; box.hidden = true;
+    let k; do { k = rand(N); } while (k === last && N > 1); last = k;
+    const center = k * STEP + STEP / 2, jitter = (Math.random() - .5) * (STEP * .6);
+    const turns = (reduceMotion ? 1 : 5 + rand(3)) * 360;
+    const target = angle - (angle % 360) + turns + (360 - center) + jitter;
+    angle = target >= angle + 360 ? target : target + 360;
+    rot.style.transform = `rotate(${angle}deg)`;
+    const done = () => {
+      busy = false; hub.disabled = btn.disabled = false;
+      pick.textContent = t('w.pick', { label: label(k) }); box.hidden = false;
+      btn.textContent = t('w.again');
+    };
+    if (reduceMotion) done(); else setTimeout(done, 4700);
+  }
+  hub.addEventListener('click', spin); btn.addEventListener('click', spin);
+  draw();
+  document.addEventListener('langchange', () => { draw(); if (!box.hidden && last >= 0) pick.textContent = t('w.pick', { label: label(last) }); });
+})();

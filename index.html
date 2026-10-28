@@ -286,6 +286,32 @@
   </div>
 </section>
 
+<!-- SPINNING WHEEL (preview game, no prizes) -->
+<section class="section wheel-sec" id="wheelSec" aria-labelledby="wheelTitle">
+  <div class="wrap wheel-grid">
+    <div class="wheel-box">
+      <div class="wheel-stage">
+        <svg class="wheel-pointer" viewBox="0 0 60 60" aria-hidden="true"><path d="M30 56 L8 12 Q30 -4 52 12Z" fill="#B93E5F" stroke="#2F3B37" stroke-width="3" stroke-linejoin="round"/><circle cx="30" cy="18" r="5" fill="#fff"/></svg>
+        <div class="wheel-rot" id="wheelRot"><svg id="wheelSvg" viewBox="-172 -172 344 344" role="img" aria-label="Roue de la chance COLARO" data-en-aria="COLARO spinning wheel"></svg></div>
+        <button type="button" class="wheel-hub" id="wheelHub" aria-label="Tourner la roue" data-en-aria="Spin the wheel">
+          <svg viewBox="-50 -50 100 100" width="46" height="46" aria-hidden="true"><use href="#blossom" x="-50" y="-50" width="100" height="100"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="wheel-text">
+      <p class="eyebrow-s"><span data-en="A taste of the pop-up">Un avant-goût du pop-up</span></p>
+      <h2 id="wheelTitle"><small class="ko" lang="ko">행운의 룰렛</small><span data-en="Spin the wheel">Tournez la roue</span></h2>
+      <p class="section-lead" data-en="Try it here for fun: the wheel shows your K-beauty mood of the day. At the pop-up, the real wheel gives every player a free gift.">Essayez-la ici pour le plaisir : la roue vous donne votre humeur K-beauty du jour. Au pop-up, la vraie roue offre un cadeau à chaque joueuse.</p>
+      <button type="button" class="btn btn-berry" id="wheelSpin" data-en="Spin the wheel">Tourner la roue</button>
+      <div class="wheel-result" id="wheelResult" role="status" aria-live="polite" hidden>
+        <p class="wheel-pick" id="wheelPick"></p>
+        <p class="muted" data-en="At the pop-up, the real wheel gives every player a free gift. Open your passport to collect your stamps.">Au pop-up, la vraie roue offre un cadeau à chaque joueuse. Ouvrez votre passeport pour collecter vos tampons.</p>
+        <a class="text-link" href="passport.html" data-en="Open my passport">Ouvrir mon passeport</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- PASSPORT + REFERRAL (concept) -->
 <section class="section section-passport" id="passport" aria-labelledby="passportTitle">
   <div class="wrap passport-grid">

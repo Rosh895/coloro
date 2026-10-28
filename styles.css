@@ -522,3 +522,21 @@ input[aria-invalid="true"]{border-color:var(--cherry)}
 .booth-text h3{font:500 1.8rem var(--serif);margin:0 0 10px}
 .booth-text p{margin:0 0 18px;max-width:46ch}
 @media(max-width:700px){.booth-demo{grid-template-columns:1fr;padding:18px;gap:20px}.booth-video{max-width:300px;margin:0 auto}}
+
+/* ---------- Spinning wheel (home page preview game) ---------- */
+.wheel-grid{display:grid;grid-template-columns:minmax(260px,420px) 1fr;gap:clamp(28px,5vw,64px);align-items:center}
+.wheel-box{display:grid;place-items:center}
+.wheel-stage{position:relative;width:min(100%,400px);aspect-ratio:1}
+.wheel-rot{position:absolute;inset:0;transition:transform 4.6s cubic-bezier(.12,.62,.08,1);will-change:transform;filter:drop-shadow(0 14px 24px rgba(47,59,55,.22))}
+.wheel-rot svg{width:100%;height:100%;display:block}
+.wheel-pointer{position:absolute;left:50%;top:-14px;width:52px;height:52px;transform:translateX(-50%);z-index:3}
+.wheel-hub{position:absolute;left:50%;top:50%;width:76px;height:76px;transform:translate(-50%,-50%);border-radius:50%;border:4px solid var(--pine);background:#fff;display:grid;place-items:center;cursor:pointer;z-index:2;box-shadow:0 6px 16px rgba(47,59,55,.25);padding:0}
+.wheel-hub:focus-visible,.wheel-sec .btn:focus-visible{outline:3px solid var(--pine);outline-offset:3px}
+.wheel-hub:disabled,#wheelSpin:disabled{opacity:.6;cursor:default}
+.wheel-text .eyebrow-s{font:700 .8rem var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--cherry);margin:0 0 6px}
+.wheel-result{margin-top:22px;background:#fff;border-radius:22px;padding:18px 22px;box-shadow:var(--shadow);max-width:46ch}
+.wheel-result[hidden]{display:none}
+.wheel-pick{font:500 1.5rem var(--serif);margin:0 0 8px;color:var(--pine)}
+.wheel-result .muted{margin:0 0 10px}
+@media(max-width:760px){.wheel-grid{grid-template-columns:1fr}.wheel-stage{width:min(86vw,360px)}}
+@media(prefers-reduced-motion:reduce){.wheel-rot{transition:none}}

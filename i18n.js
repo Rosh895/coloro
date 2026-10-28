@@ -111,6 +111,7 @@ const T = {
   'r.mask': ['Une à deux fois par semaine :', 'Once or twice a week:'], 'r.boost': ['Soin ciblé en plus :', 'Extra targeted care:'],
   'r.optional': ['Maquillage facultatif', 'Optional makeup'],
   'r.extras': ['Pour les lèvres et les joues', 'For lips and cheeks'],
+  'w.pick': ['Votre humeur du jour : {label}', 'Your mood of the day: {label}'], 'w.again': ['Rejouer', 'Spin again'], 'w.aria': ['Roue de la chance COLARO', 'COLARO spinning wheel'],
   'r.lightlayer': ['(couche légère)', '(light layer)'],
   'r.sens': ['Vérifiez vos sensibilités aux ingrédients avec notre équipe avant de choisir un produit pour les lèvres.', 'Check your ingredient sensitivities with our team before choosing a lip product.'],
   'r.blush': ['Teinte de blush :', 'Blush shade:'],
