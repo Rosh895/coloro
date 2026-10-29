@@ -35,6 +35,11 @@ Object.assign(T, {
   'p.ref.title': ['COLARO Beauty Passport', 'COLARO Beauty Passport'],
   'p.ref.text': ['Rejoins-moi au pop-up K-beauty COLARO à Paris (1er mars – 1er avril 2027) et ouvre ton Beauty Passport !', 'Join me at the COLARO K-beauty pop-up in Paris (1 March – 1 April 2027) and open your Beauty Passport!'],
   'p.ref.copied': ['Lien copié ! Envoyez-le à votre amie.', 'Link copied! Send it to your friend.'],
+  'p.tree.s0': ['Une graine attend dans la terre.', 'A seed is waiting in the soil.'], 'p.tree.s10': ['Une jeune pousse sort de terre.', 'A tiny seedling breaks through.'],
+  'p.tree.s50': ['Un jeune arbre se dresse, ses branches se forment.', 'A young sapling, its branches forming.'], 'p.tree.s100': ['L’arbre fleurit : Glow est débloqué.', 'The tree blossoms: Glow unlocked.'],
+  'p.tree.s150': ['L’arbre est de plus en plus fleuri.', 'The tree is fuller and fuller.'], 'p.tree.s250': ['Floraison complète : Seoul Star est débloqué.', 'Full bloom: Seoul Star unlocked.'],
+  'p.tree.next': ['Encore {n} points pour {name}.', '{n} more points to reach {name}.'], 'p.tree.max': ['Niveau maximum atteint. Merci !', 'Top level reached. Thank you!'],
+  'p.tree.up': ['Niveau {name} débloqué !', '{name} level unlocked!'], 'p.tree.redeem': ['Points à échanger : {n} (les récompenses seront annoncées).', 'Points to spend: {n} (rewards will be announced).'],
 });
 
 const ICONS = {
@@ -83,6 +88,31 @@ function flowerSVG(st, stamped, i) {
   return `<svg viewBox="0 0 100 100" aria-hidden="true">${parts.join('')}${icon}${mark}</svg>`;
 }
 
+/* Loyalty points come ONLY from the server (Apps Script ledger). They are never sent by this page and never saved on the phone. */
+let pts = null, tree = null;
+const SEEN = 'colaro-tree-seen';
+function applyPts(res) { pts = res.points && typeof res.points.status === 'number' ? { status: res.points.status, redeemable: res.points.redeemable || 0 } : null; }
+const seenGet = () => { try { return JSON.parse(localStorage.getItem(SEEN)); } catch (_) { return null; } };
+const seenSet = v => { try { localStorage.setItem(SEEN, JSON.stringify(v)); } catch (_) {} };
+function syncTree() {
+  const box = $('#ppTree');
+  if (!pts || !window.ColaroTree) { box.hidden = true; return; }
+  box.hidden = false;
+  const lv = ColaroTree.levelFor(pts.status), seen = seenGet(), same = seen && seen.id === state.id;
+  if (!tree) tree = ColaroTree.mount($('#treeBox'), { points: same ? seen.status : pts.status });
+  tree.setPoints(pts.status);
+  $('#ptsNum').textContent = pts.status;
+  $('#lvlPill').textContent = lv.name; $('#lvlPill').dataset.k = lv.key;
+  const stages = [0, 10, 50, 100, 150, 250], sk = stages.filter(x => pts.status >= x).pop();
+  $('#treeStage').textContent = t('p.tree.s' + sk);
+  $('#lvlFill').style.width = Math.round(lv.progress * 100) + '%'; $('#lvlBar').setAttribute('aria-valuenow', Math.round(lv.progress * 100));
+  $('#treeNext').textContent = lv.next ? t('p.tree.next', { n: lv.toNext, name: ColaroTree.LEVELS[lv.rank + 1].name }) : t('p.tree.max');
+  $('#redeemTxt').textContent = t('p.tree.redeem', { n: pts.redeemable });
+  if (same && lv.rank > seen.rank) { // a new level since this phone last looked: celebrate once
+    tree.celebrate(); const tt = $('#treeToast'); tt.textContent = t('p.tree.up', { name: lv.name }); tt.hidden = false; setTimeout(() => { tt.hidden = true; }, 5200);
+  }
+  seenSet({ id: state.id, status: pts.status, rank: lv.rank });
+}
 function applyRef(res) { if (res.ref) { state.ref = res.ref; state.invited = res.invited || 0; state.due = res.due || 0; } }
 
 function render() {
@@ -97,6 +127,7 @@ function render() {
   $('#ppDots').innerHTML = [1, 2, 3, 4].map((x, i) => `<span class="pp-dot${state.stamps[i] ? ' on' : ''}">${state.stamps[i] ? '✿' : x}</span>`).join('');
   $('#ppCount').textContent = t(n <= 1 ? 'p.count1' : 'p.count', { n });
   $('#ppBar').setAttribute('aria-valuenow', n);
+  syncTree();
   $('#stops').innerHTML = STOPS.map((st, i) => {
     const done = state.stamps[i], locked = i === 3 && !first3 && !done;
     let action;
@@ -123,7 +154,7 @@ $('#regForm').addEventListener('submit', async e => {
   try {
     const res = await api({ action: 'register', name, email, instagram: f.elements.instagram.value.trim(), skin: f.elements.skin.value, news: f.elements.news.checked, consent: true, lang: LANG, refBy: refBy() });
     if (!res.ok) throw new Error(res.error || 'error');
-    state.id = res.id; state.stamps = res.stamps; applyRef(res); save(); f.reset(); render();
+    state.id = res.id; state.stamps = res.stamps; applyRef(res); applyPts(res); save(); f.reset(); render();
   } catch (_) { msg.hidden = false; msg.textContent = t('p.net'); }
   btn.disabled = false; btn.textContent = label;
 });
@@ -150,7 +181,7 @@ $('#pinForm').addEventListener('submit', async e => {
     try {
       const res = await api({ action: 'stamp', id: state.id, stop: pinFor, code: pin });
       if (res.error === 'locked') { lockedUntil = Date.now() + 30000; msg.textContent = t('p.pin.wait', { s: 30 }); return; }
-      if (res.ok) { state.stamps = res.stamps; good = true; }
+      if (res.ok) { state.stamps = res.stamps; applyPts(res); good = true; }
     } catch (_) { msg.textContent = t('p.net'); return; }
   } else {
     good = (await sha(`colaro|${pinFor}|${pin}`)) === STOP_HASHES[pinFor];
@@ -175,7 +206,7 @@ $('#copyLink').addEventListener('click', async () => {
 });
 $('#ppReset').addEventListener('click', () => {
   if (!confirm(t('p.reset.ask'))) return;
-  state = { stamps: [false, false, false, false], rot: state.rot, id: null }; save(); render();
+  state = { stamps: [false, false, false, false], rot: state.rot, id: null }; pts = null; tree = null; $('#treeBox').innerHTML = ''; try { localStorage.removeItem(SEEN); } catch (_) {} save(); render();
 });
 document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
 document.addEventListener('langchange', render);
@@ -185,7 +216,7 @@ applyLang();
 function refresh() {
   if (!online || !state.id) return;
   api({ action: 'status', id: state.id }).then(res => {
-    if (res.ok) { state.stamps = res.stamps; applyRef(res); save(); render(); }
+    if (res.ok) { state.stamps = res.stamps; applyRef(res); applyPts(res); save(); render(); }
     else if (res.error === 'unknown') { state.id = null; save(); render(); }
   }).catch(() => {});
 }

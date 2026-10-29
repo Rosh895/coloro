@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="passport.css">
+<link rel="stylesheet" href="tree.css">
 </head>
 <body class="pp-body">
 
@@ -74,6 +75,20 @@
       <div class="pp-dots" id="ppDots"></div>
       <p id="ppCount"></p>
     </div>
+    <section id="ppTree" class="pp-tree" hidden aria-labelledby="treeTitle">
+      <h2 id="treeTitle" data-en="Watch your beauty journey bloom">Votre beauté s’épanouit</h2>
+      <div id="treeBox"></div>
+      <div class="pp-lvl">
+        <span class="pill-lvl" id="lvlPill" data-k="bloom">Bloom</span>
+        <span class="pp-pts"><b id="ptsNum">0</b> <small data-en="status points">points de statut</small></span>
+      </div>
+      <p class="pp-stage" id="treeStage"></p>
+      <div class="pp-lvlbar" id="lvlBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="lvlFill"></i></div>
+      <p class="small" id="treeNext"></p>
+      <p class="small pp-redeem" id="redeemTxt"></p>
+      <p class="pp-toast" id="treeToast" role="status" aria-live="polite" hidden></p>
+    </section>
+
     <p class="pp-gift" data-en="Collect your stamps for a surprise gift.">Collectez vos tampons pour un cadeau surprise.</p>
 
   <ol class="stops" id="stops" aria-label="Les 4 étapes" data-en-aria="The 4 stops"></ol>
@@ -113,6 +128,7 @@
 </dialog>
 
 <script src="i18n.js" defer></script>
+<script src="tree.js" defer></script>
 <script src="passport.js" defer></script>
 </body>
 </html>

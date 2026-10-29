@@ -67,3 +67,19 @@
 .btn-wa:hover{background:#0f7049}
 .btn-wa:focus-visible{outline:3px solid var(--pine);outline-offset:2px}
 @media(max-width:480px){.pp-share .btn{width:100%;text-align:center;justify-content:center}}
+
+/* ---------- Beauty journey tree (loyalty points) ---------- */
+.pp-tree{margin:18px 0;background:#fff;border-radius:26px;padding:20px 18px 22px;box-shadow:var(--shadow)}
+.pp-tree[hidden]{display:none}
+.pp-tree h2{font:500 1.5rem var(--serif);margin:0 0 6px;text-align:center}
+.pp-lvl{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 0 2px;flex-wrap:wrap}
+.pill-lvl{display:inline-block;border-radius:99px;padding:6px 16px;font-weight:700;font-size:.95rem;background:var(--blush);color:var(--pine);transition:background .4s}
+.pill-lvl[data-k="glow"]{background:var(--butter)}.pill-lvl[data-k="star"]{background:var(--lilac)}
+.pp-pts{font-size:1rem}.pp-pts b{font:500 2.1rem var(--serif);line-height:1}.pp-pts small{font-weight:600;opacity:.7;margin-left:4px}
+.pp-stage{font-style:italic;color:#5B6763;margin:2px 0 10px;min-height:1.3em}
+.pp-lvlbar{height:10px;border-radius:99px;background:var(--mint);overflow:hidden}
+.pp-lvlbar i{display:block;height:100%;width:0;background:var(--cherry);border-radius:99px;transition:width .6s}
+.pp-tree .small{margin:8px 0 0}
+.pp-redeem{opacity:.8}
+.pp-toast{margin:12px 0 0;background:var(--butter);border-radius:14px;padding:10px 14px;font-weight:700;text-align:center}
+.pp-toast[hidden]{display:none}
