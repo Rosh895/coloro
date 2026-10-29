@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="fr" data-en-title="Beauty Passport – tree demo">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beauty Passport – démo de l’arbre</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F7F6F2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,600&family=Great+Vibes&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="passport.css">
+<link rel="stylesheet" href="tree.css">
+<style>
+.demo-banner{background:var(--butter);border-radius:16px;padding:12px 16px;font-weight:600;font-size:.92rem;margin:0 0 16px}
+.demo-card{background:#fff;border-radius:28px;padding:22px 20px 24px;box-shadow:var(--shadow)}
+.demo-lvl{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 0 4px;flex-wrap:wrap}
+.pill-lvl{display:inline-block;border-radius:99px;padding:6px 16px;font-weight:700;font-size:.95rem;background:var(--blush);color:var(--pine);transition:background .4s}
+.pill-lvl[data-k="glow"]{background:var(--butter)} .pill-lvl[data-k="star"]{background:var(--lilac)}
+.demo-pts{font:500 2.2rem var(--serif);line-height:1}
+.demo-pts small{font:600 .9rem var(--sans);opacity:.7;margin-left:4px}
+.demo-stage{font-style:italic;color:#5B6763;min-height:1.4em;margin:2px 0 12px}
+.demo-bar{height:10px;border-radius:99px;background:var(--mint);overflow:hidden}
+.demo-bar i{display:block;height:100%;width:0;background:var(--cherry);border-radius:99px;transition:width .5s}
+.demo-next{font-size:.9rem;margin:8px 0 16px;min-height:1.3em}
+.demo-range{width:100%;accent-color:var(--cherry);margin:4px 0 6px}
+.demo-presets{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
+.demo-presets button,.demo-act button{border:1.5px solid rgba(47,59,55,.25);background:#fff;border-radius:99px;padding:8px 14px;font:600 .88rem var(--sans);cursor:pointer;color:var(--pine)}
+.demo-presets button[aria-pressed="true"]{background:var(--pine);color:#fff;border-color:var(--pine)}
+.demo-act{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.demo-act label{font-size:.88rem;display:flex;gap:6px;align-items:center}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--pine);color:#fff;padding:12px 20px;border-radius:99px;font-weight:600;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .4s;z-index:50;max-width:calc(100vw - 32px);text-align:center}
+.toast.on{opacity:1}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.levels div{border-radius:16px;padding:10px 8px;text-align:center;font-size:.82rem;background:var(--white);border:1.5px dashed rgba(47,59,55,.2)}
+.levels div b{display:block;font-size:.95rem}
+.levels div.on{border-style:solid;border-color:var(--cherry);background:#fff}
+</style>
+</head>
+<body class="pp-body">
+<header class="pp-head">
+  <a class="logo" href="./" aria-label="COLARO">
+    <svg viewBox="-50 -50 100 100" width="30" height="30" aria-hidden="true"><g fill="#F4C9D6"><path id="p0" d="M0 0 C-16 -10 -20 -34 -9 -44 L0 -37 L9 -44 C20 -34 16 -10 0 0Z"/><use href="#p0" transform="rotate(72)"/><use href="#p0" transform="rotate(144)"/><use href="#p0" transform="rotate(216)"/><use href="#p0" transform="rotate(288)"/></g><circle r="9" fill="#E0607E"/><circle r="4" fill="#C94868"/></svg>
+    <span>colaro</span>
+  </a>
+  <div class="lang" role="group" aria-label="Langue" data-en-aria="Language">
+    <button type="button" data-lang="fr" aria-pressed="true">FR</button>
+    <button type="button" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+</header>
+<main class="pp">
+  <section class="pp-hero">
+    <p class="pill" data-en="Demo · fictional points">Démo · points fictifs</p>
+    <h1 class="script" data-en="Watch your beauty journey bloom">Votre beauté s’épanouit</h1>
+  </section>
+  <p class="demo-banner" data-en="Demonstration mode: these points are made up. Nothing here is connected to real passports or customers.">Mode démonstration : ces points sont fictifs. Rien ici n’est relié aux vrais passeports ni aux clientes.</p>
+  <section class="demo-card" aria-labelledby="dTitle">
+    <h2 id="dTitle" class="sr" style="position:absolute;left:-9999px" data-en="Your tree">Votre arbre</h2>
+    <div id="treeBox" aria-live="off"></div>
+    <div class="demo-lvl">
+      <span class="pill-lvl" id="lvlPill" data-k="bloom">Bloom</span>
+      <span class="demo-pts"><span id="ptsNum">0</span><small data-en="status points">points de statut</small></span>
+    </div>
+    <p class="demo-stage" id="stageTxt"></p>
+    <div class="demo-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="lvlBar"><i id="lvlFill"></i></div>
+    <p class="demo-next" id="nextTxt"></p>
+    <label for="pts" class="muted small" data-en="Try any number of points (0 to 300)">Essayez n’importe quel nombre de points (0 à 300)</label>
+    <input class="demo-range" id="pts" type="range" min="0" max="300" step="1" value="0">
+    <div class="demo-presets" id="presets" role="group" aria-label="Exemples" data-en-aria="Examples"></div>
+    <div class="demo-act">
+      <button type="button" id="replay" data-en="Replay the growth">Rejouer la croissance</button>
+      <button type="button" id="petals" data-en="Test the petals">Tester les pétales</button>
+      <label><input type="checkbox" id="rm"> <span data-en="Simulate “reduce motion”">Simuler « réduire les animations »</span></label>
+    </div>
+    <div class="levels" id="levelsRow"></div>
+  </section>
+  <p class="pp-foot"><a href="./" data-en="Back to the website">Retour au site</a></p>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="i18n.js" defer></script>
+<script src="tree.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const $ = s => document.querySelector(s);
+  const L = (fr, en) => (typeof LANG !== 'undefined' && LANG === 'en') ? en : fr;
+  const STAGES = [
+    [0, 'Une graine attend dans la terre.', 'A seed is waiting in the soil.'],
+    [10, 'Une jeune pousse sort de terre.', 'A tiny seedling breaks through.'],
+    [50, 'Un jeune arbre se dresse, ses branches se forment.', 'A young sapling, its branches forming.'],
+    [100, 'L’arbre fleurit : Glow est débloqué.', 'The tree blossoms: Glow unlocked.'],
+    [150, 'L’arbre est de plus en plus fleuri.', 'The tree is fuller and fuller.'],
+    [250, 'Floraison complète : Seoul Star est débloqué.', 'Full bloom: Seoul Star unlocked.'],
+  ];
+  const stage = p => STAGES.filter(s => p >= s[0]).pop();
+  const tree = ColaroTree.mount($('#treeBox'), { points: 0 });
+  const range = $('#pts'), toast = $('#toast');
+  let lastRank = 0, tt = 0;
+  const say = msg => { toast.textContent = msg; toast.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('on'), 3200); };
+
+  [0, 10, 50, 100, 150, 250, 300].forEach(v => { const b = document.createElement('button'); b.type = 'button'; b.textContent = v + ' pts'; b.dataset.v = v; b.setAttribute('aria-pressed', 'false'); $('#presets').appendChild(b); });
+
+  function levelsRow(lv) {
+    $('#levelsRow').innerHTML = ColaroTree.LEVELS.map(l => `<div class="${l.key === lv.key ? 'on' : ''}"><b>${l.name}</b>${l.next ? l.min + '–' + (l.next - 1) : l.min + '+'} pts</div>`).join('');
+  }
+  function paint(p, opts) {
+    opts = opts || {};
+    const lv = ColaroTree.levelFor(p), s = stage(p);
+    $('#ptsNum').textContent = p; range.value = p;
+    $('#lvlPill').textContent = lv.name; $('#lvlPill').dataset.k = lv.key;
+    $('#stageTxt').textContent = L(s[1], s[2]);
+    $('#lvlFill').style.width = Math.round(lv.progress * 100) + '%';
+    $('#lvlBar').setAttribute('aria-valuenow', Math.round(lv.progress * 100));
+    $('#nextTxt').textContent = lv.next ? L(`Encore ${lv.toNext} points pour ${ColaroTree.LEVELS[lv.rank + 1].name}.`, `${lv.toNext} more points to reach ${ColaroTree.LEVELS[lv.rank + 1].name}.`) : L('Niveau maximum atteint. Merci !', 'Top level reached. Thank you!');
+    document.querySelectorAll('#presets button').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.v === p)));
+    levelsRow(lv);
+    tree.setPoints(p, opts);
+    if (lv.rank > lastRank && !opts.silent) {
+      const ok = tree.celebrate();
+      say(L(`Niveau ${lv.name} débloqué !`, `${lv.name} level unlocked!`) + (ok ? '' : ''));
+    }
+    lastRank = lv.rank;
+  }
+  range.addEventListener('input', () => paint(+range.value));
+  $('#presets').addEventListener('click', e => { const b = e.target.closest('button'); if (b) paint(+b.dataset.v); });
+  $('#replay').addEventListener('click', () => { const p = +range.value; tree.setPoints(0, { animate: false }); lastRank = 0; setTimeout(() => { lastRank = ColaroTree.levelFor(p).rank; tree.setPoints(p, { force: true }); }, 250); });
+  $('#petals').addEventListener('click', () => { if (!tree.celebrate()) say(L('Animations réduites : pas de pétales.', 'Reduced motion is on: no petals.')); });
+  $('#rm').addEventListener('change', e => { ColaroTree.reducedOverride = e.target.checked ? true : null; $('#treeBox').classList.toggle('is-reduced', e.target.checked); });
+  document.addEventListener('langchange', () => paint(+range.value, { silent: true, animate: false }));
+  document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+  applyLang();
+  paint(0, { silent: true, animate: false });
+  const q = new URLSearchParams(location.search).get('p'); if (q !== null && !isNaN(+q)) paint(Math.max(0, Math.min(300, +q)), { silent: true, animate: false });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+/* COLARO cherry-blossom tree (see tree.js) */
+.ctree{display:block;width:100%;max-width:420px;margin:0 auto}
+.ctree-svg{display:block;width:100%;height:auto;overflow:visible}
+.ctree-sway{transform-box:view-box;transform-origin:200px 404px;animation:ctreeSway 9s ease-in-out infinite}
+@keyframes ctreeSway{0%,100%{transform:rotate(-.5deg)}50%{transform:rotate(.5deg)}}
+.ctree-petals path{will-change:transform,opacity}
+@media(prefers-reduced-motion:reduce){.ctree-sway{animation:none}}
+.ctree.is-reduced .ctree-sway{animation:none}
