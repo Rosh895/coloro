@@ -87,11 +87,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const L = (fr, en) => (typeof LANG !== 'undefined' && LANG === 'en') ? en : fr;
   const STAGES = [
     [0, 'Une graine attend dans la terre.', 'A seed is waiting in the soil.'],
-    [10, 'Une jeune pousse sort de terre.', 'A tiny seedling breaks through.'],
-    [50, 'Un jeune arbre se dresse, ses branches se forment.', 'A young sapling, its branches forming.'],
-    [100, 'L’arbre fleurit : Glow est débloqué.', 'The tree blossoms: Glow unlocked.'],
-    [150, 'L’arbre est de plus en plus fleuri.', 'The tree is fuller and fuller.'],
-    [250, 'Floraison complète : Seoul Star est débloqué.', 'Full bloom: Seoul Star unlocked.'],
+    [25, 'Une jeune pousse grandit.', 'A young sapling is growing.'],
+    [50, 'Les branches se forment, les premiers bourgeons apparaissent.', 'Branches are forming, the first buds appear.'],
+    [75, 'L’arbre fleurit de plus en plus.', 'The tree is blooming more and more.'],
+    [100, 'Floraison complète : Glow est débloqué.', 'Full bloom: Glow unlocked.'],
+    [250, 'Votre arbre rayonne : Seoul Star est débloqué.', 'Your tree shines: Seoul Star unlocked.'],
   ];
   const stage = p => STAGES.filter(s => p >= s[0]).pop();
   const tree = ColaroTree.mount($('#treeBox'), { points: 0 });
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastRank = 0, tt = 0;
   const say = msg => { toast.textContent = msg; toast.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('on'), 3200); };
 
-  [0, 10, 50, 100, 150, 250, 300].forEach(v => { const b = document.createElement('button'); b.type = 'button'; b.textContent = v + ' pts'; b.dataset.v = v; b.setAttribute('aria-pressed', 'false'); $('#presets').appendChild(b); });
+  [0, 25, 50, 75, 100, 175, 250, 300].forEach(v => { const b = document.createElement('button'); b.type = 'button'; b.textContent = v + ' pts'; b.dataset.v = v; b.setAttribute('aria-pressed', 'false'); $('#presets').appendChild(b); });
 
   function levelsRow(lv) {
     $('#levelsRow').innerHTML = ColaroTree.LEVELS.map(l => `<div class="${l.key === lv.key ? 'on' : ''}"><b>${l.name}</b>${l.next ? l.min + '–' + (l.next - 1) : l.min + '+'} pts</div>`).join('');

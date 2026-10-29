@@ -26,7 +26,7 @@
   }
 
   /* ---------- growth curve: smooth through the milestones, monotone (no wobble) ---------- */
-  const ANCHORS = [[0, 0], [10, 0.1], [50, 0.34], [100, 0.6], [150, 0.8], [250, 1]];
+  const ANCHORS = [[0, 0], [12, 0.06], [25, 0.25], [50, 0.56], [75, 0.86], [100, 1]]; // 4 stamps = 100 points = full bloom
   const xs = ANCHORS.map(a => a[0]), ys = ANCHORS.map(a => a[1]);
   const slopes = (() => { // Fritsch–Carlson monotone cubic
     const n = xs.length, d = [], m = [];
@@ -40,9 +40,10 @@
     }
     return m;
   })();
+  const clamp01 = x => Math.max(0, Math.min(1, x));
   function growth(points) {
     const p = Math.max(0, Number(points) || 0);
-    if (p >= xs[xs.length - 1]) return 1;
+    if (p >= xs[xs.length - 1]) return 1 + clamp01((p - 100) / 150); // 1 = full bloom; 1..2 = extra radiance up to Seoul Star (250 points)
     let i = 0; while (p > xs[i + 1]) i++;
     const h = xs[i + 1] - xs[i], t = (p - xs[i]) / h, t2 = t * t, t3 = t2 * t;
     return ys[i] * (2 * t3 - 3 * t2 + 1) + h * slopes[i] * (t3 - 2 * t2 + t) + ys[i + 1] * (-2 * t3 + 3 * t2) + h * slopes[i + 1] * (t3 - t2);
@@ -51,7 +52,6 @@
   /* ---------- small helpers ---------- */
   const NS = 'http://www.w3.org/2000/svg';
   const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
-  const clamp01 = x => Math.max(0, Math.min(1, x));
   const smooth = x => { x = clamp01(x); return x * x * (3 - 2 * x); };
   const ramp = (g, a, b) => smooth((g - a) / (b - a));
   const ease = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -170,15 +170,24 @@
       el('use', { href: '#' + id + 'f' + (rand() > 0.5 ? 'L' : 'D'), x: -size, y: -size, width: size * 2, height: size * 2 }, fi);
       const a = 0.72 + rand() * 0.2; flowers.push({ g: fi, a, b: a + 0.08 });
     }
+    // soft sparkles that appear as the points go from 100 (full bloom) towards 250 (Seoul Star)
+    const sparkG = el('g', { 'aria-hidden': 'true' }, svg), sparkles = [];
+    [[62, 96, 13], [338, 104, 12], [40, 208, 10], [362, 214, 11], [128, 36, 10], [276, 30, 12], [206, 14, 9], [84, 296, 9], [318, 292, 10]].forEach(([x, y, s], i) => {
+      const g = el('g', { opacity: 0, transform: `translate(${x} ${y}) scale(.3)` }, sparkG);
+      el('path', { d: 'M0 -1 Q0 0 1 0 Q0 0 0 1 Q0 0 -1 0 Q0 0 0 -1Z', transform: `scale(${s})`, fill: '#F6E7A8', stroke: '#E0A44F', 'stroke-width': 0.09, 'stroke-linejoin': 'round' }, g);
+      sparkles.push({ g, x, y, a: (i / 9) * 0.65 });
+    });
     const petalsLayer = el('g', { class: 'ctree-petals', 'aria-hidden': 'true' }, svg);
 
     /* ---------- drawing for a given growth value ---------- */
     let shown = -1;
-    function render(g) {
-      shown = g;
+    function render(gx) {
+      shown = gx;
+      const g = Math.min(gx, 1), rad = clamp01(gx - 1);
       const c = smooth(g / 0.5);
       svg.setAttribute('viewBox', `${(130 * (1 - c)).toFixed(1)} ${(280 * (1 - c)).toFixed(1)} ${(140 + 260 * c).toFixed(1)} ${(161 + 299 * c).toFixed(1)}`);
-      glow.setAttribute('opacity', (0.75 * ramp(g, 0.6, 1)).toFixed(3));
+      glow.setAttribute('opacity', (0.55 * ramp(g, 0.6, 1) + 0.4 * rad).toFixed(3));
+      sparkles.forEach(s => { const v = ramp(rad, s.a, s.a + 0.3); s.g.setAttribute('opacity', v.toFixed(3)); s.g.setAttribute('transform', `translate(${s.x} ${s.y}) scale(${(0.3 + 0.7 * v).toFixed(3)})`); });
       const sd = 1 - ramp(g, 0.0, 0.05);
       seed.setAttribute('opacity', sd.toFixed(3));
       const tv = ramp(g, TRUNK_G[0], TRUNK_G[1]);
@@ -227,7 +236,7 @@
       if (opts.animate === false || reduced() && !opts.force || options.animate === false || shown < 0) { render(target); return; }
       const from = shown, delta = Math.abs(target - from);
       if (delta < 0.0005) { render(target); return; }
-      const dur = Math.min(2600, 700 + delta * 3600), t0 = performance.now();
+      const dur = Math.min(1700, 450 + delta * 1800), t0 = performance.now();
       const step = now => {
         const t = clamp01((now - t0) / dur);
         render(from + (target - from) * ease(t));

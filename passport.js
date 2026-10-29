@@ -35,9 +35,9 @@ Object.assign(T, {
   'p.ref.title': ['COLARO Beauty Passport', 'COLARO Beauty Passport'],
   'p.ref.text': ['Rejoins-moi au pop-up K-beauty COLARO à Paris (1er mars – 1er avril 2027) et ouvre ton Beauty Passport !', 'Join me at the COLARO K-beauty pop-up in Paris (1 March – 1 April 2027) and open your Beauty Passport!'],
   'p.ref.copied': ['Lien copié ! Envoyez-le à votre amie.', 'Link copied! Send it to your friend.'],
-  'p.tree.s0': ['Une graine attend dans la terre.', 'A seed is waiting in the soil.'], 'p.tree.s10': ['Une jeune pousse sort de terre.', 'A tiny seedling breaks through.'],
-  'p.tree.s50': ['Un jeune arbre se dresse, ses branches se forment.', 'A young sapling, its branches forming.'], 'p.tree.s100': ['L’arbre fleurit : Glow est débloqué.', 'The tree blossoms: Glow unlocked.'],
-  'p.tree.s150': ['L’arbre est de plus en plus fleuri.', 'The tree is fuller and fuller.'], 'p.tree.s250': ['Floraison complète : Seoul Star est débloqué.', 'Full bloom: Seoul Star unlocked.'],
+  'p.tree.s0': ['Une graine attend dans la terre.', 'A seed is waiting in the soil.'], 'p.tree.s25': ['Une jeune pousse grandit.', 'A young sapling is growing.'],
+  'p.tree.s50': ['Les branches se forment, les premiers bourgeons apparaissent.', 'Branches are forming, the first buds appear.'], 'p.tree.s75': ['L’arbre fleurit de plus en plus.', 'The tree is blooming more and more.'],
+  'p.tree.s100': ['Floraison complète : Glow est débloqué.', 'Full bloom: Glow unlocked.'], 'p.tree.s250': ['Votre arbre rayonne : Seoul Star est débloqué.', 'Your tree shines: Seoul Star unlocked.'],
   'p.tree.next': ['Encore {n} points pour {name}.', '{n} more points to reach {name}.'], 'p.tree.max': ['Niveau maximum atteint. Merci !', 'Top level reached. Thank you!'],
   'p.tree.up': ['Niveau {name} débloqué !', '{name} level unlocked!'], 'p.tree.redeem': ['Points à échanger : {n} (les récompenses seront annoncées).', 'Points to spend: {n} (rewards will be announced).'],
 });
@@ -103,7 +103,7 @@ function syncTree() {
   tree.setPoints(pts.status);
   $('#ptsNum').textContent = pts.status;
   $('#lvlPill').textContent = lv.name; $('#lvlPill').dataset.k = lv.key;
-  const stages = [0, 10, 50, 100, 150, 250], sk = stages.filter(x => pts.status >= x).pop();
+  const stages = [0, 25, 50, 75, 100, 250], sk = stages.filter(x => pts.status >= x).pop();
   $('#treeStage').textContent = t('p.tree.s' + sk);
   $('#lvlFill').style.width = Math.round(lv.progress * 100) + '%'; $('#lvlBar').setAttribute('aria-valuenow', Math.round(lv.progress * 100));
   $('#treeNext').textContent = lv.next ? t('p.tree.next', { n: lv.toNext, name: ColaroTree.LEVELS[lv.rank + 1].name }) : t('p.tree.max');
